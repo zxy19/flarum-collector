@@ -1,0 +1,55 @@
+xypp-collector:
+  forum:
+    integration:
+      reward:
+        money: => xypp-collector.ref.integration.reward.money
+        store_item: => xypp-collector.ref.integration.reward.store_item
+        store_item_loading: => xypp-collector.ref.integration.reward.store_item_loading
+        store_item_select: => xypp-collector.ref.integration.reward.store_item_select
+        store_item_select_button: => xypp-collector.ref.integration.reward.store_item_select_button
+        badge: => xypp-collector.ref.integration.reward.badge
+        badge_loading: => xypp-collector.ref.integration.reward.badge_loading
+        badge_error: => xypp-collector.ref.integration.reward.badge_error
+        badge_select: => xypp-collector.ref.integration.reward.badge_select
+        badge_select_button: => xypp-collector.ref.integration.reward.badge_select_button
+  admin:
+    integration:
+      reward:
+        money: => xypp-collector.ref.integration.reward.money
+        store_item: => xypp-collector.ref.integration.reward.store_item
+        store_item_loading: => xypp-collector.ref.integration.reward.store_item_loading
+        store_item_select: => xypp-collector.ref.integration.reward.store_item_select
+        store_item_select_button: => xypp-collector.ref.integration.reward.store_item_select_button
+        badge: => xypp-collector.ref.integration.reward.badge
+        badge_loading: => xypp-collector.ref.integration.reward.badge_loading
+        badge_error: => xypp-collector.ref.integration.reward.badge_error
+        badge_select: => xypp-collector.ref.integration.reward.badge_select
+        badge_select_button: => xypp-collector.ref.integration.reward.badge_select_button
+  ref:
+    integration:
+      condition:
+        post_count: "Post Count"
+        discussion_count: "Discussion Count"
+        like_recv: "Like Received"
+        like_send: "Like Sent"
+        user_page_view: "User Page Visit"
+        reloads: "Page Reloads"
+        store_purchased: "Store Purchased"
+        discussion_replied: "Discussion Replied"
+        discussion_views: "Discussion was view"
+        badge_received: "Badge Received"
+        email_changed: "Change Email"
+        avatar_changed: "Change Avatar"
+        money: "Money"
+      reward:
+        money: "Money"
+        store_item: "Store Item"
+        store_item_loading: "..."
+        store_item_error: "Not Found"
+        store_item_select: "Select Store Item"
+        store_item_select_button: "Select"
+        badge: "Badge"
+        badge_loading: "..."
+        badge_error: "Not Found"
+        badge_select: "Select Badge"
+        badge_select_button: "Select"

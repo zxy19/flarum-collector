@@ -1,0 +1,55 @@
+xypp-collector:
+  forum:
+    integration:
+      reward:
+        money: => xypp-collector.ref.integration.reward.money
+        store_item: => xypp-collector.ref.integration.reward.store_item
+        store_item_loading: => xypp-collector.ref.integration.reward.store_item_loading
+        store_item_select: => xypp-collector.ref.integration.reward.store_item_select
+        store_item_select_button: => xypp-collector.ref.integration.reward.store_item_select_button
+        badge: => xypp-collector.ref.integration.reward.badge
+        badge_loading: => xypp-collector.ref.integration.reward.badge_loading
+        badge_error: => xypp-collector.ref.integration.reward.badge_error
+        badge_select: => xypp-collector.ref.integration.reward.badge_select
+        badge_select_button: => xypp-collector.ref.integration.reward.badge_select_button
+  admin:
+    integration:
+      reward:
+        money: => xypp-collector.ref.integration.reward.money
+        store_item: => xypp-collector.ref.integration.reward.store_item
+        store_item_loading: => xypp-collector.ref.integration.reward.store_item_loading
+        store_item_select: => xypp-collector.ref.integration.reward.store_item_select
+        store_item_select_button: => xypp-collector.ref.integration.reward.store_item_select_button
+        badge: => xypp-collector.ref.integration.reward.badge
+        badge_error: => xypp-collector.ref.integration.reward.badge_error
+        badge_loading: => xypp-collector.ref.integration.reward.badge_loading
+        badge_select: => xypp-collector.ref.integration.reward.badge_select
+        badge_select_button: => xypp-collector.ref.integration.reward.badge_select_button
+  ref:
+    integration:
+      condition:
+        post_count: "发帖数"
+        discussion_count: "讨论数"
+        like_recv: "收到赞"
+        like_send: "发送赞"
+        user_page_view: "访问用户页"
+        reloads: "页面重载"
+        store_purchased: "购买商品"
+        discussion_replied: "被回复"
+        discussion_views: "讨论被浏览"
+        badge_received: "获得徽章"
+        email_changed: "修改邮箱"
+        avatar_changed: "修改头像"
+        money: "货币"
+      reward:
+        money: "货币"
+        store_item: "商品"
+        store_item_loading: "..."
+        store_item_error: "商品未找到"
+        store_item_select: "选择商品"
+        store_item_select_button: "选择"
+        badge: "徽章"
+        badge_loading: "..."
+        badge_error: "未找到徽章"
+        badge_select: "选择徽章"
+        badge_select_button: "选择"

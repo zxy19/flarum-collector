@@ -1,0 +1,33 @@
+xypp-collector:
+  forum:
+    reward_not_found: Reward {reward} not found
+    condition_not_found: Condition {condition} not found
+    condition:
+      condition: "Condition"
+      format: "<b>{name}</b> {operator}{value} {span} "
+      and: " and "
+      span: "In {span} days"
+    reward:
+      reward: "Reward"
+      format: "<b>{name}</b>:{value}"
+      and: " and "
+  admin:
+    settings: "Settings"
+    timezone: "Timezone"
+    allow_update: "Allow user update manually"
+    list:
+      condition: "Condition"
+      reward: "Reward"
+      condition-name: "Condition Name"
+      condition-operator: "Operator"
+      condition-value: "Value"
+      condition-span: "Time Span"
+      condition-alter_name: "Display Name"
+      reward-name: "Reward Name"
+      reward-value: "Value"
+      reward-get_value: "Get Value"
+      reward-alter_name: "Display Name"
+      new_item: "New Item"
+  api:
+    condition_not_allow_frontend: "Condition cannot be trigger in frontend"
+    no_manual_update: "No manual update needed"
