@@ -10,6 +10,7 @@ use Xypp\Collector\RewardDefinition;
 
 class LikeRecv extends ConditionDefinition
 {
+    public bool $accumulateAbsolute = true;
     public ConnectionInterface $connection;
     public function __construct(ConnectionInterface $connection)
     {

@@ -503,6 +503,26 @@ var commonSelectionModal = /*#__PURE__*/function (_Modal) {
 
 /***/ }),
 
+/***/ "./src/common/extend.ts":
+/*!******************************!*\
+  !*** ./src/common/extend.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/common/extenders */ "flarum/common/extenders");
+/* harmony import */ var flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _models_Condition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./models/Condition */ "./src/common/models/Condition.ts");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([new (flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0___default().Store)().add('condition', _models_Condition__WEBPACK_IMPORTED_MODULE_1__["default"])]);
+
+/***/ }),
+
 /***/ "./src/common/integration/index.ts":
 /*!*****************************************!*\
   !*** ./src/common/integration/index.ts ***!
@@ -810,6 +830,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
   function HumanizeUtils(app) {
     this.app = void 0;
     this.definitionLoaded = false;
+    this.rawConditionDefinition = {};
     this.conditionTranslations = {};
     this.rewardTranslations = {};
     this.conditionsKeys = [];
@@ -860,6 +881,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
     data.conditions.forEach(function (value) {
       _this.conditionTranslations[value.key] = value.trans;
       _this.conditionsKeys.push(value.key);
+      _this.rawConditionDefinition[value.key] = value;
     });
     data.rewards.forEach(function (value) {
       _this.rewardTranslations[value.key] = value.trans;
@@ -962,6 +984,9 @@ var HumanizeUtils = /*#__PURE__*/function () {
         value: this.getRewardValue(rewardData.name, rewardData.value)
       });
     }
+  };
+  _proto.getRawConditionDefinition = function getRawConditionDefinition(key) {
+    return this.rawConditionDefinition[key] || false;
   };
   return HumanizeUtils;
 }();
@@ -1085,12 +1110,12 @@ var RewardList = /*#__PURE__*/function (_Component) {
   _proto.view = function view(vnode) {
     var humanize = _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].getInstance((flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default()));
     return m("div", {
-      className: "quest-item-reward"
+      className: "collector-reward"
     }, m("div", {
-      className: "quest-item-reward-title"
+      className: "collector-reward-title"
     }, m("i", {
       "class": "fas fa-gift"
-    }), " ", flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans("xypp-forum-quests.forum.reward.reward")), humanize.humanizeReward(this.attrs.rewards).map(function (e) {
+    }), " ", flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans("xypp-collector.forum.reward.reward")), humanize.humanizeReward(this.attrs.rewards).map(function (e) {
       return m("div", null, e);
     }));
   };
@@ -1232,7 +1257,7 @@ function triggerConditions(records) {
     };
   });
   return flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().request({
-    url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.attribute('apiUrl') + "/quest-condition",
+    url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.attribute('apiUrl') + "/collector-condition",
     method: "POST",
     body: {
       data: rec
@@ -1388,6 +1413,17 @@ module.exports = flarum.core.compat['common/components/Select'];
 
 "use strict";
 module.exports = flarum.core.compat['common/extend'];
+
+/***/ }),
+
+/***/ "flarum/common/extenders":
+/*!*********************************************************!*\
+  !*** external "flarum.core.compat['common/extenders']" ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/extenders'];
 
 /***/ }),
 
@@ -1947,6 +1983,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   addCondition: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addCondition),
 /* harmony export */   addReward: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addReward),
 /* harmony export */   addRewardSelection: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addRewardSelection),
+/* harmony export */   extend: () => (/* reexport safe */ _src_common_extend__WEBPACK_IMPORTED_MODULE_1__["default"]),
 /* harmony export */   getConditionMap: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.getConditionMap),
 /* harmony export */   getConditions: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.getConditions),
 /* harmony export */   rewardValueConvert: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.rewardValueConvert),
@@ -1954,6 +1991,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   triggerConditions: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.triggerConditions)
 /* harmony export */ });
 /* harmony import */ var _src_forum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/forum */ "./src/forum/index.ts");
+/* harmony import */ var _src_common_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/common/extend */ "./src/common/extend.ts");
+
 
 })();
 

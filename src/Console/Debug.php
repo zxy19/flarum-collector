@@ -8,9 +8,9 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 
 use Xypp\Collector\Data\ConditionAccumulation;
-use Xypp\Collector\Helper\CarbonZoneHelper;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Condition;
+use Xypp\LocalizeDate\Helper\CarbonZoneHelper;
 class Debug extends Command
 {
     /**

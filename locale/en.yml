@@ -13,8 +13,13 @@ xypp-collector:
       and: " and "
   admin:
     settings: "Settings"
-    timezone: "Timezone"
     allow_update: "Allow user update manually"
+    emit_control:
+      title: "Update Emitter and Recalculate"
+      event: "Event"
+      update: "Update Command"
+      manual: "Manual"
+      name: "Name"
     list:
       condition: "Condition"
       reward: "Reward"

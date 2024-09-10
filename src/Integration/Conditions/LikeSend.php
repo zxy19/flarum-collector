@@ -11,10 +11,11 @@ use Xypp\Collector\RewardDefinition;
 
 class LikeSend extends ConditionDefinition
 {
+    public bool $accumulateAbsolute = true;
     public ConnectionInterface $connection;
     public function __construct(ConnectionInterface $connection)
     {
-        parent::__construct("like_send",null,"xypp-collector.ref.integration.condition.like_send");
+        parent::__construct("like_send", null, "xypp-collector.ref.integration.condition.like_send");
         $this->connection = $connection;
     }
     public function getAbsoluteValue(\Flarum\User\User $user, ConditionAccumulation $conditionAccumulation): bool

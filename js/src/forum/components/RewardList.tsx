@@ -8,8 +8,8 @@ export default class RewardList extends Component<{
 }> {
     view(vnode: any) {
         const humanize = HumanizeUtils.getInstance(app);
-        return <div className='quest-item-reward'>
-            <div className='quest-item-reward-title'><i class="fas fa-gift"></i>{" "}{app.translator.trans("xypp-forum-quests.forum.reward.reward")}</div>
+        return <div className='collector-reward'>
+            <div className='collector-reward-title'><i class="fas fa-gift"></i>{" "}{app.translator.trans("xypp-collector.forum.reward.reward")}</div>
             {humanize.humanizeReward(this.attrs.rewards).map((e: any) => <div>{e}</div>)}
         </div>
     }

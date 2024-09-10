@@ -27,7 +27,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
             this.REG_CONDITIONS[item] = conditions[item].content;
         });
 
-        this.REG_CONDITIONS['*'] = app.translator.trans('xypp-collector.admin.create-modal.new_item') + "";
+        this.REG_CONDITIONS['*'] = app.translator.trans('xypp-collector.admin.list.new_item') + "";
 
         this.conditions = this.attrs.conditions();
         this.conditions.push({
@@ -41,11 +41,11 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         return <table className='Table'>
             <thead>
                 <tr>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.condition-name')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.condition-operator')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.condition-value')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.condition-span')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.condition-alter_name')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-name')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-operator')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-value')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-span')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-alter_name')}</th>
                 </tr>
             </thead>
             <tbody>

@@ -30,8 +30,9 @@ return array_merge(
             ->js(__DIR__ . '/js/dist/admin.js')
             ->css(__DIR__ . '/less/admin.less'),
         new Extend\Locales(__DIR__ . '/locale'),
+        new Extend\Locales(__DIR__ . '/integration-locale'),
         (new Extend\Event())
-            ->listen(UpdateCondition::class, ConditionModifierListener::class),
+            ->listen(\Xypp\Collector\Event\UpdateCondition::class, ConditionModifierListener::class),
         (new Extend\Routes('api'))
             ->post('/collector-condition', 'collector-condition.trigger', Api\Controller\FrontendConditionUpdateController::class)
             ->get('/collector-condition', 'collector-condition.index', Api\Controller\ListUserConditionsController::class)

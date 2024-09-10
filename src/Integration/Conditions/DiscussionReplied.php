@@ -8,6 +8,7 @@ use Xypp\Collector\RewardDefinition;
 
 class DiscussionReplied extends ConditionDefinition
 {
+    public bool $accumulateAbsolute = true;
     public function __construct()
     {
         parent::__construct("discussion_replied",null,"xypp-collector.ref.integration.condition.discussion_replied");

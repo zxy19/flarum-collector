@@ -23,7 +23,7 @@ class ConditionDefinition
      * Can accumulate when get absolute value;
      * @var bool
      */
-    public bool $accumulateAbsolute = true;
+    public bool $accumulateAbsolute = false;
 
     /**
      * No auto update support. Will display a check button on frontend

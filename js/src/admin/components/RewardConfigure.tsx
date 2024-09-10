@@ -19,7 +19,7 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
             this.REG_REWARDS[item] = reward[item].content;
         });
 
-        this.REG_REWARDS['*'] = app.translator.trans('xypp-collector.admin.create-modal.new_item') + "";
+        this.REG_REWARDS['*'] = app.translator.trans('xypp-collector.admin.list.new_item') + "";
 
         this.rewards = this.attrs.rewards();
         this.rewards.push({
@@ -32,10 +32,10 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
         return <table className='Table'>
             <thead>
                 <tr>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.reward-name')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.reward-value')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.reward-get_value')}</th>
-                    <th>{app.translator.trans('xypp-collector.admin.create-modal.reward-alter_name')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.reward-name')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.reward-value')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.reward-get_value')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.reward-alter_name')}</th>
                 </tr>
             </thead>
             <tbody>

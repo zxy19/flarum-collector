@@ -8,6 +8,7 @@ use Xypp\Collector\RewardDefinition;
 
 class PostCount extends ConditionDefinition
 {
+    public bool $accumulateAbsolute = true;
     public function __construct()
     {
         parent::__construct("post_count",null,"xypp-collector.ref.integration.condition.post_count");

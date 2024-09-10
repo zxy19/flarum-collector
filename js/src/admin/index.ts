@@ -5,12 +5,7 @@ app.initializers.add('xypp/collector', () => {
   init(app, "admin");
   app.extensionData
     .for('xypp-collector')
-    .registerSetting({
-      type: 'string',
-      setting: 'xypp.collector.timezone',
-      default: 'UTC',
-      label: app.translator.trans('xypp-collector.admin.timezone'),
-    })
+    .registerPage(adminPage);
 });
 
 
@@ -20,6 +15,7 @@ import Condition from '../common/models/Condition';
 import RewardConfigure from './components/RewardConfigure';
 import ConditionConfigure from './components/ConditionConfigure';
 import { OPERATOR } from '../common/types/data';
+import adminPage from './components/adminPage';
 export {
   addCondition,
   addReward,

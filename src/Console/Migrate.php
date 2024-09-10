@@ -26,10 +26,23 @@ class Migrate extends Command
     }
     public function handle()
     {
-        $column = ["created_at", "updated_at", "name", "user_id", "value", "accumulation"];
-        Condition::insertUsing(
-            $column,
-            $this->connection->table("quest_condition")->select($column)
+        $conditions = Condition::all();
+
+        $this->withProgressBar(
+            $this->connection->table("quest_condition")->get(),
+            function ($data) use ($conditions) {
+                $model = $conditions->where("name", $data->name)->where("user_id", $data->user_id)->first();
+                if (!$model) {
+                    $model = new Condition();
+                    $model->name = $data->name;
+                    $model->user_id = $data->user_id;
+                }
+                $model->accumulation = $data->accumulation;
+                $model->updated_at = $data->updated_at;
+                $model->created_at = $data->created_at;
+                $model->value = $data->value;
+                $model->save();
+            }
         );
     }
 }

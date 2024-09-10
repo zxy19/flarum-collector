@@ -13,8 +13,8 @@ xypp-collector:
       and: " 和 "
   admin:
     settings: "设置"
-    timezone: "时区"
     allow_update: "允许用户手动更新"
+    emit_control: "触发更新和重算"
     list:
       condition: "条件"
       reward: "奖励"

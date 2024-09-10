@@ -29,7 +29,8 @@ class GetCollectorDefinitionController implements RequestHandlerInterface
                 function ($conditionName) use (&$ret) {
                     return [
                         "key" => $conditionName,
-                        "trans" => $this->translator->trans($this->conditionHelper->getConditionDefinition($conditionName)->translateKey)
+                        "trans" => $this->translator->trans($this->conditionHelper->getConditionDefinition($conditionName)->translateKey),
+                        "abs" => $this->conditionHelper->getConditionDefinition($conditionName)->accumulateAbsolute
                     ];
                 },
                 $this->conditionHelper->getAllConditionName()

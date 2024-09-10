@@ -12,7 +12,7 @@ export function triggerConditions(records: Record<string, number>) {
         }
     });
     return app.request({
-        url: app.forum.attribute('apiUrl') + "/quest-condition",
+        url: app.forum.attribute('apiUrl') + "/collector-condition",
         method: "POST",
         body: { data: rec }
     });

@@ -8,6 +8,7 @@ use Xypp\Collector\RewardDefinition;
 
 class BadgeReceived extends ConditionDefinition
 {
+    public bool $accumulateAbsolute = true;
     public bool $needManualUpdate = true;
     public function __construct()
     {

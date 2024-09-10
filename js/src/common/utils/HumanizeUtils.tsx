@@ -10,6 +10,9 @@ export default class HumanizeUtils {
     public static instance?: HumanizeUtils;
     protected app: ForumApplication | AdminApplication;
     protected definitionLoaded: boolean = false;
+    protected rawConditionDefinition: Record<string, {
+        trans: string, key: string, manual: boolean, abs: boolean
+    }> = {}
     protected conditionTranslations: Record<string, string> = {};
     protected rewardTranslations: Record<string, string> = {};
     protected conditionsKeys: string[] = [];
@@ -32,12 +35,13 @@ export default class HumanizeUtils {
         this._loadDefinition(data as any);
     }
     protected _loadDefinition(data: {
-        conditions: { trans: string, key: string }[],
+        conditions: { trans: string, key: string, manual: boolean, abs: boolean }[],
         rewards: { trans: string, key: string }[]
     }) {
         data.conditions.forEach((value) => {
             this.conditionTranslations[value.key] = value.trans;
             this.conditionsKeys.push(value.key);
+            this.rawConditionDefinition[value.key] = value;
         });
         data.rewards.forEach((value) => {
             this.rewardTranslations[value.key] = value.trans;
@@ -121,5 +125,9 @@ export default class HumanizeUtils {
                 value: this.getRewardValue(rewardData.name, rewardData.value)
             });
         }
+    }
+
+    public getRawConditionDefinition(key: string): { trans: string, key: string, manual: boolean, abs: boolean } | false {
+        return this.rawConditionDefinition[key] || false;
     }
 }
