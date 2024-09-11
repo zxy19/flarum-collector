@@ -6,6 +6,11 @@ export declare enum OPERATOR {
     GREATER_THAN_OR_EQUAL = ">=",
     LESS_THAN_OR_EQUAL = "<="
 }
+export declare enum CALCULATE {
+    SUM = 1,
+    MAX = 2,
+    DAY_COUNT = 3
+}
 export type ConditionEvent = {
     name: string;
     value: number;
@@ -15,6 +20,7 @@ export type ConditionData = {
     operator: OPERATOR;
     value: number;
     span?: number;
+    calculate?: CALCULATE;
     alter_name?: string;
 };
 export type RewardData = {
@@ -25,5 +31,6 @@ export type RewardData = {
 export type ConditionAccumulation = {
     all: number;
     rest: number;
+    max: number;
     [key: string]: number;
 };
