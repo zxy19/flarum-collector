@@ -721,6 +721,7 @@ var Condition = /*#__PURE__*/function (_Model) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CALCULATE: () => (/* binding */ CALCULATE),
 /* harmony export */   OPERATOR: () => (/* binding */ OPERATOR)
 /* harmony export */ });
 var OPERATOR = /*#__PURE__*/function (OPERATOR) {
@@ -733,6 +734,12 @@ var OPERATOR = /*#__PURE__*/function (OPERATOR) {
   return OPERATOR;
 }({});
 ;
+var CALCULATE = /*#__PURE__*/function (CALCULATE) {
+  CALCULATE[CALCULATE["SUM"] = 1] = "SUM";
+  CALCULATE[CALCULATE["MAX"] = 2] = "MAX";
+  CALCULATE[CALCULATE["DAY_COUNT"] = 3] = "DAY_COUNT";
+  return CALCULATE;
+}({});
 
 /***/ }),
 
@@ -820,10 +827,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/utils/ItemList */ "flarum/common/utils/ItemList");
-/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _types_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types/data */ "./src/common/types/data.ts");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/utils/ItemList */ "flarum/common/utils/ItemList");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__);
 
 var _HumanizeUtils;
+
 
 
 var HumanizeUtils = /*#__PURE__*/function () {
@@ -897,7 +906,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
   };
   _proto.getAllConditions = function getAllConditions() {
     var _this2 = this;
-    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default())();
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
     this.conditionsKeys.forEach(function (key) {
       ret.add(key, _this2.conditionTranslations[key]);
     });
@@ -905,7 +914,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
   };
   _proto.getAllRewards = function getAllRewards() {
     var _this3 = this;
-    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default())();
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
     this.rewardsKeys.forEach(function (key) {
       ret.add(key, _this3.rewardTranslations[key]);
     });
@@ -964,6 +973,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
         name: this.getConditionName(conditionData.name),
         operator: conditionData.operator,
         value: conditionData.value,
+        calculate: this.getCalculate(conditionData.calculate || _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM),
         span: span
       });
     }
@@ -984,6 +994,11 @@ var HumanizeUtils = /*#__PURE__*/function () {
         value: this.getRewardValue(rewardData.name, rewardData.value)
       });
     }
+  };
+  _proto.getCalculate = function getCalculate(calculate) {
+    var _CALCULATE_MAPPING;
+    var CALCULATE_MAPPING = (_CALCULATE_MAPPING = {}, _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM] = 'sum', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX] = 'max', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT] = 'days', _CALCULATE_MAPPING);
+    return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
   };
   _proto.getRawConditionDefinition = function getRawConditionDefinition(key) {
     return this.rawConditionDefinition[key] || false;

@@ -53,7 +53,6 @@ class UpdateCondition extends Command
             if ($names && !in_array($conditionDefinitionName, $names))
                 continue;
             $conditionDefinition = $this->conditionHelper->getConditionDefinition($conditionDefinitionName);
-            $updated = false;
             $this->info("Updating $conditionDefinitionName");
             $this->withProgressBar(
                 $users,

@@ -428,6 +428,7 @@ var ConditionConfigure = /*#__PURE__*/function (_Component) {
       '<=': '<=',
       '!=': '!='
     };
+    _this.REG_CALCULATE = {};
     _this.REG_CONDITIONS = {};
     return _this;
   }
@@ -442,6 +443,9 @@ var ConditionConfigure = /*#__PURE__*/function (_Component) {
       _this2.REG_CONDITIONS[item] = conditions[item].content;
     });
     this.REG_CONDITIONS['*'] = flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.new_item') + "";
+    this.REG_CALCULATE[_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM] = humanize.getCalculate(_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM) + "";
+    this.REG_CALCULATE[_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX] = humanize.getCalculate(_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX) + "";
+    this.REG_CALCULATE[_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT] = humanize.getCalculate(_common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT) + "";
     this.conditions = this.attrs.conditions();
     this.conditions.push({
       name: '*',
@@ -453,7 +457,7 @@ var ConditionConfigure = /*#__PURE__*/function (_Component) {
     var _this3 = this;
     return m("table", {
       className: "Table"
-    }, m("thead", null, m("tr", null, m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-name')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-operator')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-value')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-span')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-alter_name')))), m("tbody", null, this.conditions.map(function (item, index) {
+    }, m("thead", null, m("tr", null, m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-name')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-operator')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-value')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-span')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-calculate')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_3___default().translator.trans('xypp-collector.admin.list.condition-alter_name')))), m("tbody", null, this.conditions.map(function (item, index) {
       return m("tr", null, m("td", null, m((flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_7___default()), {
         className: "FormControl",
         value: item.name,
@@ -491,6 +495,14 @@ var ConditionConfigure = /*#__PURE__*/function (_Component) {
         value: item.span,
         onchange: function (e) {
           _this3.conditions[index].span = e.target.value ? parseInt(e.target.value) : undefined;
+          _this3.attrs.conditions(_this3.conditions);
+        }.bind(_this3)
+      })), m("td", null, m((flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_7___default()), {
+        className: "FormControl",
+        value: item.calculate || _common_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM,
+        options: _this3.REG_CALCULATE,
+        onchange: function (name) {
+          _this3.conditions[index].calculate = parseInt(name);
           _this3.attrs.conditions(_this3.conditions);
         }.bind(_this3)
       })), m("td", null, m("input", {
@@ -693,6 +705,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../common/utils/HumanizeUtils */ "./src/common/utils/HumanizeUtils.tsx");
 /* harmony import */ var flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! flarum/common/components/Checkbox */ "flarum/common/components/Checkbox");
 /* harmony import */ var flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! flarum/common/components/LinkButton */ "flarum/common/components/LinkButton");
+/* harmony import */ var flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9__);
+
 
 
 
@@ -729,7 +744,13 @@ var adminPage = /*#__PURE__*/function (_ExtensionPage) {
       className: "Form-group"
     }, m("h2", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.title')), m("table", {
       className: "Table"
-    }, m("thead", null, m("tr", null, m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.name')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.event')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.update')), m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.manual')))), m("tbody", null, this.getControls()))), this.submitButton());
+    }, m("thead", null, m("tr", null, m("th", null, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.name')), m("th", null, m((flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9___default()), {
+      onclick: this.toggleAll("event")
+    }, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.event'))), m("th", null, m((flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9___default()), {
+      onclick: this.toggleAll("update")
+    }, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.update'))), m("th", null, m((flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9___default()), {
+      onclick: this.toggleAll("manual")
+    }, flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default().translator.trans('xypp-collector.admin.emit_control.manual'))))), m("tbody", null, this.getControls()))), this.submitButton());
   };
   _proto.loadData = /*#__PURE__*/function () {
     var _loadData = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee() {
@@ -763,28 +784,31 @@ var adminPage = /*#__PURE__*/function (_ExtensionPage) {
         className: "emit-control-row"
       }, m("td", {
         className: "emit-control-label"
-      }, conditions[key].content), m("td", {
+      }, m((flarum_common_components_LinkButton__WEBPACK_IMPORTED_MODULE_9___default()), {
+        onclick: _this2.toggleRow(key)
+      }, conditions[key].content)), m("td", {
         className: "emit-control-event"
       }, m((flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8___default()), {
         onchange: _this2.changeStateCbMaker("event", key),
-        checked: _this2.checked("event", key),
+        state: _this2.checked("event", key),
         disabled: !_this2.checkType("event", key)
       })), m("td", {
         className: "emit-control-update"
       }, m((flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8___default()), {
         onchange: _this2.changeStateCbMaker("update", key),
-        checked: _this2.checked("update", key),
+        state: _this2.checked("update", key),
         disabled: !_this2.checkType("update", key)
       })), m("td", {
         className: "emit-control-manual"
       }, m((flarum_common_components_Checkbox__WEBPACK_IMPORTED_MODULE_8___default()), {
         onchange: _this2.changeStateCbMaker("manual", key),
-        checked: _this2.checked("manual", key),
+        state: _this2.checked("manual", key),
         disabled: !_this2.checkType("manual", key)
       })));
     });
   };
   _proto.checked = function checked(type, name) {
+    if (!this.checkType(type, name)) return false;
     if (!this.autoEmitObj[type]) return true;
     return this.autoEmitObj[type][name] !== true;
   };
@@ -795,26 +819,43 @@ var adminPage = /*#__PURE__*/function (_ExtensionPage) {
     if (type === "manual") return def && def.manual;
     return false;
   };
-  _proto.toggleAll = function toggleAll(type) {
+  _proto.toggleRow = function toggleRow(name) {
     var _this3 = this;
-    var all = Object.keys(_common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_7__["default"].getInstance((flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default())).getAllConditions().toObject()).filter(function (key) {
-      return _this3.checkType(type, key);
-    });
-    if (!this.autoEmitObj[type]) this.autoEmitObj[type] = {};
-    var target = true;
-    if (Object.keys(this.autoEmitObj[type]).length == 0) target = false;
-    all.forEach(function (key) {
-      if (target) _this3.autoEmitObj[type][key] = true;else if (_this3.autoEmitObj[type][key]) delete _this3.autoEmitObj[type][key];
-    });
-    this.autoEmit(JSON.stringify(this.autoEmit));
-    m.redraw();
+    return function (e) {
+      e.preventDefault();
+      var types = ["event", "update", "manual"].filter(function (type) {
+        return _this3.checkType(type, name);
+      });
+      var target = types.find(function (type) {
+        return _this3.autoEmitObj[type] && _this3.autoEmitObj[type][name];
+      }) === undefined;
+      types.forEach(function (type) {
+        if (target) _this3.autoEmitObj[type][name] = true;else if (_this3.autoEmitObj[type][name]) delete _this3.autoEmitObj[type][name];
+      });
+    }.bind(this);
   };
-  _proto.changeStateCbMaker = function changeStateCbMaker(type, name) {
+  _proto.toggleAll = function toggleAll(type) {
     var _this4 = this;
     return function (e) {
+      e.preventDefault();
+      var all = Object.keys(_common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_7__["default"].getInstance((flarum_admin_app__WEBPACK_IMPORTED_MODULE_4___default())).getAllConditions().toObject()).filter(function (key) {
+        return _this4.checkType(type, key);
+      });
       if (!_this4.autoEmitObj[type]) _this4.autoEmitObj[type] = {};
-      if (!e) _this4.autoEmitObj[type][name] = true;else if (_this4.autoEmitObj[type][name]) delete _this4.autoEmitObj[type][name];
-      _this4.autoEmit(JSON.stringify(_this4.autoEmitObj));
+      var target = true;
+      if (Object.keys(_this4.autoEmitObj[type]).length == 0) target = false;
+      all.forEach(function (key) {
+        if (target) _this4.autoEmitObj[type][key] = true;else if (_this4.autoEmitObj[type][key]) delete _this4.autoEmitObj[type][key];
+      });
+      _this4.autoEmit(JSON.stringify(_this4.autoEmit));
+    }.bind(this);
+  };
+  _proto.changeStateCbMaker = function changeStateCbMaker(type, name) {
+    var _this5 = this;
+    return function (e) {
+      if (!_this5.autoEmitObj[type]) _this5.autoEmitObj[type] = {};
+      if (!e) _this5.autoEmitObj[type][name] = true;else if (_this5.autoEmitObj[type][name]) delete _this5.autoEmitObj[type][name];
+      _this5.autoEmit(JSON.stringify(_this5.autoEmitObj));
     }.bind(this);
   };
   return adminPage;
@@ -1209,6 +1250,7 @@ var Condition = /*#__PURE__*/function (_Model) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CALCULATE: () => (/* binding */ CALCULATE),
 /* harmony export */   OPERATOR: () => (/* binding */ OPERATOR)
 /* harmony export */ });
 var OPERATOR = /*#__PURE__*/function (OPERATOR) {
@@ -1221,6 +1263,12 @@ var OPERATOR = /*#__PURE__*/function (OPERATOR) {
   return OPERATOR;
 }({});
 ;
+var CALCULATE = /*#__PURE__*/function (CALCULATE) {
+  CALCULATE[CALCULATE["SUM"] = 1] = "SUM";
+  CALCULATE[CALCULATE["MAX"] = 2] = "MAX";
+  CALCULATE[CALCULATE["DAY_COUNT"] = 3] = "DAY_COUNT";
+  return CALCULATE;
+}({});
 
 /***/ }),
 
@@ -1308,10 +1356,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/utils/ItemList */ "flarum/common/utils/ItemList");
-/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _types_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types/data */ "./src/common/types/data.ts");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/utils/ItemList */ "flarum/common/utils/ItemList");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__);
 
 var _HumanizeUtils;
+
 
 
 var HumanizeUtils = /*#__PURE__*/function () {
@@ -1385,7 +1435,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
   };
   _proto.getAllConditions = function getAllConditions() {
     var _this2 = this;
-    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default())();
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
     this.conditionsKeys.forEach(function (key) {
       ret.add(key, _this2.conditionTranslations[key]);
     });
@@ -1393,7 +1443,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
   };
   _proto.getAllRewards = function getAllRewards() {
     var _this3 = this;
-    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_2___default())();
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
     this.rewardsKeys.forEach(function (key) {
       ret.add(key, _this3.rewardTranslations[key]);
     });
@@ -1452,6 +1502,7 @@ var HumanizeUtils = /*#__PURE__*/function () {
         name: this.getConditionName(conditionData.name),
         operator: conditionData.operator,
         value: conditionData.value,
+        calculate: this.getCalculate(conditionData.calculate || _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM),
         span: span
       });
     }
@@ -1472,6 +1523,11 @@ var HumanizeUtils = /*#__PURE__*/function () {
         value: this.getRewardValue(rewardData.name, rewardData.value)
       });
     }
+  };
+  _proto.getCalculate = function getCalculate(calculate) {
+    var _CALCULATE_MAPPING;
+    var CALCULATE_MAPPING = (_CALCULATE_MAPPING = {}, _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM] = 'sum', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX] = 'max', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT] = 'days', _CALCULATE_MAPPING);
+    return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
   };
   _proto.getRawConditionDefinition = function getRawConditionDefinition(key) {
     return this.rawConditionDefinition[key] || false;
@@ -1564,6 +1620,17 @@ module.exports = flarum.core.compat['common/components/Button'];
 
 "use strict";
 module.exports = flarum.core.compat['common/components/Checkbox'];
+
+/***/ }),
+
+/***/ "flarum/common/components/LinkButton":
+/*!*********************************************************************!*\
+  !*** external "flarum.core.compat['common/components/LinkButton']" ***!
+  \*********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/components/LinkButton'];
 
 /***/ }),
 

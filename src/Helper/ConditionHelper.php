@@ -7,6 +7,7 @@ use Flarum\Locale\Translator;
 use Flarum\Notification\NotificationSyncer;
 use Flarum\User\User;
 use Xypp\Collector\ConditionDefinition;
+use Xypp\Collector\Data\ConditionAccumulation;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\ConditionChange;
 use Xypp\Collector\Extend\ConditionDefinitionCollection;
@@ -23,13 +24,15 @@ class ConditionHelper
     public CarbonZoneHelper $cz;
     public Translator $translator;
     public Dispatcher $events;
+    protected SettingHelper $setting;
     public function __construct(
         ConditionDefinitionCollection $collection,
         RewardHelper $rewardHelper,
         NotificationSyncer $notifications,
         CarbonZoneHelper $carbonZoneHelper,
         Translator $translator,
-        Dispatcher $events
+        Dispatcher $events,
+        SettingHelper $setting
     ) {
         $this->collection = $collection;
         $this->notifications = $notifications;
@@ -37,6 +40,7 @@ class ConditionHelper
         $this->cz = $carbonZoneHelper;
         $this->translator = $translator;
         $this->events = $events;
+        $this->setting = $setting;
     }
     public function getAllConditionName(): array
     {
@@ -46,8 +50,11 @@ class ConditionHelper
     {
         return $this->collection->getConditionDefinition($name);
     }
-
-    public function checkCondition(string $name, string $operator, int $value, ?int $span, Condition $condition): bool
+    public function checkConditionObj(array $data, Condition $condition)
+    {
+        return $this->checkCondition($data['name'], $data['operator'], $data['value'], isset($data['span']) ? $data['span'] : null, $data['calculate'], $condition);
+    }
+    public function checkCondition(string $name, string $operator, int $value, ?int $span, ?int $calculate, Condition $condition): bool
     {
         $currentTime = $this->cz->now();
         $conditionDefine = $this->collection->getConditionDefinition($name);
@@ -55,15 +62,16 @@ class ConditionHelper
             return false;
         }
         if ($span)
-            $currentValue = $condition->getAccumulation()->getSpan($currentTime, $span);
-        else
-            $currentValue = $condition->getAccumulation()->total;
+            $currentValue = $condition->getAccumulation()->getSpan($currentTime, $span, intval($calculate));
+        else {
+            $currentValue = $condition->getAccumulation()->getTotal($calculate);
+        }
         if (!$conditionDefine->compare($currentValue, $operator, $value)) {
             return false;
         }
         return true;
     }
-    public function updateConditions(User $user, ConditionData|array $data, bool $frontend = false)
+    public function updateConditions(User $user, ConditionData|array $data, bool $frontend = false, string $from = "event")
     {
         if (is_array($data)) {
             foreach ($data as $condition) {
@@ -71,7 +79,9 @@ class ConditionHelper
             }
             return;
         }
-
+        if (!$this->setting->enable($from, $data->name)) {
+            return;
+        }
         $conditionDefine = $this->collection->getConditionDefinition($data->name);
         if ($frontend && !$conditionDefine->allowFrontendTrigger) {
             throw new ValidationException([

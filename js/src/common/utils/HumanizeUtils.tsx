@@ -1,7 +1,7 @@
 import ForumApplication from "flarum/forum/ForumApplication";
 import AdminApplication from "flarum/admin/AdminApplication";
 
-import { ConditionData, RewardData } from "../types/data";
+import { CALCULATE, ConditionData, RewardData } from "../types/data";
 import ItemList from "flarum/common/utils/ItemList";
 import Condition from "../models/Condition";
 import { showIf } from "./NodeUtil";
@@ -105,6 +105,7 @@ export default class HumanizeUtils {
                 name: this.getConditionName(conditionData.name),
                 operator: conditionData.operator,
                 value: conditionData.value,
+                calculate: this.getCalculate(conditionData.calculate || CALCULATE.SUM),
                 span
             });
         }
@@ -127,6 +128,14 @@ export default class HumanizeUtils {
         }
     }
 
+    public getCalculate(calculate: CALCULATE) {
+        const CALCULATE_MAPPING = {
+            [CALCULATE.SUM]: 'sum',
+            [CALCULATE.MAX]: 'max',
+            [CALCULATE.DAY_COUNT]: 'days'
+        }
+        return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
+    }
     public getRawConditionDefinition(key: string): { trans: string, key: string, manual: boolean, abs: boolean } | false {
         return this.rawConditionDefinition[key] || false;
     }

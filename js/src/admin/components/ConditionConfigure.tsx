@@ -1,5 +1,5 @@
 import Component from "flarum/common/Component";
-import { ConditionData, OPERATOR } from "../../common/types/data";
+import { CALCULATE, ConditionData, OPERATOR } from "../../common/types/data";
 import Stream from "mithril/stream";
 import app from "flarum/admin/app";
 import HumanizeUtils from "../../common/utils/HumanizeUtils";
@@ -17,6 +17,8 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         '<=': '<=',
         '!=': '!='
     }
+    REG_CALCULATE: Record<string, string> = {
+    }
     REG_CONDITIONS: Record<string, string> = {}
 
     oninit(vnode: any): void {
@@ -28,7 +30,9 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         });
 
         this.REG_CONDITIONS['*'] = app.translator.trans('xypp-collector.admin.list.new_item') + "";
-
+        this.REG_CALCULATE[CALCULATE.SUM] = humanize.getCalculate(CALCULATE.SUM) + "";
+        this.REG_CALCULATE[CALCULATE.MAX] = humanize.getCalculate(CALCULATE.MAX) + "";
+        this.REG_CALCULATE[CALCULATE.DAY_COUNT] = humanize.getCalculate(CALCULATE.DAY_COUNT) + "";
         this.conditions = this.attrs.conditions();
         this.conditions.push({
             name: '*',
@@ -45,6 +49,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-operator')}</th>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-value')}</th>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-span')}</th>
+                    <th>{app.translator.trans('xypp-collector.admin.list.condition-calculate')}</th>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-alter_name')}</th>
                 </tr>
             </thead>
@@ -84,6 +89,13 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                                     this.conditions[index].span = (e.target as HTMLInputElement).value ? parseInt((e.target as HTMLInputElement).value) : undefined;
                                     this.attrs.conditions(this.conditions);
                                 }).bind(this)} />
+                            </td>
+                            <td>
+                                <Select className="FormControl" value={item.calculate || CALCULATE.SUM} options={this.REG_CALCULATE} onchange={((name: string) => {
+                                    this.conditions[index].calculate = parseInt(name) as CALCULATE;
+                                    this.attrs.conditions(this.conditions);
+                                }).bind(this)}>
+                                </Select>
                             </td>
                             <td>
                                 <input className="FormControl" type="text" value={item.alter_name || ""} onchange={((e: InputEvent) => {

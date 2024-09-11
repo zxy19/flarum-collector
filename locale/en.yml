@@ -4,7 +4,7 @@ xypp-collector:
     condition_not_found: Condition {condition} not found
     condition:
       condition: "Condition"
-      format: "<b>{name}</b> {operator}{value} {span} "
+      format: "<b>{name}:{calculate}</b> {operator}{value} {span} "
       and: " and "
       span: "In {span} days"
     reward:
@@ -27,6 +27,7 @@ xypp-collector:
       condition-operator: "Operator"
       condition-value: "Value"
       condition-span: "Time Span"
+      condition-calculate: "Calculate"
       condition-alter_name: "Display Name"
       reward-name: "Reward Name"
       reward-value: "Value"
@@ -36,3 +37,8 @@ xypp-collector:
   api:
     condition_not_allow_frontend: "Condition cannot be trigger in frontend"
     no_manual_update: "No manual update needed"
+  lib:
+    calculate:
+      sum: "Sum"
+      max: "Max"
+      days: "Count Days"

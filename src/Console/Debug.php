@@ -49,9 +49,9 @@ class Debug extends Command
              * @var ConditionAccumulation $accumulation
              */
             $accumulation = $condition->getAccumulation();
-            $this->info("Accumulation(Today): " . $accumulation->getSpan($now, 1));
-            $this->info("Accumulation(5 days): " . $accumulation->getSpan($now, 5));
-            $this->info("Accumulation(Total): " . $accumulation->total);
+            $this->info("Accumulation(Today): " . $accumulation->getSpan($now, 1, intval($condition->calculate)));
+            $this->info("Accumulation(5 days): " . $accumulation->getSpan($now, 5, intval($condition->calculate)));
+            $this->info("Accumulation(Total): " . $accumulation->getTotal(intval($condition->calculate)));
         });
     }
 

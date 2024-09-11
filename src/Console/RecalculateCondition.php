@@ -11,6 +11,7 @@ use Xypp\Collector\Event\ConditionChange;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Condition;
 use Illuminate\Events\Dispatcher;
+use Xypp\Collector\Helper\SettingHelper;
 
 class RecalculateCondition extends Command
 {

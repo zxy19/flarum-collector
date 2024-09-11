@@ -5,6 +5,7 @@ import { showIf } from "../../common/utils/NodeUtil";
 import LoadingIndicator from "flarum/common/components/LoadingIndicator";
 import HumanizeUtils from "../../common/utils/HumanizeUtils";
 import Checkbox from "flarum/common/components/Checkbox";
+import LinkButton from "flarum/common/components/LinkButton";
 import Stream from "mithril/stream";
 
 export default class adminPage extends ExtensionPage {
@@ -26,9 +27,21 @@ export default class adminPage extends ExtensionPage {
                     <thead>
                         <tr>
                             <th>{app.translator.trans('xypp-collector.admin.emit_control.name')}</th>
-                            <th>{app.translator.trans('xypp-collector.admin.emit_control.event')}</th>
-                            <th>{app.translator.trans('xypp-collector.admin.emit_control.update')}</th>
-                            <th>{app.translator.trans('xypp-collector.admin.emit_control.manual')}</th>
+                            <th>
+                                <LinkButton onclick={this.toggleAll("event")}>
+                                    {app.translator.trans('xypp-collector.admin.emit_control.event')}
+                                </LinkButton>
+                            </th>
+                            <th>
+                                <LinkButton onclick={this.toggleAll("update")}>
+                                    {app.translator.trans('xypp-collector.admin.emit_control.update')}
+                                </LinkButton>
+                            </th>
+                            <th>
+                                <LinkButton onclick={this.toggleAll("manual")}>
+                                    {app.translator.trans('xypp-collector.admin.emit_control.manual')}
+                                </LinkButton>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -53,23 +66,25 @@ export default class adminPage extends ExtensionPage {
         const conditions = HumanizeUtils.getInstance(app).getAllConditions().toObject();
         return Object.keys(conditions).map(key => <tr className="emit-control-row">
             <td className="emit-control-label">
-                {conditions[key].content}
+                <LinkButton onclick={this.toggleRow(key)}>
+                    {conditions[key].content}
+                </LinkButton>
             </td>
             <td className="emit-control-event">
                 <Checkbox onchange={this.changeStateCbMaker("event", key)}
-                    checked={this.checked("event", key)}
+                    state={this.checked("event", key)}
                     disabled={!this.checkType("event", key)}
                 />
             </td>
             <td className="emit-control-update">
                 <Checkbox onchange={this.changeStateCbMaker("update", key)}
-                    checked={this.checked("update", key)}
+                    state={this.checked("update", key)}
                     disabled={!this.checkType("update", key)}
                 />
             </td>
             <td className="emit-control-manual">
                 <Checkbox onchange={this.changeStateCbMaker("manual", key)}
-                    checked={this.checked("manual", key)}
+                    state={this.checked("manual", key)}
                     disabled={!this.checkType("manual", key)}
                 />
             </td>
@@ -77,6 +92,7 @@ export default class adminPage extends ExtensionPage {
         );
     }
     checked(type: string, name: string): boolean {
+        if (!this.checkType(type, name)) return false;
         if (!this.autoEmitObj[type]) return true;
         return this.autoEmitObj[type][name] !== true;
     }
@@ -87,17 +103,34 @@ export default class adminPage extends ExtensionPage {
         if (type === "manual") return def && def.manual;
         return false
     }
+    toggleRow(name: string) {
+        return ((e: MouseEvent) => {
+            e.preventDefault();
+            const types = ["event", "update", "manual"].filter(type => this.checkType(type, name));
+
+            const target = types.find(type => {
+                return this.autoEmitObj[type] && this.autoEmitObj[type][name]
+            }) === undefined;
+
+            types.forEach(type => {
+                if (target) this.autoEmitObj[type][name] = true;
+                else if (this.autoEmitObj[type][name]) delete this.autoEmitObj[type][name];
+            });
+        }).bind(this);
+    }
     toggleAll(type: string) {
-        const all = Object.keys(HumanizeUtils.getInstance(app).getAllConditions().toObject()).filter(key => this.checkType(type, key));
-        if (!this.autoEmitObj[type]) this.autoEmitObj[type] = {};
-        let target = true;
-        if (Object.keys(this.autoEmitObj[type]).length == 0) target = false;
-        all.forEach(key => {
-            if (target) this.autoEmitObj[type][key] = true;
-            else if (this.autoEmitObj[type][key]) delete this.autoEmitObj[type][key];
-        });
-        this.autoEmit!(JSON.stringify(this.autoEmit));
-        m.redraw();
+        return ((e: MouseEvent) => {
+            e.preventDefault();
+            const all = Object.keys(HumanizeUtils.getInstance(app).getAllConditions().toObject()).filter(key => this.checkType(type, key));
+            if (!this.autoEmitObj[type]) this.autoEmitObj[type] = {};
+            let target = true;
+            if (Object.keys(this.autoEmitObj[type]).length == 0) target = false;
+            all.forEach(key => {
+                if (target) this.autoEmitObj[type][key] = true;
+                else if (this.autoEmitObj[type][key]) delete this.autoEmitObj[type][key];
+            });
+            this.autoEmit!(JSON.stringify(this.autoEmit));
+        }).bind(this)
     }
     changeStateCbMaker(type: string, name: string) {
         return ((e: boolean) => {
