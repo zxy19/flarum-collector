@@ -13,6 +13,7 @@ xypp-collector:
       and: " 和 "
   admin:
     settings: "设置"
+    max_keep: "最大记录天数"
     allow_update: "允许用户手动更新"
     emit_control: "触发更新和重算"
     list:

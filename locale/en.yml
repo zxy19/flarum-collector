@@ -14,6 +14,7 @@ xypp-collector:
   admin:
     settings: "Settings"
     allow_update: "Allow user update manually"
+    max_keep: "Max Record Days"
     emit_control:
       title: "Update Emitter and Recalculate"
       event: "Event"

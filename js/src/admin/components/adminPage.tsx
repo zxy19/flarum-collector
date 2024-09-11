@@ -20,7 +20,7 @@ export default class adminPage extends ExtensionPage {
     }
     content(vnode: any) {
         return <div className="xypp-collector-adminPage-container container">
-            {showIf(this.loadingData, <LoadingIndicator />)}
+            
             <div className="Form-group">
                 <h2>{app.translator.trans('xypp-collector.admin.emit_control.title')}</h2>
                 <table className="Table">
@@ -49,6 +49,13 @@ export default class adminPage extends ExtensionPage {
                     </tbody>
                 </table>
             </div>
+            {showIf(this.loadingData, <LoadingIndicator />)}
+            {this.buildSettingComponent({
+                setting: "xypp.collector.max_keep",
+                label: app.translator.trans('xypp-collector.admin.max_keep'),
+                type: "number",
+                min: 1
+            })}
             {this.submitButton()}
         </div>
     }
