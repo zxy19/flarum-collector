@@ -20,7 +20,10 @@
     "autoload": {
         "psr-4": {
             "Xypp\\Collector\\": "src/"
-        }
+        },
+        "files": [
+            "classMappings.php"
+        ]
     },
     "extra": {
         "flarum-extension": {

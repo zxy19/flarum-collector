@@ -21,6 +21,7 @@ use Xypp\Collector\Console\UpdateCondition;
 use Xypp\Collector\Console\UpdateRefreshCommand;
 use Xypp\Collector\Provider\CollectorServiceProvider;
 use Xypp\Collector\Provider\QuestSeriviceProvider;
+
 return array_merge(
     [
         (new Extend\Frontend('forum'))
