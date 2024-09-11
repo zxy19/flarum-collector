@@ -26,9 +26,10 @@ class SettingHelper
         $dat = $this->load();
         if (!isset($dat[$fromType]))
             return true;
-        return isset($dat[$fromType][$conditionName]) && $dat[$fromType][$conditionName];
+        return !(isset($dat[$fromType][$conditionName]) && $dat[$fromType][$conditionName]);
     }
-    public function maxKeep(){
+    public function maxKeep()
+    {
         return $this->settings->get("xypp.collector.max_keep", 30);
     }
 }
