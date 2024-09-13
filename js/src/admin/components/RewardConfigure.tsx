@@ -32,6 +32,10 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
     }
     onbeforeupdate(vnode: any): void {
         this.rewards = this.attrs.rewards();
+        this.rewards.push({
+            name: '*',
+            value: '*'
+        });
         super.onbeforeupdate(vnode);
     }
     view(vnode: any) {

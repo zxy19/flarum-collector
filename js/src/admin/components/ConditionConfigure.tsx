@@ -46,6 +46,11 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
     }
     onbeforeupdate(vnode: any): void {
         this.conditions = this.attrs.conditions();
+        this.conditions.push({
+            name: '*',
+            operator: OPERATOR.EQUAL,
+            value: 0
+        });
         super.onbeforeupdate(vnode);
     }
     view(vnode: any) {
