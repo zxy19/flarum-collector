@@ -45,7 +45,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         });
     }
     onbeforeupdate(vnode: any): void {
-        this.conditions = this.attrs.conditions();
+        this.conditions = JSON.parse(JSON.stringify(this.attrs.conditions()));
         this.conditions.push({
             name: '*',
             operator: OPERATOR.EQUAL,

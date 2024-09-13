@@ -31,7 +31,7 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
         });
     }
     onbeforeupdate(vnode: any): void {
-        this.rewards = this.attrs.rewards();
+        this.rewards = JSON.parse(JSON.stringify(this.attrs.rewards()));
         this.rewards.push({
             name: '*',
             value: '*'
