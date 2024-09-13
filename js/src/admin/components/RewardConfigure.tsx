@@ -30,7 +30,10 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
             value: '*'
         });
     }
-
+    onbeforeupdate(vnode: any): void {
+        this.rewards = this.attrs.rewards();
+        super.onbeforeupdate(vnode);
+    }
     view(vnode: any) {
         return <table className='Table'>
             <thead>

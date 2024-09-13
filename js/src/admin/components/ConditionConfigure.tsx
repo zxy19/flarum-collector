@@ -44,7 +44,10 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
             value: 0
         });
     }
-
+    onbeforeupdate(vnode: any): void {
+        this.conditions = this.attrs.conditions();
+        super.onbeforeupdate(vnode);
+    }
     view(vnode: any) {
         return <table className='Table'>
             <thead>
