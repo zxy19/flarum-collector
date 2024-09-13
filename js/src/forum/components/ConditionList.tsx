@@ -38,7 +38,6 @@ export default class ConditionList extends Component<{
                 [{value}/{condition.value}]
             </span>
         );
-
     }
     conditionOp(value1: number, op: OPERATOR, value2: number) {
         switch (op) {

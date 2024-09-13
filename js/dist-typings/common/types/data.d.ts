@@ -32,5 +32,6 @@ export type ConditionAccumulation = {
     all: number;
     rest: number;
     max: number;
+    days: number;
     [key: string]: number;
 };
