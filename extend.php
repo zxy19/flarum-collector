@@ -45,6 +45,10 @@ return array_merge(
             ->command(Migrate::class),
         (new Extend\ServiceProvider())
             ->register(CollectorServiceProvider::class),
+        (new Extend\Settings)
+            ->default("xypp.collector.max_keep", 30)
+            ->default('xypp.collector.emit_control', "[]")
+            ->serializeToForum('xypp.collector.max_keep', "xypp.collector.max_keep"),
     ]
     ,
     require(__DIR__ . '/src/Integration/Integrations.php')

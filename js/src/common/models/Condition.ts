@@ -1,5 +1,5 @@
 import Model from 'flarum/common/Model';
-import { ConditionAccumulation, ConditionData, RewardData } from '../types/data';
+import { CALCULATE, ConditionAccumulation, ConditionData, RewardData } from '../types/data';
 import dayjs from 'dayjs';
 // For more details about frontend models
 // checkout https://docs.flarum.org/extend/models.html#frontend-models
@@ -17,10 +17,10 @@ export default class Condition extends Model {
   name = Model.attribute<string>('name');
   value = Model.attribute<number>('value');
   accumulation = Model.attribute<ConditionAccumulation | null>('accumulation', optionalJsonParser<ConditionAccumulation>);
-  getSpan(span: number): number {
+  getSpan(span: number, calculate: CALCULATE = CALCULATE.SUM): number {
     const accumulation = this.accumulation();
     if (!accumulation || span < 1) return 0;
-    let cut = dayjs(dayjs().format("YYYYMMDD"),"YYYYMMDD");
+    let cut = dayjs(dayjs().format("YYYYMMDD"), "YYYYMMDD");
     if (span != 1) {
       cut = cut.subtract(span - 1, 'day');
     }
@@ -29,9 +29,20 @@ export default class Condition extends Model {
       if (key == 'all' || key == 'rest') return;
       const d = dayjs(key, "YYYYMMDD");
       if (d.isAfter(cut) || d.isSame(cut)) {
-        ret += accumulation[key];
+        if (calculate == CALCULATE.MAX)
+          ret = Math.max(ret, accumulation[key]);
+        else if (calculate == CALCULATE.SUM)
+          ret += accumulation[key];
+        else if (calculate == CALCULATE.DAY_COUNT && accumulation[key] > 0)
+          ret += 1;
       }
     });
     return ret;
+  }
+
+  getTotal(calculate: CALCULATE = CALCULATE.SUM) {
+    if (calculate == CALCULATE.MAX) return this.accumulation()?.max || 0;
+    else if (calculate == CALCULATE.DAY_COUNT) return this.accumulation()?.days || 0;
+    else return this.accumulation()?.all || 0;
   }
 }

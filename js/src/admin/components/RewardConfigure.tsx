@@ -6,6 +6,9 @@ import HumanizeUtils from "../../common/utils/HumanizeUtils";
 import { showIf } from "../../common/utils/NodeUtil";
 import Button from "flarum/common/components/Button";
 import Select from "flarum/common/components/Select";
+function noNewItem(c: any): boolean {
+    return c.name !== "*";
+}
 
 export default class RewardConfigure extends Component<{ rewards: Stream<RewardData[]> }> {
     rewards: RewardData[] = [];
@@ -21,7 +24,7 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
 
         this.REG_REWARDS['*'] = app.translator.trans('xypp-collector.admin.list.new_item') + "";
 
-        this.rewards = this.attrs.rewards();
+        this.rewards = JSON.parse(JSON.stringify(this.attrs.rewards()));
         this.rewards.push({
             name: '*',
             value: '*'
@@ -51,12 +54,14 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
                                         });
                                     }
                                     this.rewards[index].name = name;
+                                    this.attrs.rewards(this.rewards.filter(noNewItem));
                                 }).bind(this)}>
                                 </Select>
                             </td>
                             <td>
                                 <input className="FormControl" type="text" value={item.value} onchange={((e: InputEvent) => {
                                     this.rewards[index].value = (e.target as HTMLInputElement).value;
+                                    this.attrs.rewards(this.rewards.filter(noNewItem));
                                 }).bind(this)} />
                             </td>
                             <td>
@@ -68,12 +73,14 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
                             <td>
                                 <input className="FormControl" type="text" value={item.alter_name || ""} onchange={((e: InputEvent) => {
                                     this.rewards[index].alter_name = (e.target as HTMLInputElement).value || undefined;
+                                    this.attrs.rewards(this.rewards.filter(noNewItem));
                                 }).bind(this)} />
                             </td>
                             <td>
                                 {showIf(item.name != '*',
                                     <Button className="Button Button--danger" onclick={((e: any) => {
                                         this.rewards.splice(index, 1);
+                                        this.attrs.rewards(this.rewards.filter(noNewItem));
                                         m.redraw();
                                     }).bind(this)} data-id={index}>
                                         <i class="fas fa-trash"></i>
@@ -93,6 +100,7 @@ export default class RewardConfigure extends Component<{ rewards: Stream<RewardD
         const result = await HumanizeUtils.getInstance(app).rewardSelection(this.rewards[id].name);
         if (result) this.rewards[id].value = result;
         this.rewardGettingValue[id] = false;
+        this.attrs.rewards(this.rewards.filter(noNewItem));
         m.redraw();
     }
 }

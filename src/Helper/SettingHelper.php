@@ -17,7 +17,7 @@ class SettingHelper
     public function load()
     {
         if ($this->disabled === null) {
-            $this->disabled = json_decode($this->settings->get("xypp.collector.emit_control", "[]"), true);
+            $this->disabled = json_decode($this->settings->get("xypp.collector.emit_control") ?? "[]", true);
         }
         return $this->disabled;
     }
@@ -30,6 +30,6 @@ class SettingHelper
     }
     public function maxKeep()
     {
-        return $this->settings->get("xypp.collector.max_keep", 30);
+        return $this->settings->get("xypp.collector.max_keep") ?? 30;
     }
 }

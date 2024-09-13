@@ -7,6 +7,10 @@ import { showIf } from "../../common/utils/NodeUtil";
 import Button from "flarum/common/components/Button";
 import Select from "flarum/common/components/Select";
 
+function noNewItem(c: any): boolean {
+    return c.name !== "*";
+}
+
 export default class ConditionConfigure extends Component<{ conditions: Stream<ConditionData[]> }> {
     conditions: ConditionData[] = [];
     REG_OPERATOR: Record<string, string> = {
@@ -33,7 +37,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         this.REG_CALCULATE[CALCULATE.SUM] = humanize.getCalculate(CALCULATE.SUM) + "";
         this.REG_CALCULATE[CALCULATE.MAX] = humanize.getCalculate(CALCULATE.MAX) + "";
         this.REG_CALCULATE[CALCULATE.DAY_COUNT] = humanize.getCalculate(CALCULATE.DAY_COUNT) + "";
-        this.conditions = this.attrs.conditions();
+        this.conditions = JSON.parse(JSON.stringify(this.attrs.conditions()));
         this.conditions.push({
             name: '*',
             operator: OPERATOR.EQUAL,
@@ -67,40 +71,40 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                                         });
                                     }
                                     this.conditions[index].name = name;
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)}>
                                 </Select>
                             </td>
                             <td>
                                 <Select className="FormControl" value={item.operator} options={this.REG_OPERATOR} onchange={((name: string) => {
                                     this.conditions[index].operator = name as OPERATOR;
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)}>
                                 </Select>
                             </td>
                             <td>
                                 <input className="FormControl" type="text" value={item.value} onchange={((e: InputEvent) => {
                                     this.conditions[index].value = parseInt((e.target as HTMLInputElement).value);
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)} />
                             </td>
                             <td>
                                 <input className="FormControl" type="number" value={item.span} onchange={((e: InputEvent) => {
                                     this.conditions[index].span = (e.target as HTMLInputElement).value ? parseInt((e.target as HTMLInputElement).value) : undefined;
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)} />
                             </td>
                             <td>
                                 <Select className="FormControl" value={item.calculate || CALCULATE.SUM} options={this.REG_CALCULATE} onchange={((name: string) => {
                                     this.conditions[index].calculate = parseInt(name) as CALCULATE;
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)}>
                                 </Select>
                             </td>
                             <td>
                                 <input className="FormControl" type="text" value={item.alter_name || ""} onchange={((e: InputEvent) => {
                                     this.conditions[index].alter_name = (e.target as HTMLInputElement).value || undefined;
-                                    this.attrs.conditions(this.conditions);
+                                    this.attrs.conditions(this.conditions.filter(noNewItem));;
                                 }).bind(this)} />
                             </td>
                             <td>
@@ -108,7 +112,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                                     <Button className="Button Button--danger" onclick={((e: any) => {
                                         this.conditions.splice(index, 1);
                                         m.redraw();
-                                        this.attrs.conditions(this.conditions);
+                                        this.attrs.conditions(this.conditions.filter(noNewItem));;
                                     }).bind(this)} data-id={index}>
                                         <i class="fas fa-trash"></i>
                                     </Button>
