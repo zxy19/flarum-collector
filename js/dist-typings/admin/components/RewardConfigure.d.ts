@@ -9,6 +9,7 @@ export default class RewardConfigure extends Component<{
     REG_REWARDS: Record<string, string>;
     rewardGettingValue: Record<number, boolean>;
     oninit(vnode: any): void;
+    onbeforeupdate(vnode: any): void;
     view(vnode: any): JSX.Element;
     getValue(e: MouseEvent): Promise<void>;
 }

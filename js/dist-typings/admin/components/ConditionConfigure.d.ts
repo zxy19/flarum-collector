@@ -10,5 +10,6 @@ export default class ConditionConfigure extends Component<{
     REG_CALCULATE: Record<string, string>;
     REG_CONDITIONS: Record<string, string>;
     oninit(vnode: any): void;
+    onbeforeupdate(vnode: any): void;
     view(vnode: any): JSX.Element;
 }

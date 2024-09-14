@@ -16,6 +16,7 @@ function optionalJsonParser<T>(data: any): T | null {
 export default class Condition extends Model {
   name = Model.attribute<string>('name');
   value = Model.attribute<number>('value');
+  user_id = Model.attribute<number>('user_id');
   accumulation = Model.attribute<ConditionAccumulation | null>('accumulation', optionalJsonParser<ConditionAccumulation>);
   getSpan(span: number, calculate: CALCULATE = CALCULATE.SUM): number {
     const accumulation = this.accumulation();

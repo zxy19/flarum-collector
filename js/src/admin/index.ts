@@ -5,7 +5,12 @@ app.initializers.add('xypp/collector', () => {
   init(app, "admin");
   app.extensionData
     .for('xypp-collector')
-    .registerPage(adminPage);
+    .registerPage(adminPage)
+    .registerPermission({
+      icon: 'fas fa-eye',
+      label: app.translator.trans('xypp-collector.admin.permissions.view-condition'),
+      permission: 'user.view-condition',
+    }, 'moderate', 30);
 });
 
 

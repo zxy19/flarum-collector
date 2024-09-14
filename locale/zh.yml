@@ -30,6 +30,8 @@ xypp-collector:
       reward-get_value: "获取值"
       reward-alter_name: "显示名"
       new_item: "新项"
+    permissions:
+      view-condition: "查看条件值"
   api:
     condition_not_allow_frontend: "该条件不能由前端修改"
     no_manual_update: "无需手动更新"

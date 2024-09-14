@@ -35,6 +35,8 @@ xypp-collector:
       reward-get_value: "Get Value"
       reward-alter_name: "Display Name"
       new_item: "New Item"
+    permissions:
+      view-condition: "View Condition Value"
   api:
     condition_not_allow_frontend: "Condition cannot be trigger in frontend"
     no_manual_update: "No manual update needed"

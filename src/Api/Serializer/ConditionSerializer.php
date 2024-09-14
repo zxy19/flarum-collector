@@ -31,6 +31,7 @@ class ConditionSerializer extends AbstractSerializer
             $accumulation = "{}";
         }
         return [
+            "user_id" => $model->user_id,
             "name" => $model->name,
             "value" => $model->value,
             "accumulation" => $accumulation
