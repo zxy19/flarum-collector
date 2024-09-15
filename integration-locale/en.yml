@@ -14,6 +14,10 @@ xypp-collector:
         badge_received: "Badge Received"
         email_changed: "Change Email"
         avatar_changed: "Change Avatar"
+        best_answer: "Best Answer"
+        set_best_answer: "Set Best Answer"
+        valid_post_count: "Valid Post Count"
+        valid_discussion_count: "Valid Discussion Count"
         money: "Money"
       reward:
         money: "Money"
@@ -27,3 +31,5 @@ xypp-collector:
         badge_error: "Not Found"
         badge_select: "Select Badge"
         badge_select_button: "Select"
+  admin:
+    valid_tag: "Valid Tags"

@@ -27,7 +27,8 @@ class RecalculateCondition extends Command
 
     protected ConditionHelper $conditionHelper;
     protected Dispatcher $events;
-    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events)
+    protected SettingHelper $settingHelper;
+    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events, SettingHelper $settingHelper)
     {
         parent::__construct();
 
@@ -38,6 +39,7 @@ class RecalculateCondition extends Command
 
         $this->conditionHelper = $conditionHelper;
         $this->events = $events;
+        $this->settingHelper = $settingHelper;
     }
     public function handle()
     {
@@ -55,6 +57,8 @@ class RecalculateCondition extends Command
 
         foreach ($this->conditionHelper->getAllConditionName() as $conditionDefinitionName) {
             if ($names && !in_array($conditionDefinitionName, $names))
+                continue;
+            if (!$this->settingHelper->enable("abs", $conditionDefinitionName) && !$this->option("overwrite"))
                 continue;
             $conditionDefinition = $this->conditionHelper->getConditionDefinition($conditionDefinitionName);
             if (!$conditionDefinition->accumulateAbsolute) {
@@ -80,8 +84,6 @@ class RecalculateCondition extends Command
                 function (User $user) use ($conditionDefinitionName, $conditionDefinition, &$userConditionChange) {
                     $accumulation = new ConditionAccumulation("{}");
                     $result = $conditionDefinition->getAbsoluteValue($user, $accumulation);
-                    if (!$result)
-                        return;
                     $condition = Condition::where("name", $conditionDefinitionName)->where("user_id", $user->id)->first();
                     if (!$condition) {
                         $condition = new Condition();
@@ -92,7 +94,9 @@ class RecalculateCondition extends Command
                     $condition->value = $accumulation->total;
                     $condition->updateTimestamps();
                     $condition->save();
-                    $userConditionChange[$user->id][] = $condition;
+                    
+                    if ($result)
+                        $userConditionChange[$user->id][] = $condition;
                 }
             );
             $this->info("Done");

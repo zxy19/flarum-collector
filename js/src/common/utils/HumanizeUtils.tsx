@@ -11,7 +11,7 @@ export default class HumanizeUtils {
     protected app: ForumApplication | AdminApplication;
     protected definitionLoaded: boolean = false;
     protected rawConditionDefinition: Record<string, {
-        trans: string, key: string, manual: boolean, abs: boolean
+        trans: string, key: string, manual: boolean, abs: boolean, update: boolean
     }> = {}
     protected conditionTranslations: Record<string, string> = {};
     protected rewardTranslations: Record<string, string> = {};
@@ -35,7 +35,7 @@ export default class HumanizeUtils {
         this._loadDefinition(data as any);
     }
     protected _loadDefinition(data: {
-        conditions: { trans: string, key: string, manual: boolean, abs: boolean }[],
+        conditions: { trans: string, key: string, manual: boolean, abs: boolean, update: boolean }[],
         rewards: { trans: string, key: string }[]
     }) {
         data.conditions.forEach((value) => {
@@ -136,7 +136,7 @@ export default class HumanizeUtils {
         }
         return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
     }
-    public getRawConditionDefinition(key: string): { trans: string, key: string, manual: boolean, abs: boolean } | false {
+    public getRawConditionDefinition(key: string): { trans: string, key: string, manual: boolean, abs: boolean, update: boolean } | false {
         return this.rawConditionDefinition[key] || false;
     }
 }

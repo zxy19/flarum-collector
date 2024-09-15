@@ -6,21 +6,27 @@ import LoadingIndicator from "flarum/common/components/LoadingIndicator";
 import HumanizeUtils from "../../common/utils/HumanizeUtils";
 import Checkbox from "flarum/common/components/Checkbox";
 import LinkButton from "flarum/common/components/LinkButton";
+import Tooltip from "flarum/common/components/Tooltip";
 import Stream from "mithril/stream";
+import type Tag from "@flarum-tags/common/models/Tag";
 
 export default class adminPage extends ExtensionPage {
     loadingData: boolean = false;
     autoEmit?: Stream<string>
     autoEmitObj: Record<string, Record<string, boolean>> = {};
+    invalidTags?: Stream<string>;
+    invalidTagsObj: Record<string, boolean> = {};
     oncreate(vnode: any): void {
         this.autoEmit = this.setting('xypp.collector.emit_control', "{}");
         this.autoEmitObj = JSON.parse(this.autoEmit!());
+        this.invalidTags = this.setting('xypp.collector.invalid_tags', "{}");
+        this.invalidTagsObj = JSON.parse(this.invalidTags!());
         super.oncreate(vnode);
         this.loadData();
     }
     content(vnode: any) {
         return <div className="xypp-collector-adminPage-container container">
-            
+
             <div className="Form-group">
                 <h2>{app.translator.trans('xypp-collector.admin.emit_control.title')}</h2>
                 <table className="Table">
@@ -42,6 +48,11 @@ export default class adminPage extends ExtensionPage {
                                     {app.translator.trans('xypp-collector.admin.emit_control.manual')}
                                 </LinkButton>
                             </th>
+                            <th>
+                                <LinkButton onclick={this.toggleAll("abs")}>
+                                    {app.translator.trans('xypp-collector.admin.emit_control.abs')}
+                                </LinkButton>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,14 +61,23 @@ export default class adminPage extends ExtensionPage {
                 </table>
             </div>
             {showIf(this.loadingData, <LoadingIndicator />)}
-            {this.buildSettingComponent({
-                setting: "xypp.collector.max_keep",
-                label: app.translator.trans('xypp-collector.admin.max_keep'),
-                type: "number",
-                min: 1
-            })}
             {this.submitButton()}
-        </div>
+            <div className="Form-group valid-tags">
+                <h3>{app.translator.trans("xypp-collector.admin.valid_tag")}</h3>
+                <div className="xypp-collector-valid-tags-check">
+                    {this.getValidTags()}
+                </div>
+            </div>
+            {
+                this.buildSettingComponent({
+                    setting: "xypp.collector.max_keep",
+                    label: app.translator.trans('xypp-collector.admin.max_keep'),
+                    type: "number",
+                    min: 1
+                })
+            }
+            {this.submitButton()}
+        </div >
     }
 
     async loadData() {
@@ -95,19 +115,32 @@ export default class adminPage extends ExtensionPage {
                     disabled={!this.checkType("manual", key)}
                 />
             </td>
+            <td className="emit-control-abs">
+                <Checkbox onchange={this.changeStateCbMaker("abs", key)}
+                    state={this.checked("abs", key)}
+                />
+                {showIf(this.checkType("abs", key), "",
+                    <span>
+                        <Tooltip text={app.translator.trans("xypp-collector.admin.limited_accumulation_support")}>
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </Tooltip>
+                    </span>
+                )}
+            </td>
         </tr>
         );
     }
     checked(type: string, name: string): boolean {
-        if (!this.checkType(type, name)) return false;
+        if (!this.checkType(type, name) && type != "abs") return false;
         if (!this.autoEmitObj[type]) return true;
         return this.autoEmitObj[type][name] !== true;
     }
     checkType(type: string, name: string): boolean {
         const def = HumanizeUtils.getInstance(app).getRawConditionDefinition(name);
         if (type === "event") return !(def && def.manual);
-        if (type === "update") return def && def.abs;
+        if (type === "update") return def && def.update;
         if (type === "manual") return def && def.manual;
+        if (type === "abs") return def && def.abs;
         return false
     }
     toggleRow(name: string) {
@@ -145,6 +178,22 @@ export default class adminPage extends ExtensionPage {
             if (!e) this.autoEmitObj[type][name] = true;
             else if (this.autoEmitObj[type][name]) delete this.autoEmitObj[type][name];
             this.autoEmit!(JSON.stringify(this.autoEmitObj));
+        }).bind(this);
+    }
+
+    getValidTags() {
+        return app.store.all<Tag>("tags").map(tag => {
+            return <Checkbox onchange={this.changeValidTagsStateCbMaker(tag)} state={!this.invalidTagsObj[tag.id() || 0]}>
+                {tag.name()}
+            </Checkbox>
+        })
+    }
+
+    changeValidTagsStateCbMaker(tag: Tag) {
+        return ((e: boolean) => {
+            if (!e) this.invalidTagsObj[tag.id() || 0] = true;
+            else if (this.invalidTagsObj[tag.id() || 0]) delete this.invalidTagsObj[tag.id() || 0];
+            this.invalidTags!(JSON.stringify(this.invalidTagsObj));
         }).bind(this);
     }
 }

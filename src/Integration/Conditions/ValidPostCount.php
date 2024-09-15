@@ -4,14 +4,17 @@ namespace Xypp\Collector\Integration\Conditions;
 
 use Xypp\Collector\ConditionDefinition;
 use Xypp\Collector\Data\ConditionAccumulation;
+use Xypp\Collector\Integration\Helper\ValidTagsHelper;
 use Xypp\Collector\RewardDefinition;
 
-class PostCount extends ConditionDefinition
+class ValidPostCount extends ConditionDefinition
 {
     public bool $accumulateAbsolute = true;
-    public function __construct()
+    private $helper;
+    public function __construct(ValidTagsHelper $helper)
     {
-        parent::__construct("post_count", null, "xypp-collector.ref.integration.condition.post_count");
+        parent::__construct("valid_post_count", null, "xypp-collector.ref.integration.condition.valid_post_count");
+        $this->helper = $helper;
     }
     public function getAbsoluteValue(\Flarum\User\User $user, ConditionAccumulation $conditionAccumulation): bool
     {
@@ -21,7 +24,8 @@ class PostCount extends ConditionDefinition
                 continue;
             if ($post->hidden_at)
                 continue;
-            $conditionAccumulation->updateValue($post->created_at, 1);
+            if ($this->helper->isAllTagValid($post->discussion->tags))
+                $conditionAccumulation->updateValue($post->created_at, 1);
         }
         if (!$conditionAccumulation->dirty)
             return false;

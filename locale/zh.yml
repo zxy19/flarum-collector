@@ -15,7 +15,14 @@ xypp-collector:
     settings: "设置"
     max_keep: "最大记录天数"
     allow_update: "允许用户手动更新"
-    emit_control: "触发更新和重算"
+    limited_accumulation_support: "这个条件无法再重算时获取全部信息，将在运行命令时询问你"
+    emit_control:
+      title: "触发更新和重算"
+      event: "事件"
+      update: "更新命令"
+      manual: "手动"
+      abs: "重算命令"
+      name: "名字"
     list:
       condition: "条件"
       reward: "奖励"

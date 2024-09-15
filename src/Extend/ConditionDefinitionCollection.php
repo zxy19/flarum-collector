@@ -30,7 +30,7 @@ class ConditionDefinitionCollection
     {
         if (!isset($this->conditionsDefinitions[$name])) {
             throw new ValidationException([
-                "error" => $this->translator->trans("xypp-collector.forum。condition_not_found", ["condition" => $name])
+                "error" => $this->translator->trans("xypp-collector.forum.condition_not_found", ["condition" => $name])
             ]);
         }
         return $this->conditionsDefinitions[$name];

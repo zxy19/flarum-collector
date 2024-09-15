@@ -15,11 +15,13 @@ xypp-collector:
     settings: "Settings"
     allow_update: "Allow user update manually"
     max_keep: "Max Record Days"
+    limited_accumulation_support: "This condition is not able to get all data in recalculate. It will ask you when running the command."
     emit_control:
       title: "Update Emitter and Recalculate"
       event: "Event"
       update: "Update Command"
       manual: "Manual"
+      abs: "Recalculate"
       name: "Name"
     list:
       condition: "Condition"

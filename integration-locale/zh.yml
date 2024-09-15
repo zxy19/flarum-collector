@@ -14,6 +14,10 @@ xypp-collector:
         badge_received: "获得徽章"
         email_changed: "修改邮箱"
         avatar_changed: "修改头像"
+        best_answer: "最佳答案"
+        set_best_answer: "设置最佳答案"
+        valid_post_count: "有效发帖数"
+        valid_discussion_count: "有效讨论数"
         money: "货币"
       reward:
         money: "货币"
@@ -27,3 +31,5 @@ xypp-collector:
         badge_error: "未找到徽章"
         badge_select: "选择徽章"
         badge_select_button: "选择"
+  admin:
+    valid_tag: "有效标签"

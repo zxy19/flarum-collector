@@ -12,6 +12,7 @@ export default class HumanizeUtils {
         key: string;
         manual: boolean;
         abs: boolean;
+        update: boolean;
     }>;
     protected conditionTranslations: Record<string, string>;
     protected rewardTranslations: Record<string, string>;
@@ -25,6 +26,7 @@ export default class HumanizeUtils {
             key: string;
             manual: boolean;
             abs: boolean;
+            update: boolean;
         }[];
         rewards: {
             trans: string;
@@ -46,5 +48,6 @@ export default class HumanizeUtils {
         key: string;
         manual: boolean;
         abs: boolean;
+        update: boolean;
     } | false;
 }

@@ -4,12 +4,15 @@ use AntoineFr\Money\Event\MoneyUpdated;
 use Flarum\Discussion\Event\Started;
 use Flarum\Extend;
 use Flarum\Post\Event\Posted;
+use Flarum\Tags\Event\DiscussionWasTagged;
 use Michaelbelgium\Discussionviews\Events\DiscussionWasViewed;
-use Xypp\Collector\Integration\Listener\DiscussionStartedListener;
+use Xypp\Collector\Integration\Listener\BestAnswerListener;
+use Xypp\Collector\Integration\Listener\DiscussionCountListener;
+use Xypp\Collector\Integration\Listener\DiscussionTagListener;
 use Xypp\Collector\Integration\Listener\DiscussionViewed;
 use Xypp\Collector\Integration\Listener\LikeEventsListener;
 use Xypp\Collector\Integration\Listener\MoneyChangeListener;
-use Xypp\Collector\Integration\Listener\PostPostedListener;
+use Xypp\Collector\Integration\Listener\PostCountListener;
 use Xypp\Collector\Integration\Listener\StoreEventListener;
 use Xypp\Collector\Integration\Listener\UserEventsListener;
 use Xypp\Collector\Integration\Middleware\ApiVisitCheck;
@@ -17,8 +20,8 @@ use Xypp\Store\Event\PurchaseDone;
 
 return [
     (new Extend\Event)
-        ->listen(Posted::class, PostPostedListener::class)
-        ->listen(Started::class, DiscussionStartedListener::class)
+        ->subscribe(PostCountListener::class)
+        ->subscribe(DiscussionCountListener::class)
         ->subscribe(UserEventsListener::class)
         //Integrate with AntoineFr/money
         ->listen(MoneyUpdated::class, MoneyChangeListener::class)
@@ -27,7 +30,15 @@ return [
         //Integrate with xypp/store
         ->listen(PurchaseDone::class, StoreEventListener::class)
         //Integrate with flarum/likes
-        ->subscribe(LikeEventsListener::class),
+        ->subscribe(LikeEventsListener::class)
+        //Integrate with fof/best-answer
+        ->subscribe(BestAnswerListener::class)
+        //Integrate with flarum/tags
+        ->subscribe(DiscussionTagListener::class)
+    ,
     (new Extend\Middleware("forum"))
-        ->add(ApiVisitCheck::class)
+        ->add(ApiVisitCheck::class),
+
+    (new Extend\Settings)
+        ->default("xypp.collector.invalid_tags", "{}")
 ];

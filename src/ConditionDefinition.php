@@ -26,6 +26,11 @@ class ConditionDefinition
     public bool $accumulateAbsolute = false;
 
     /**
+     * Supports update with updateValue
+     * @var bool
+     */
+    public bool $accumulateUpdate = false;
+    /**
      * No auto update support. Will display a check button on frontend
      * @var bool
      */

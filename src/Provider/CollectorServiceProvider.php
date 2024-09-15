@@ -2,6 +2,7 @@
 
 namespace Xypp\Collector\Provider;
 
+use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Locale\Translator;
 use Xypp\Collector\ConditionDefinition;
@@ -11,6 +12,7 @@ use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Helper\RewardHelper;
 use Illuminate\Contracts\Container\Container;
 use Xypp\Collector\Integration\Conditions\BadgeReceived;
+use Xypp\Collector\Integration\Conditions\BestAnswer;
 use Xypp\Collector\Integration\Conditions\DiscussionCount;
 use Xypp\Collector\Integration\Conditions\DiscussionReplied;
 use Xypp\Collector\Integration\Conditions\DiscussionViews;
@@ -19,6 +21,8 @@ use Xypp\Collector\Integration\Conditions\LikeSend;
 use Xypp\Collector\Integration\Conditions\Money;
 use Xypp\Collector\Integration\Conditions\PostCount;
 use Xypp\Collector\Integration\Conditions\StoreItemPurchase;
+use Xypp\Collector\Integration\Conditions\ValidDiscussionCount;
+use Xypp\Collector\Integration\Conditions\ValidPostCount;
 use Xypp\Collector\Integration\Rewards\BadgeReward;
 use Xypp\Collector\Integration\Rewards\MoneyReward;
 use Xypp\Collector\Integration\Rewards\StoreItemReward;
@@ -34,6 +38,12 @@ class CollectorServiceProvider extends AbstractServiceProvider
             $collector = new ConditionDefinitionCollection(
                 $container->make(Translator::class)
             );
+
+            /**
+             * @var ExtensionManager $extensionManager
+             */
+            $extensionManager = resolve(ExtensionManager::class);
+
             // Core features
             $collector->addDefinition(new ConditionDefinition("user_page_view", true, "xypp-collector.ref.integration.condition.user_page_view"));
             $collector->addDefinition(new ConditionDefinition("reloads", null, "xypp-collector.ref.integration.condition.reloads"));
@@ -45,26 +55,35 @@ class CollectorServiceProvider extends AbstractServiceProvider
             $collector->addDefinition($container->make(DiscussionReplied::class));
 
             // Integrate with AntoineFr/money
-            if (class_exists(\AntoineFr\Money\Event\MoneyUpdated::class))
+            if ($extensionManager->isEnabled("antoinefr-money"))
                 $collector->addDefinition($container->make(Money::class));
 
             // Integrate with michaelbelgium/flarum-discussion-views
-            if (class_exists(\Michaelbelgium\Discussionviews\Models\DiscussionView::class))
+            if ($extensionManager->isEnabled("michaelbelgium-discussion-views"))
                 $collector->addDefinition($container->make(DiscussionViews::class));
 
             // Integrate with flarum-likes
-            if (class_exists(\Flarum\Likes\Event\PostWasLiked::class)) {
+            if ($extensionManager->isEnabled("flarum-likes")) {
                 $collector->addDefinition($container->make(LikeRecv::class));
                 $collector->addDefinition($container->make(LikeSend::class));
             }
 
             // Integrate with xypp-store
-            if (class_exists(\Xypp\Store\StoreItem::class))
+            if ($extensionManager->isEnabled("xypp-store"))
                 $collector->addDefinition($container->make(StoreItemPurchase::class));
 
             // v17development/flarum-user-badges
-            if (class_exists(\V17Development\FlarumUserBadges\Badge\Badge::class))
+            if ($extensionManager->isEnabled("v17development-user-badges"))
                 $collector->addDefinition($container->make(BadgeReceived::class));
+
+            // fof/best-answer
+            if ($extensionManager->isEnabled("fof-best-answer"))
+                $collector->addDefinition($container->make(BestAnswer::class));
+            // flarum/tags
+            if ($extensionManager->isEnabled("flarum-tags")) {
+                $collector->addDefinition($container->make(ValidPostCount::class));
+                $collector->addDefinition($container->make(ValidDiscussionCount::class));
+            }
 
             return $collector;
         });
@@ -72,16 +91,19 @@ class CollectorServiceProvider extends AbstractServiceProvider
             $collector = new RewardDefinitionCollection(
                 $container->make(Translator::class)
             );
+
+            $extensionManager = resolve(ExtensionManager::class);
+
             // Integrate with AntoineFr/money
-            if (class_exists(\AntoineFr\Money\Event\MoneyUpdated::class))
+            if ($extensionManager->isEnabled("antoinefr-money"))
                 $collector->addDefinition($container->make(MoneyReward::class));
 
             // Integrate with v17development/flarum-user-badges
-            if (class_exists(\V17Development\FlarumUserBadges\Badge\Badge::class))
+            if ($extensionManager->isEnabled("v17development-user-badges"))
                 $collector->addDefinition($container->make(BadgeReward::class));
 
             // Integrate with xypp-store
-            if (class_exists(\Xypp\Store\StoreItem::class))
+            if ($extensionManager->isEnabled("xypp-store"))
                 $collector->addDefinition($container->make(StoreItemReward::class));
 
             return $collector;

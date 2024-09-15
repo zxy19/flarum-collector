@@ -11,6 +11,7 @@ use Xypp\Collector\Event\ConditionChange;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Condition;
 use Illuminate\Events\Dispatcher;
+use Xypp\Collector\Helper\SettingHelper;
 
 class UpdateCondition extends Command
 {
@@ -26,14 +27,17 @@ class UpdateCondition extends Command
 
     protected ConditionHelper $conditionHelper;
     protected Dispatcher $events;
-    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events)
+    protected SettingHelper $settingHelper;
+    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events,SettingHelper $settingHelper)
     {
         parent::__construct();
         $this->addArgument("names", InputArgument::OPTIONAL | InputArgument::IS_ARRAY, "Condition names to update");
         $this->addOption("no-dispatch-update", "a", InputArgument::OPTIONAL, "Not update achievement");
 
+
         $this->conditionHelper = $conditionHelper;
         $this->events = $events;
+        $this->settingHelper = $settingHelper;
     }
     public function handle()
     {
@@ -52,6 +56,8 @@ class UpdateCondition extends Command
         foreach ($this->conditionHelper->getAllConditionName() as $conditionDefinitionName) {
             if ($names && !in_array($conditionDefinitionName, $names))
                 continue;
+            if (!$this->settingHelper->enable("update",$conditionDefinitionName))
+                continue;
             $conditionDefinition = $this->conditionHelper->getConditionDefinition($conditionDefinitionName);
             $this->info("Updating $conditionDefinitionName");
             $this->withProgressBar(
@@ -62,6 +68,9 @@ class UpdateCondition extends Command
                         $condition = new Condition();
                         $condition->name = $conditionDefinitionName;
                         $condition->user_id = $user->id;
+                    }
+                    if (!$conditionDefinition->accumulateUpdate) {
+                        $this->info($conditionDefinition->name . "not support update. Skipped");
                     }
                     $accumulation = $condition->getAccumulation();
                     $result = $conditionDefinition->updateValue($user, $accumulation);
