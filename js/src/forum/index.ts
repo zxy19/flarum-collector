@@ -13,6 +13,7 @@ import Condition from '../common/models/Condition';
 import { getConditionMap, getConditions } from './utils/userCondition';
 import ConditionList from './components/ConditionList';
 import RewardList from './components/RewardList';
+import userValueUtil from './utils/userValueUtil';
 import { OPERATOR } from '../common/types/data';
 export {
   addCondition,
@@ -27,5 +28,6 @@ export {
   getConditions,
   ConditionList,
   RewardList,
+  userValueUtil,
   OPERATOR
 };

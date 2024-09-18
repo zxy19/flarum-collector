@@ -19,6 +19,12 @@ xypp-collector:
         valid_post_count: "Valid Post Count"
         valid_discussion_count: "Valid Discussion Count"
         money: "Money"
+      global-condition:
+        post_count: "Global Post Count"
+        discussion_count: "Global Discussion Count"
+        valid_post_count: "Global Valid Post Count"
+        valid_discussion_count: "Global Valid Discussion Count"
+        like: "Global Like Count"
       reward:
         money: "Money"
         store_item: "Store Item"

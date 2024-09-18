@@ -9,6 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Psr\Http\Server\RequestHandlerInterface;
+use Xypp\Collector\Custom\CustomConditionDefinition;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Helper\RewardHelper;
 class GetCollectorDefinitionController implements RequestHandlerInterface
@@ -22,20 +23,49 @@ class GetCollectorDefinitionController implements RequestHandlerInterface
         $this->rewardHelper = $rewardHelper;
         $this->translator = $translator;
     }
+    protected function optionalTranslate(string $key, array $params = [])
+    {
+        if (str_contains($key, ".")) {
+            return $this->translator->trans($key, $params);
+        } else {
+            return $key;
+        }
+    }
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         return new JsonResponse([
-            "conditions" => array_map(
-                function ($conditionName) use (&$ret) {
-                    return [
-                        "key" => $conditionName,
-                        "trans" => $this->translator->trans($this->conditionHelper->getConditionDefinition($conditionName)->translateKey),
-                        "abs" => $this->conditionHelper->getConditionDefinition($conditionName)->accumulateAbsolute,
-                        "manual" => $this->conditionHelper->getConditionDefinition($conditionName)->needManualUpdate,
-                        "update" => $this->conditionHelper->getConditionDefinition($conditionName)->accumulateUpdate,
-                    ];
-                },
-                $this->conditionHelper->getAllConditionName()
+            "conditions" => array_merge(
+                array_map(
+                    function ($conditionName) use (&$ret) {
+                        $definition = $this->conditionHelper->getConditionDefinition($conditionName);
+                        $ret = [
+                            "global" => false,
+                            "key" => $conditionName,
+                            "trans" => $this->optionalTranslate($definition->translateKey),
+                            "abs" => $definition->accumulateAbsolute,
+                            "manual" => $definition->needManualUpdate,
+                            "update" => $definition->accumulateUpdate,
+                        ];
+                        if ($definition instanceof CustomConditionDefinition) {
+                            $ret["evaluation"] = $definition->evaluation;
+                        }
+                        return $ret;
+                    },
+                    $this->conditionHelper->getAllConditionName()
+                ),
+                array_map(
+                    function ($conditionName) use (&$ret) {
+                        return [
+                            "global" => true,
+                            "key" => $conditionName,
+                            "trans" => $this->optionalTranslate($this->conditionHelper->getGlobalConditionDefinition($conditionName)->translateKey),
+                            "abs" => $this->conditionHelper->getGlobalConditionDefinition($conditionName)->accumulateAbsolute,
+                            "manual" => $this->conditionHelper->getGlobalConditionDefinition($conditionName)->needManualUpdate,
+                            "update" => $this->conditionHelper->getGlobalConditionDefinition($conditionName)->accumulateUpdate,
+                        ];
+                    },
+                    $this->conditionHelper->getGlobalConditionName()
+                )
             ),
             "rewards" => array_map(
                 function ($rewardName) use (&$ret) {

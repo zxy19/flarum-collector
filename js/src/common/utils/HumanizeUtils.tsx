@@ -11,7 +11,7 @@ export default class HumanizeUtils {
     protected app: ForumApplication | AdminApplication;
     protected definitionLoaded: boolean = false;
     protected rawConditionDefinition: Record<string, {
-        trans: string, key: string, manual: boolean, abs: boolean, update: boolean
+        global: boolean, trans: string, key: string, manual: boolean, abs: boolean, update: boolean, evaluation?: string
     }> = {}
     protected conditionTranslations: Record<string, string> = {};
     protected rewardTranslations: Record<string, string> = {};
@@ -35,7 +35,7 @@ export default class HumanizeUtils {
         this._loadDefinition(data as any);
     }
     protected _loadDefinition(data: {
-        conditions: { trans: string, key: string, manual: boolean, abs: boolean, update: boolean }[],
+        conditions: { global: boolean, trans: string, key: string, manual: boolean, abs: boolean, update: boolean, evaluation?: string }[],
         rewards: { trans: string, key: string }[]
     }) {
         data.conditions.forEach((value) => {
@@ -55,10 +55,11 @@ export default class HumanizeUtils {
         }
         return this.instance;
     }
-    public getAllConditions(): ItemList<string> {
+    public getAllConditions(containsGlobal: boolean = false): ItemList<string> {
         const ret = new ItemList<string>();
         this.conditionsKeys.forEach(key => {
-            ret.add(key, this.conditionTranslations[key]);
+            if (containsGlobal || !this.rawConditionDefinition[key].global)
+                ret.add(key, this.conditionTranslations[key]);
         });
         return ret;
     }
@@ -136,7 +137,7 @@ export default class HumanizeUtils {
         }
         return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
     }
-    public getRawConditionDefinition(key: string): { trans: string, key: string, manual: boolean, abs: boolean, update: boolean } | false {
+    public getRawConditionDefinition(key: string): { global: boolean, trans: string, key: string, manual: boolean, abs: boolean, update: boolean, evaluation?: string } | false {
         return this.rawConditionDefinition[key] || false;
     }
 }

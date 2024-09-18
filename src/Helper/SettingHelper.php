@@ -32,4 +32,13 @@ class SettingHelper
     {
         return $this->settings->get("xypp.collector.max_keep") ?? 30;
     }
+    public function globalChangeCustom(){
+        return $this->settings->get("xypp.collector.custom-global-update") ?? false;
+    }
+    public function useCustom(){
+        return $this->settings->get("xypp.collector.use_custom") ?? false;
+    }
+    public function autoUpdate(){
+        return $this->settings->get("xypp.collector.auto_update") ?? false;
+    }
 }

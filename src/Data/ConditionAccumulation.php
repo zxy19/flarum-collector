@@ -180,10 +180,10 @@ class ConditionAccumulation
             $this->sorted = false;
         }
     }
-    public function updateFlag(string $flag)
+    public function updateFlag(?string $flag)
     {
         $this->dirty = true;
-        $this->updateFlag = $flag;
+        $this->updateFlag = $flag ?? "";
     }
     public function clear()
     {

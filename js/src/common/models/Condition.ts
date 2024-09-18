@@ -19,6 +19,7 @@ export default class Condition extends Model {
   user_id = Model.attribute<number>('user_id');
   accumulation = Model.attribute<ConditionAccumulation | null>('accumulation', optionalJsonParser<ConditionAccumulation>);
   getSpan(span: number, calculate: CALCULATE = CALCULATE.SUM): number {
+    if (!calculate) calculate = CALCULATE.SUM;
     const accumulation = this.accumulation();
     if (!accumulation || span < 1) return 0;
     let cut = dayjs(dayjs().format("YYYYMMDD"), "YYYYMMDD");
@@ -42,6 +43,7 @@ export default class Condition extends Model {
   }
 
   getTotal(calculate: CALCULATE = CALCULATE.SUM) {
+    if (!calculate) calculate = CALCULATE.SUM;
     if (calculate == CALCULATE.MAX) return this.accumulation()?.max || 0;
     else if (calculate == CALCULATE.DAY_COUNT) return this.accumulation()?.days || 0;
     else return this.accumulation()?.all || 0;

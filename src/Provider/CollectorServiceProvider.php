@@ -6,11 +6,14 @@ use Flarum\Extension\ExtensionManager;
 use Flarum\Foundation\AbstractServiceProvider;
 use Flarum\Locale\Translator;
 use Xypp\Collector\ConditionDefinition;
+use Xypp\Collector\Custom\Util\AddCustomConditionUtils;
 use Xypp\Collector\Extend\ConditionDefinitionCollection;
 use Xypp\Collector\Extend\RewardDefinitionCollection;
+use Xypp\Collector\Helper\CommandContextHelper;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Helper\RewardHelper;
 use Illuminate\Contracts\Container\Container;
+use Xypp\Collector\Helper\SettingHelper;
 use Xypp\Collector\Integration\Conditions\BadgeReceived;
 use Xypp\Collector\Integration\Conditions\BestAnswer;
 use Xypp\Collector\Integration\Conditions\DiscussionCount;
@@ -23,6 +26,11 @@ use Xypp\Collector\Integration\Conditions\PostCount;
 use Xypp\Collector\Integration\Conditions\StoreItemPurchase;
 use Xypp\Collector\Integration\Conditions\ValidDiscussionCount;
 use Xypp\Collector\Integration\Conditions\ValidPostCount;
+use Xypp\Collector\Integration\Global\GlobalDiscussionCount;
+use Xypp\Collector\Integration\Global\GlobalPostCount;
+use Xypp\Collector\Integration\Global\GlobalValidDiscussionCount;
+use Xypp\Collector\Integration\Global\GlobalValidPostCount;
+use Xypp\Collector\Integration\Global\GlobalLike;
 use Xypp\Collector\Integration\Rewards\BadgeReward;
 use Xypp\Collector\Integration\Rewards\MoneyReward;
 use Xypp\Collector\Integration\Rewards\StoreItemReward;
@@ -34,16 +42,17 @@ class CollectorServiceProvider extends AbstractServiceProvider
     {
         $this->container->singleton(ConditionHelper::class);
         $this->container->singleton(RewardHelper::class);
+        $this->container->singleton(CommandContextHelper::class);
+        $this->container->singleton(SettingHelper::class);
         $this->container->singleton(ConditionDefinitionCollection::class, function (Container $container) {
             $collector = new ConditionDefinitionCollection(
-                $container->make(Translator::class)
+                $container->make(Translator::class),
+                $container->make(SettingHelper::class)
             );
-
             /**
              * @var ExtensionManager $extensionManager
              */
             $extensionManager = resolve(ExtensionManager::class);
-
             // Core features
             $collector->addDefinition(new ConditionDefinition("user_page_view", true, "xypp-collector.ref.integration.condition.user_page_view"));
             $collector->addDefinition(new ConditionDefinition("reloads", null, "xypp-collector.ref.integration.condition.reloads"));
@@ -53,6 +62,9 @@ class CollectorServiceProvider extends AbstractServiceProvider
             $collector->addDefinition($container->make(DiscussionCount::class));
             $collector->addDefinition($container->make(PostCount::class));
             $collector->addDefinition($container->make(DiscussionReplied::class));
+
+            $collector->addGlobalDefinition($container->make(GlobalDiscussionCount::class));
+            $collector->addGlobalDefinition($container->make(GlobalPostCount::class));
 
             // Integrate with AntoineFr/money
             if ($extensionManager->isEnabled("antoinefr-money"))
@@ -66,6 +78,7 @@ class CollectorServiceProvider extends AbstractServiceProvider
             if ($extensionManager->isEnabled("flarum-likes")) {
                 $collector->addDefinition($container->make(LikeRecv::class));
                 $collector->addDefinition($container->make(LikeSend::class));
+                $collector->addGlobalDefinition($container->make(GlobalLike::class));
             }
 
             // Integrate with xypp-store
@@ -83,6 +96,8 @@ class CollectorServiceProvider extends AbstractServiceProvider
             if ($extensionManager->isEnabled("flarum-tags")) {
                 $collector->addDefinition($container->make(ValidPostCount::class));
                 $collector->addDefinition($container->make(ValidDiscussionCount::class));
+                $collector->addGlobalDefinition($container->make(GlobalValidPostCount::class));
+                $collector->addGlobalDefinition($container->make(GlobalValidDiscussionCount::class));
             }
 
             return $collector;

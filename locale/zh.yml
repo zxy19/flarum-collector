@@ -15,7 +15,10 @@ xypp-collector:
     settings: "设置"
     max_keep: "最大记录天数"
     allow_update: "允许用户手动更新"
+    use_custom: "使用自定义条件"
+    custom_global_update: "自定义条件在全局条件更新时更新"
     limited_accumulation_support: "这个条件无法再重算时获取全部信息，将在运行命令时询问你"
+    auto_update: "自动更新自定义条件（本地时间00：00）"
     emit_control:
       title: "触发更新和重算"
       event: "事件"
@@ -37,6 +40,15 @@ xypp-collector:
       reward-get_value: "获取值"
       reward-alter_name: "显示名"
       new_item: "新项"
+    custom:
+      title: "自定义条件"
+      name: "名字"
+      add: "新建"
+      display_name: "显示名"
+      evaluation: "表达式"
+      button-edit: "编辑"
+      button: "创建"
+      delete-confirm: "确定要删除此项吗？"
     permissions:
       view-condition: "查看条件值"
   api:

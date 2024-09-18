@@ -7,7 +7,7 @@ use Xypp\Collector\Data\ConditionAccumulation;
 use Xypp\Collector\Enum\ConditionOperator;
 use Illuminate\Console\Command;
 
-class ConditionDefinition
+class GlobalConditionDefinition
 {
     /**
      * Name of this condition
@@ -45,7 +45,7 @@ class ConditionDefinition
     public function __construct(?string $name = null, ?bool $frontend = false, ?string $translateKey = null)
     {
         if ($name)
-            $this->name = $name;
+            $this->name = "global." . $name;
         if ($frontend)
             $this->allowFrontendTrigger = true;
         if ($translateKey)
@@ -71,11 +71,11 @@ class ConditionDefinition
                 return false;
         }
     }
-    public function getAbsoluteValue(User $user, ConditionAccumulation $accumulation): bool
+    public function getAbsoluteValue(ConditionAccumulation $accumulation): bool
     {
         return false;
     }
-    public function updateValue(User $user, ConditionAccumulation $accumulation): bool
+    public function updateValue(ConditionAccumulation $accumulation): bool
     {
         return false;
     }

@@ -9,6 +9,8 @@ import LinkButton from "flarum/common/components/LinkButton";
 import Tooltip from "flarum/common/components/Tooltip";
 import Stream from "mithril/stream";
 import type Tag from "@flarum-tags/common/models/Tag";
+import CustomCondition from "../../common/models/CustomCondition";
+import editCustomModal from "./editCustomModal";
 
 export default class adminPage extends ExtensionPage {
     loadingData: boolean = false;
@@ -16,6 +18,8 @@ export default class adminPage extends ExtensionPage {
     autoEmitObj: Record<string, Record<string, boolean>> = {};
     invalidTags?: Stream<string>;
     invalidTagsObj: Record<string, boolean> = {};
+    customs?: CustomCondition[];
+    deletingCustom: Record<string, boolean> = {};
     oncreate(vnode: any): void {
         this.autoEmit = this.setting('xypp.collector.emit_control', "{}");
         this.autoEmitObj = JSON.parse(this.autoEmit!());
@@ -26,7 +30,6 @@ export default class adminPage extends ExtensionPage {
     }
     content(vnode: any) {
         return <div className="xypp-collector-adminPage-container container">
-
             <div className="Form-group">
                 <h2>{app.translator.trans('xypp-collector.admin.emit_control.title')}</h2>
                 <table className="Table">
@@ -76,7 +79,63 @@ export default class adminPage extends ExtensionPage {
                     min: 1
                 })
             }
+            {
+                this.buildSettingComponent({
+                    setting: "xypp.collector.use_custom",
+                    label: app.translator.trans('xypp-collector.admin.use_custom'),
+                    type: "boolean"
+                })
+            }
+            {
+                this.buildSettingComponent({
+                    setting: "xypp.collector.custom-global-update",
+                    label: app.translator.trans('xypp-collector.admin.custom_global_update'),
+                    type: "boolean"
+                })
+            }
+            {
+                this.buildSettingComponent({
+                    setting: "xypp.collector.auto_update",
+                    label: app.translator.trans('xypp-collector.admin.auto_update'),
+                    type: "boolean"
+                })
+            }
             {this.submitButton()}
+
+            <div>
+                <h2>{app.translator.trans("xypp-collector.admin.custom.title")}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{app.translator.trans("xypp-collector.admin.custom.name")}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            this.customs?.map(custom => <tr className="custom-row">
+                                <td>{custom.display_name()}</td>
+                                <td>
+                                    <Button className="Button Button--primary" onclick={this.customEdit(custom)}>
+                                        <i class="fas fa-edit"></i>
+                                    </Button>
+                                    <Button className="Button Button--primary" onclick={this.customDelete(custom)}>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </Button>
+                                </td>
+                            </tr>)
+                        }
+                        <tr>
+                            <td colspan="2">
+                                <Button className="Button Button--primary" onclick={this.customAdd()}>
+                                    <i class="fas fa-plus"></i>
+                                    {app.translator.trans("xypp-collector.admin.custom.add")}
+                                </Button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div >
     }
 
@@ -84,13 +143,14 @@ export default class adminPage extends ExtensionPage {
         this.loadingData = true;
         m.redraw();
         await HumanizeUtils.getInstance(app).loadDefinition();
+        this.customs = await app.store.find<CustomCondition[]>(CustomCondition.type);
         this.loadingData = false;
         m.redraw();
     }
 
     getControls() {
         if (this.loadingData) return [];
-        const conditions = HumanizeUtils.getInstance(app).getAllConditions().toObject();
+        const conditions = HumanizeUtils.getInstance(app).getAllConditions(true).toObject();
         return Object.keys(conditions).map(key => <tr className="emit-control-row">
             <td className="emit-control-label">
                 <LinkButton onclick={this.toggleRow(key)}>
@@ -196,4 +256,43 @@ export default class adminPage extends ExtensionPage {
             this.invalidTags!(JSON.stringify(this.invalidTagsObj));
         }).bind(this);
     }
+
+
+    customEdit(custom: CustomCondition) {
+        return (e: any) => {
+            e.preventDefault();
+            app.modal.show(editCustomModal, {
+                item: custom,
+                update: (item: CustomCondition) => {
+                    this.customs = this.customs?.map(c => c.id() == item.id() ? item : c);
+                    m.redraw();
+                }
+            });
+        }
+    }
+    customAdd() {
+        return (e: any) => {
+            e.preventDefault();
+            app.modal.show(editCustomModal, {
+                update: (item: CustomCondition) => {
+                    this.customs?.push(item);
+                    m.redraw();
+                }
+            });
+        }
+    }
+    customDelete(custom: CustomCondition) {
+        return (e: any) => {
+            e.preventDefault();
+            if (!confirm(app.translator.trans("xypp-collector.admin.custom.delete-confirm") + "")) return;
+            this.deletingCustom[custom.id() + ""] = true;
+            m.redraw();
+            custom.delete().then(() => {
+                this.customs = this.customs?.filter(c => c.id() != custom.id())
+                delete this.deletingCustom[custom.id() + ""];
+                m.redraw();
+            });
+        }
+    }
+
 }

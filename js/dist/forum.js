@@ -1,3 +1,5762 @@
-/*! For license information please see forum.js.LICENSE.txt */
-(()=>{var t={912:function(t){t.exports=function(){"use strict";var t=6e4,r=36e5,e="millisecond",n="second",o="minute",i="hour",a="day",s="week",u="month",c="quarter",l="year",f="date",d="Invalid Date",h=/^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,p=/\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,m={name:"en",weekdays:"Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),months:"January_February_March_April_May_June_July_August_September_October_November_December".split("_"),ordinal:function(t){var r=["th","st","nd","rd"],e=t%100;return"["+t+(r[(e-20)%10]||r[e]||r[0])+"]"}},v=function(t,r,e){var n=String(t);return!n||n.length>=r?t:""+Array(r+1-n.length).join(e)+t},y={s:v,z:function(t){var r=-t.utcOffset(),e=Math.abs(r),n=Math.floor(e/60),o=e%60;return(r<=0?"+":"-")+v(n,2,"0")+":"+v(o,2,"0")},m:function t(r,e){if(r.date()<e.date())return-t(e,r);var n=12*(e.year()-r.year())+(e.month()-r.month()),o=r.clone().add(n,u),i=e-o<0,a=r.clone().add(n+(i?-1:1),u);return+(-(n+(e-o)/(i?o-a:a-o))||0)},a:function(t){return t<0?Math.ceil(t)||0:Math.floor(t)},p:function(t){return{M:u,y:l,w:s,d:a,D:f,h:i,m:o,s:n,ms:e,Q:c}[t]||String(t||"").toLowerCase().replace(/s$/,"")},u:function(t){return void 0===t}},g="en",w={};w[g]=m;var b="$isDayjsObject",_=function(t){return t instanceof S||!(!t||!t[b])},x=function t(r,e,n){var o;if(!r)return g;if("string"==typeof r){var i=r.toLowerCase();w[i]&&(o=i),e&&(w[i]=e,o=i);var a=r.split("-");if(!o&&a.length>1)return t(a[0])}else{var s=r.name;w[s]=r,o=s}return!n&&o&&(g=o),o||!n&&g},$=function(t,r){if(_(t))return t.clone();var e="object"==typeof r?r:{};return e.date=t,e.args=arguments,new S(e)},M=y;M.l=x,M.i=_,M.w=function(t,r){return $(t,{locale:r.$L,utc:r.$u,x:r.$x,$offset:r.$offset})};var S=function(){function m(t){this.$L=x(t.locale,null,!0),this.parse(t),this.$x=this.$x||t.x||{},this[b]=!0}var v=m.prototype;return v.parse=function(t){this.$d=function(t){var r=t.date,e=t.utc;if(null===r)return new Date(NaN);if(M.u(r))return new Date;if(r instanceof Date)return new Date(r);if("string"==typeof r&&!/Z$/i.test(r)){var n=r.match(h);if(n){var o=n[2]-1||0,i=(n[7]||"0").substring(0,3);return e?new Date(Date.UTC(n[1],o,n[3]||1,n[4]||0,n[5]||0,n[6]||0,i)):new Date(n[1],o,n[3]||1,n[4]||0,n[5]||0,n[6]||0,i)}}return new Date(r)}(t),this.init()},v.init=function(){var t=this.$d;this.$y=t.getFullYear(),this.$M=t.getMonth(),this.$D=t.getDate(),this.$W=t.getDay(),this.$H=t.getHours(),this.$m=t.getMinutes(),this.$s=t.getSeconds(),this.$ms=t.getMilliseconds()},v.$utils=function(){return M},v.isValid=function(){return!(this.$d.toString()===d)},v.isSame=function(t,r){var e=$(t);return this.startOf(r)<=e&&e<=this.endOf(r)},v.isAfter=function(t,r){return $(t)<this.startOf(r)},v.isBefore=function(t,r){return this.endOf(r)<$(t)},v.$g=function(t,r,e){return M.u(t)?this[r]:this.set(e,t)},v.unix=function(){return Math.floor(this.valueOf()/1e3)},v.valueOf=function(){return this.$d.getTime()},v.startOf=function(t,r){var e=this,c=!!M.u(r)||r,d=M.p(t),h=function(t,r){var n=M.w(e.$u?Date.UTC(e.$y,r,t):new Date(e.$y,r,t),e);return c?n:n.endOf(a)},p=function(t,r){return M.w(e.toDate()[t].apply(e.toDate("s"),(c?[0,0,0,0]:[23,59,59,999]).slice(r)),e)},m=this.$W,v=this.$M,y=this.$D,g="set"+(this.$u?"UTC":"");switch(d){case l:return c?h(1,0):h(31,11);case u:return c?h(1,v):h(0,v+1);case s:var w=this.$locale().weekStart||0,b=(m<w?m+7:m)-w;return h(c?y-b:y+(6-b),v);case a:case f:return p(g+"Hours",0);case i:return p(g+"Minutes",1);case o:return p(g+"Seconds",2);case n:return p(g+"Milliseconds",3);default:return this.clone()}},v.endOf=function(t){return this.startOf(t,!1)},v.$set=function(t,r){var s,c=M.p(t),d="set"+(this.$u?"UTC":""),h=(s={},s[a]=d+"Date",s[f]=d+"Date",s[u]=d+"Month",s[l]=d+"FullYear",s[i]=d+"Hours",s[o]=d+"Minutes",s[n]=d+"Seconds",s[e]=d+"Milliseconds",s)[c],p=c===a?this.$D+(r-this.$W):r;if(c===u||c===l){var m=this.clone().set(f,1);m.$d[h](p),m.init(),this.$d=m.set(f,Math.min(this.$D,m.daysInMonth())).$d}else h&&this.$d[h](p);return this.init(),this},v.set=function(t,r){return this.clone().$set(t,r)},v.get=function(t){return this[M.p(t)]()},v.add=function(e,c){var f,d=this;e=Number(e);var h=M.p(c),p=function(t){var r=$(d);return M.w(r.date(r.date()+Math.round(t*e)),d)};if(h===u)return this.set(u,this.$M+e);if(h===l)return this.set(l,this.$y+e);if(h===a)return p(1);if(h===s)return p(7);var m=(f={},f[o]=t,f[i]=r,f[n]=1e3,f)[h]||1,v=this.$d.getTime()+e*m;return M.w(v,this)},v.subtract=function(t,r){return this.add(-1*t,r)},v.format=function(t){var r=this,e=this.$locale();if(!this.isValid())return e.invalidDate||d;var n=t||"YYYY-MM-DDTHH:mm:ssZ",o=M.z(this),i=this.$H,a=this.$m,s=this.$M,u=e.weekdays,c=e.months,l=e.meridiem,f=function(t,e,o,i){return t&&(t[e]||t(r,n))||o[e].slice(0,i)},h=function(t){return M.s(i%12||12,t,"0")},m=l||function(t,r,e){var n=t<12?"AM":"PM";return e?n.toLowerCase():n};return n.replace(p,(function(t,n){return n||function(t){switch(t){case"YY":return String(r.$y).slice(-2);case"YYYY":return M.s(r.$y,4,"0");case"M":return s+1;case"MM":return M.s(s+1,2,"0");case"MMM":return f(e.monthsShort,s,c,3);case"MMMM":return f(c,s);case"D":return r.$D;case"DD":return M.s(r.$D,2,"0");case"d":return String(r.$W);case"dd":return f(e.weekdaysMin,r.$W,u,2);case"ddd":return f(e.weekdaysShort,r.$W,u,3);case"dddd":return u[r.$W];case"H":return String(i);case"HH":return M.s(i,2,"0");case"h":return h(1);case"hh":return h(2);case"a":return m(i,a,!0);case"A":return m(i,a,!1);case"m":return String(a);case"mm":return M.s(a,2,"0");case"s":return String(r.$s);case"ss":return M.s(r.$s,2,"0");case"SSS":return M.s(r.$ms,3,"0");case"Z":return o}return null}(t)||o.replace(":","")}))},v.utcOffset=function(){return 15*-Math.round(this.$d.getTimezoneOffset()/15)},v.diff=function(e,f,d){var h,p=this,m=M.p(f),v=$(e),y=(v.utcOffset()-this.utcOffset())*t,g=this-v,w=function(){return M.m(p,v)};switch(m){case l:h=w()/12;break;case u:h=w();break;case c:h=w()/3;break;case s:h=(g-y)/6048e5;break;case a:h=(g-y)/864e5;break;case i:h=g/r;break;case o:h=g/t;break;case n:h=g/1e3;break;default:h=g}return d?h:M.a(h)},v.daysInMonth=function(){return this.endOf(u).$D},v.$locale=function(){return w[this.$L]},v.locale=function(t,r){if(!t)return this.$L;var e=this.clone(),n=x(t,r,!0);return n&&(e.$L=n),e},v.clone=function(){return M.w(this.$d,this)},v.toDate=function(){return new Date(this.valueOf())},v.toJSON=function(){return this.isValid()?this.toISOString():null},v.toISOString=function(){return this.$d.toISOString()},v.toString=function(){return this.$d.toUTCString()},m}(),O=S.prototype;return $.prototype=O,[["$ms",e],["$s",n],["$m",o],["$H",i],["$W",a],["$M",u],["$y",l],["$D",f]].forEach((function(t){O[t[1]]=function(r){return this.$g(r,t[0],t[1])}})),$.extend=function(t,r){return t.$i||(t(r,S,$),t.$i=!0),$},$.locale=x,$.isDayjs=_,$.unix=function(t){return $(1e3*t)},$.en=w[g],$.Ls=w,$.p={},$}()},24:(t,r,e)=>{var n=e(735).default;function o(){"use strict";t.exports=o=function(){return e},t.exports.__esModule=!0,t.exports.default=t.exports;var r,e={},i=Object.prototype,a=i.hasOwnProperty,s=Object.defineProperty||function(t,r,e){t[r]=e.value},u="function"==typeof Symbol?Symbol:{},c=u.iterator||"@@iterator",l=u.asyncIterator||"@@asyncIterator",f=u.toStringTag||"@@toStringTag";function d(t,r,e){return Object.defineProperty(t,r,{value:e,enumerable:!0,configurable:!0,writable:!0}),t[r]}try{d({},"")}catch(r){d=function(t,r,e){return t[r]=e}}function h(t,r,e,n){var o=r&&r.prototype instanceof b?r:b,i=Object.create(o.prototype),a=new N(n||[]);return s(i,"_invoke",{value:L(t,e,a)}),i}function p(t,r,e){try{return{type:"normal",arg:t.call(r,e)}}catch(t){return{type:"throw",arg:t}}}e.wrap=h;var m="suspendedStart",v="suspendedYield",y="executing",g="completed",w={};function b(){}function _(){}function x(){}var $={};d($,c,(function(){return this}));var M=Object.getPrototypeOf,S=M&&M(M(C([])));S&&S!==i&&a.call(S,c)&&($=S);var O=x.prototype=b.prototype=Object.create($);function D(t){["next","throw","return"].forEach((function(r){d(t,r,(function(t){return this._invoke(r,t)}))}))}function A(t,r){function e(o,i,s,u){var c=p(t[o],t,i);if("throw"!==c.type){var l=c.arg,f=l.value;return f&&"object"==n(f)&&a.call(f,"__await")?r.resolve(f.__await).then((function(t){e("next",t,s,u)}),(function(t){e("throw",t,s,u)})):r.resolve(f).then((function(t){l.value=t,s(l)}),(function(t){return e("throw",t,s,u)}))}u(c.arg)}var o;s(this,"_invoke",{value:function(t,n){function i(){return new r((function(r,o){e(t,n,r,o)}))}return o=o?o.then(i,i):i()}})}function L(t,e,n){var o=m;return function(i,a){if(o===y)throw Error("Generator is already running");if(o===g){if("throw"===i)throw a;return{value:r,done:!0}}for(n.method=i,n.arg=a;;){var s=n.delegate;if(s){var u=E(s,n);if(u){if(u===w)continue;return u}}if("next"===n.method)n.sent=n._sent=n.arg;else if("throw"===n.method){if(o===m)throw o=g,n.arg;n.dispatchException(n.arg)}else"return"===n.method&&n.abrupt("return",n.arg);o=y;var c=p(t,e,n);if("normal"===c.type){if(o=n.done?g:v,c.arg===w)continue;return{value:c.arg,done:n.done}}"throw"===c.type&&(o=g,n.method="throw",n.arg=c.arg)}}}function E(t,e){var n=e.method,o=t.iterator[n];if(o===r)return e.delegate=null,"throw"===n&&t.iterator.return&&(e.method="return",e.arg=r,E(t,e),"throw"===e.method)||"return"!==n&&(e.method="throw",e.arg=new TypeError("The iterator does not provide a '"+n+"' method")),w;var i=p(o,t.iterator,e.arg);if("throw"===i.type)return e.method="throw",e.arg=i.arg,e.delegate=null,w;var a=i.arg;return a?a.done?(e[t.resultName]=a.value,e.next=t.nextLoc,"return"!==e.method&&(e.method="next",e.arg=r),e.delegate=null,w):a:(e.method="throw",e.arg=new TypeError("iterator result is not an object"),e.delegate=null,w)}function T(t){var r={tryLoc:t[0]};1 in t&&(r.catchLoc=t[1]),2 in t&&(r.finallyLoc=t[2],r.afterLoc=t[3]),this.tryEntries.push(r)}function k(t){var r=t.completion||{};r.type="normal",delete r.arg,t.completion=r}function N(t){this.tryEntries=[{tryLoc:"root"}],t.forEach(T,this),this.reset(!0)}function C(t){if(t||""===t){var e=t[c];if(e)return e.call(t);if("function"==typeof t.next)return t;if(!isNaN(t.length)){var o=-1,i=function e(){for(;++o<t.length;)if(a.call(t,o))return e.value=t[o],e.done=!1,e;return e.value=r,e.done=!0,e};return i.next=i}}throw new TypeError(n(t)+" is not iterable")}return _.prototype=x,s(O,"constructor",{value:x,configurable:!0}),s(x,"constructor",{value:_,configurable:!0}),_.displayName=d(x,f,"GeneratorFunction"),e.isGeneratorFunction=function(t){var r="function"==typeof t&&t.constructor;return!!r&&(r===_||"GeneratorFunction"===(r.displayName||r.name))},e.mark=function(t){return Object.setPrototypeOf?Object.setPrototypeOf(t,x):(t.__proto__=x,d(t,f,"GeneratorFunction")),t.prototype=Object.create(O),t},e.awrap=function(t){return{__await:t}},D(A.prototype),d(A.prototype,l,(function(){return this})),e.AsyncIterator=A,e.async=function(t,r,n,o,i){void 0===i&&(i=Promise);var a=new A(h(t,r,n,o),i);return e.isGeneratorFunction(r)?a:a.next().then((function(t){return t.done?t.value:a.next()}))},D(O),d(O,f,"Generator"),d(O,c,(function(){return this})),d(O,"toString",(function(){return"[object Generator]"})),e.keys=function(t){var r=Object(t),e=[];for(var n in r)e.push(n);return e.reverse(),function t(){for(;e.length;){var n=e.pop();if(n in r)return t.value=n,t.done=!1,t}return t.done=!0,t}},e.values=C,N.prototype={constructor:N,reset:function(t){if(this.prev=0,this.next=0,this.sent=this._sent=r,this.done=!1,this.delegate=null,this.method="next",this.arg=r,this.tryEntries.forEach(k),!t)for(var e in this)"t"===e.charAt(0)&&a.call(this,e)&&!isNaN(+e.slice(1))&&(this[e]=r)},stop:function(){this.done=!0;var t=this.tryEntries[0].completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(t){if(this.done)throw t;var e=this;function n(n,o){return s.type="throw",s.arg=t,e.next=n,o&&(e.method="next",e.arg=r),!!o}for(var o=this.tryEntries.length-1;o>=0;--o){var i=this.tryEntries[o],s=i.completion;if("root"===i.tryLoc)return n("end");if(i.tryLoc<=this.prev){var u=a.call(i,"catchLoc"),c=a.call(i,"finallyLoc");if(u&&c){if(this.prev<i.catchLoc)return n(i.catchLoc,!0);if(this.prev<i.finallyLoc)return n(i.finallyLoc)}else if(u){if(this.prev<i.catchLoc)return n(i.catchLoc,!0)}else{if(!c)throw Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return n(i.finallyLoc)}}}},abrupt:function(t,r){for(var e=this.tryEntries.length-1;e>=0;--e){var n=this.tryEntries[e];if(n.tryLoc<=this.prev&&a.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var o=n;break}}o&&("break"===t||"continue"===t)&&o.tryLoc<=r&&r<=o.finallyLoc&&(o=null);var i=o?o.completion:{};return i.type=t,i.arg=r,o?(this.method="next",this.next=o.finallyLoc,w):this.complete(i)},complete:function(t,r){if("throw"===t.type)throw t.arg;return"break"===t.type||"continue"===t.type?this.next=t.arg:"return"===t.type?(this.rval=this.arg=t.arg,this.method="return",this.next="end"):"normal"===t.type&&r&&(this.next=r),w},finish:function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.finallyLoc===t)return this.complete(e.completion,e.afterLoc),k(e),w}},catch:function(t){for(var r=this.tryEntries.length-1;r>=0;--r){var e=this.tryEntries[r];if(e.tryLoc===t){var n=e.completion;if("throw"===n.type){var o=n.arg;k(e)}return o}}throw Error("illegal catch attempt")},delegateYield:function(t,e,n){return this.delegate={iterator:C(t),resultName:e,nextLoc:n},"next"===this.method&&(this.arg=r),w}},e}t.exports=o,t.exports.__esModule=!0,t.exports.default=t.exports},735:t=>{function r(e){return t.exports=r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},t.exports.__esModule=!0,t.exports.default=t.exports,r(e)}t.exports=r,t.exports.__esModule=!0,t.exports.default=t.exports},183:(t,r,e)=>{var n=e(24)();t.exports=n;try{regeneratorRuntime=n}catch(t){"object"==typeof globalThis?globalThis.regeneratorRuntime=n:Function("r","regeneratorRuntime = r")(n)}}},r={};function e(n){var o=r[n];if(void 0!==o)return o.exports;var i=r[n]={exports:{}};return t[n].call(i.exports,i,i.exports,e),i.exports}e.n=t=>{var r=t&&t.__esModule?()=>t.default:()=>t;return e.d(r,{a:r}),r},e.d=(t,r)=>{for(var n in r)e.o(r,n)&&!e.o(t,n)&&Object.defineProperty(t,n,{enumerable:!0,get:r[n]})},e.o=(t,r)=>Object.prototype.hasOwnProperty.call(t,r),e.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})};var n={};(()=>{"use strict";e.r(n),e.d(n,{Condition:()=>H,ConditionList:()=>B,HumanizeUtils:()=>h,OPERATOR:()=>c,RewardList:()=>K,addCondition:()=>p,addReward:()=>v,addRewardSelection:()=>g,extend:()=>X,getConditionMap:()=>F,getConditions:()=>z,rewardValueConvert:()=>y,triggerCondition:()=>E,triggerConditions:()=>T});const t=flarum.core.compat["forum/app"];var r=e.n(t);function o(t,r,e,n,o,i,a){try{var s=t[i](a),u=s.value}catch(t){return void e(t)}s.done?r(u):Promise.resolve(u).then(n,o)}function i(t){return function(){var r=this,e=arguments;return new Promise((function(n,i){var a=t.apply(r,e);function s(t){o(a,n,i,s,u,"next",t)}function u(t){o(a,n,i,s,u,"throw",t)}s(void 0)}))}}var a=e(183),s=e.n(a);const u=flarum.core.compat["common/extend"];var c=function(t){return t.EQUAL="=",t.NOT_EQUAL="!=",t.GREATER_THAN=">",t.LESS_THAN="<",t.GREATER_THAN_OR_EQUAL=">=",t.LESS_THAN_OR_EQUAL="<=",t}({}),l=function(t){return t[t.SUM=1]="SUM",t[t.MAX=2]="MAX",t[t.DAY_COUNT=3]="DAY_COUNT",t}({});const f=flarum.core.compat["common/utils/ItemList"];var d=e.n(f),h=function(){function t(t){this.app=void 0,this.definitionLoaded=!1,this.rawConditionDefinition={},this.conditionTranslations={},this.rewardTranslations={},this.conditionsKeys=[],this.rewardsKeys=[],this.app=t}var r=t.prototype;return r.loadDefinition=function(){var t=i(s().mark((function t(){var r;return s().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:if(!this.definitionLoaded){t.next=2;break}return t.abrupt("return");case 2:if(!this.app.data["collector-definition"]){t.next=5;break}return this._loadDefinition(this.app.data["collector-definition"]),t.abrupt("return");case 5:return t.next=7,this.app.request({method:"GET",url:this.app.forum.attribute("apiUrl")+"/collector-data"});case 7:r=t.sent,this._loadDefinition(r);case 9:case"end":return t.stop()}}),t,this)})));return function(){return t.apply(this,arguments)}}(),r._loadDefinition=function(t){var r=this;t.conditions.forEach((function(t){r.conditionTranslations[t.key]=t.trans,r.conditionsKeys.push(t.key),r.rawConditionDefinition[t.key]=t})),t.rewards.forEach((function(t){r.rewardTranslations[t.key]=t.trans,r.rewardsKeys.push(t.key)})),this.definitionLoaded=!0},t.getInstance=function(r){return this.instance||(this.instance=new t(r)),this.instance},r.getAllConditions=function(){var t=this,r=new(d());return this.conditionsKeys.forEach((function(e){r.add(e,t.conditionTranslations[e])})),r},r.getAllRewards=function(){var t=this,r=new(d());return this.rewardsKeys.forEach((function(e){r.add(e,t.rewardTranslations[e])})),r},r.getConditionName=function(t){return this.getAllConditions().has(t)?this.getAllConditions().get(t):t},r.getRewardName=function(t){return this.getAllRewards().has(t)?this.getAllRewards().get(t):t},r.getRewardValue=function(t,r){return r},r.rewardSelection=function(){var t=i(s().mark((function t(r){return s().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return t.abrupt("return","");case 1:case"end":return t.stop()}}),t)})));return function(r){return t.apply(this,arguments)}}(),r.humanizeCondition=function(t){var r=this;if(Array.isArray(t))return t.map((function(t){return r.humanizeCondition(t)}));if(t.alter_name)return t.alter_name;var e=t.span?this.app.translator.trans("xypp-collector.forum.condition.span",{span:t.span}):"";return Array.isArray(e)&&(e=e.join("")),this.app.translator.trans("xypp-collector.forum.condition.format",{b:m("b",null),name:this.getConditionName(t.name),operator:t.operator,value:t.value,calculate:this.getCalculate(t.calculate||l.SUM),span:e})},r.humanizeReward=function(t){var r=this;return Array.isArray(t)?t.map((function(t){return r.humanizeReward(t)})):t.alter_name?t.alter_name:this.app.translator.trans("xypp-collector.forum.reward.format",{b:m("b",null),name:this.getRewardName(t.name),value:this.getRewardValue(t.name,t.value)})},r.getCalculate=function(t){var r,e=((r={})[l.SUM]="sum",r[l.MAX]="max",r[l.DAY_COUNT]="days",r);return this.app.translator.trans("xypp-collector.lib.calculate."+e[t])},r.getRawConditionDefinition=function(t){return this.rawConditionDefinition[t]||!1},t}();function p(t,r){(0,u.extend)(h.prototype,"getAllConditions",(function(e){e.add(t,r)}))}function v(t,r){(0,u.extend)(h.prototype,"getAllRewards",(function(e){e.add(t,r)}))}function y(t,r){(0,u.override)(h.prototype,"getRewardValue",(function(e,n,o){return t===n?r(o):e(n,o)}))}function g(t,r){(0,u.override)(h.prototype,"rewardSelection",function(){var e=i(s().mark((function e(n,o){return s().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:if(t!==o){e.next=4;break}return e.abrupt("return",r());case 4:return e.abrupt("return",n(o));case 5:case"end":return e.stop()}}),e)})));return function(t,r){return e.apply(this,arguments)}}())}function w(t,r){return w=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(t,r){return t.__proto__=r,t},w(t,r)}function b(t,r){t.prototype=Object.create(r.prototype),t.prototype.constructor=t,w(t,r)}h.instance=void 0;const _=flarum.core.compat["common/components/Modal"];var x=e.n(_);const $=flarum.core.compat["common/components/Button"];var M=e.n($);const S=flarum.core.compat["common/components/Select"];var O=e.n(S),D=function(t){function r(){for(var r,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(r=t.call.apply(t,[this].concat(n))||this).selection="",r.done=!1,r}b(r,t);var e=r.prototype;return e.oninit=function(r){t.prototype.oninit.call(this,r),this.selection=this.attrs.items[Object.keys(this.attrs.items)[0]]},e.className=function(){return"Modal"},e.title=function(){return this.attrs.title},e.oncreate=function(r){t.prototype.oncreate.call(this,r)},e.onremove=function(r){t.prototype.onremove.call(this,r),this.done||this.attrs.cancel()},e.content=function(){var t=this;return m("div",{className:"Modal-body"},m("div",{className:"Form"},m("div",{className:"Form-group"},m(O(),{className:"FormControl",value:this.selection,options:this.attrs.items,onchange:function(r){t.selection=r}.bind(this)})),m("div",{className:"Form-group"},m(M(),{class:"Button Button--primary",type:"submit",loading:this.loading},this.attrs.button))))},e.onsubmit=function(){var t=i(s().mark((function t(r){return s().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:r.preventDefault(),this.done=!0,this.attrs.callback(this.selection);case 3:case"end":return t.stop()}}),t,this)})));return function(r){return t.apply(this,arguments)}}(),r.open=function(t,e,n,o){return new Promise((function(i,a){t.modal.show(r,{items:e,title:n,button:o,cancel:function(){a()},callback:function(r){i(r),t.modal.close()}},!0)}))},r}(x());const A=flarum.core.compat["forum/components/UserPage"];var L=e.n(A);function E(t,r){var e;return T(((e={})[t]=r,e))}function T(t){var e=Object.keys(t).map((function(r){return{name:r,value:t[r]}}));return r().request({url:r().forum.attribute("apiUrl")+"/collector-condition",method:"POST",body:{data:e}})}var k={},N={};const C=flarum.core.compat["common/Model"];var R=e.n(C),Y=e(912),j=e.n(Y);function U(t){if(!t)return null;try{return JSON.parse(t)}catch(t){return null}}var H=function(t){function r(){for(var r,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(r=t.call.apply(t,[this].concat(n))||this).name=R().attribute("name"),r.value=R().attribute("value"),r.user_id=R().attribute("user_id"),r.accumulation=R().attribute("accumulation",U),r}b(r,t);var e=r.prototype;return e.getSpan=function(t,r){void 0===r&&(r=l.SUM);var e=this.accumulation();if(!e||t<1)return 0;var n=j()(j()().format("YYYYMMDD"),"YYYYMMDD");1!=t&&(n=n.subtract(t-1,"day"));var o=0;return Object.keys(e).forEach((function(t){if("all"!=t&&"rest"!=t){var i=j()(t,"YYYYMMDD");(i.isAfter(n)||i.isSame(n))&&(r==l.MAX?o=Math.max(o,e[t]):r==l.SUM?o+=e[t]:r==l.DAY_COUNT&&e[t]>0&&(o+=1))}})),o},e.getTotal=function(t){var r,e,n;return void 0===t&&(t=l.SUM),t==l.MAX?(null==(r=this.accumulation())?void 0:r.max)||0:t==l.DAY_COUNT?(null==(e=this.accumulation())?void 0:e.days)||0:(null==(n=this.accumulation())?void 0:n.all)||0},r}(R());const P=flarum.core.compat["common/models/User"];var I=e.n(P);function F(t,r){return G.apply(this,arguments)}function G(){return(G=i(s().mark((function t(r,e){var n,o;return s().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:return void 0===r&&(r=!1),void 0===e&&(e=null),t.next=4,z(r,e);case 4:return n=t.sent,o={},n.forEach((function(t){o[t.name()]=t})),t.abrupt("return",o);case 8:case"end":return t.stop()}}),t)})))).apply(this,arguments)}function z(t,r){return Q.apply(this,arguments)}function Q(){return(Q=i(s().mark((function t(e,n){var o,i;return s().wrap((function(t){for(;;)switch(t.prev=t.next){case 0:if(void 0===e&&(e=!1),void 0===n&&(n=null),o=void 0,n&&(o=n instanceof I()?{id:n.id()}:{id:n}),i=r().store.all("collector-condition"),o&&o.id&&(i=i.filter((function(t){return t.user_id()==o.id}))),!e&&0!=i.length){t.next=10;break}return t.next=9,r().store.find("collector-condition",o);case 9:i=t.sent;case 10:return t.abrupt("return",i);case 11:case"end":return t.stop()}}),t)})))).apply(this,arguments)}const W=flarum.core.compat["common/Component"];var V=e.n(W),B=function(t){function e(){return t.apply(this,arguments)||this}b(e,t);var n=e.prototype;return n.view=function(t){var e=this,n=h.getInstance(r());return m("div",{className:"collector-condition"},m("div",{className:"collector-condition-title"},m("i",{class:"fas fa-tasks"})," ",r().translator.trans("xypp-collector.forum.condition.condition")),this.attrs.conditions.map((function(t){return m("div",{className:"collector-condition-line"},m("span",null,n.humanizeCondition(t)),e.progress(t))})))},n.progress=function(t){if(!this.attrs.conditionMap||!this.attrs.conditionMap[t.name])return"";var r=this.attrs.conditionMap[t.name].value();return t.span&&(r=this.attrs.conditionMap[t.name].getSpan(t.span)),this.conditionOp(r,t.operator,t.value)?m("span",{className:"collector-progress-satisfy"},"[",m("i",{class:"fas fa-check"}),"]"):m("span",{className:"collector-progress-not-satisfy"},"[",r,"/",t.value,"]")},n.conditionOp=function(t,r,e){switch(r){case c.EQUAL:return t==e;case c.GREATER_THAN:return t>e;case c.GREATER_THAN_OR_EQUAL:return t>=e;case c.LESS_THAN:return t<e;case c.LESS_THAN_OR_EQUAL:return t<=e;case c.NOT_EQUAL:return t!=e}},e}(V()),K=function(t){function e(){return t.apply(this,arguments)||this}return b(e,t),e.prototype.view=function(t){var e=h.getInstance(r());return m("div",{className:"collector-reward"},m("div",{className:"collector-reward-title"},m("i",{class:"fas fa-gift"})," ",r().translator.trans("xypp-collector.forum.reward.reward")),e.humanizeReward(this.attrs.rewards).map((function(t){return m("div",null,t)})))},e}(V());r().initializers.add("xypp/collector",(function(){var t,e;t=r(),e="xypp-collector."+"forum"+".integration",flarum.extensions["xypp-store"]&&function(t,r){var e={};y("store_item",(function(n){var o=t.store.getById("store-item",n);return o?o.attribute("name"):void 0===e[n]?(e[n]=!0,t.store.find("store-item",n).then((function(){m.redraw()})).catch((function(){e[n]=!1})),t.translator.trans(r+".reward.store_item_loading")+""):!1===e[n]?t.translator.trans(r+".reward.store_item_error")+"":t.translator.trans(r+".reward.store_item_loading")+""})),g("store_item",i(s().mark((function e(){var n,o;return s().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,t.store.find("store-item");case 2:return n=e.sent,o=n.reduce((function(t,r){return t[r.id()]=r.attribute("name"),t}),{}),e.next=6,D.open(t,o,t.translator.trans(r+".reward.store_item_select"),t.translator.trans(r+".reward.store_item_select_button"));case 6:return e.abrupt("return",e.sent);case 7:case"end":return e.stop()}}),e)}))))}(t,e),flarum.extensions["v17development-user-badges"]&&function(t,r){var e={};y("badge",(function(n){var o=t.store.getById("badges",n);return o?o.attribute("name"):void 0===e[n]?(e[n]=!0,t.store.find("badges",n).then((function(){m.redraw()})).catch((function(){e[n]=!1})),t.translator.trans(r+".reward.badge_loading")+""):!1===e[n]?t.translator.trans(r+".reward.badge_error")+"":t.translator.trans(r+".reward.badge_loading")+""})),g("badge",i(s().mark((function e(){var n,o;return s().wrap((function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,t.store.find("badges");case 2:return n=e.sent,o=n.reduce((function(t,r){return t[r.id()]=r.attribute("name"),t}),{}),e.next=6,D.open(t,o,t.translator.trans(r+".reward.badge_select"),t.translator.trans(r+".reward.badge_select_button"));case 6:return e.abrupt("return",e.sent);case 7:case"end":return e.stop()}}),e)}))))}(t,e),(0,u.extend)(L().prototype,"show",(function(){var t,e,n,o,i,a;null!=(t=r().session)&&t.user&&(n="user_page_view",o=null==(e=this.user)?void 0:e.slug(),i=function(t){return e=function(t){return E(t,1)},k[r=t]=k[r]||0,void(k[r]<5&&(k[r]++,e(r)));var r,e},(a=N[n]=N[n]||{})[o]||(a[o]=!0,i(n)))}))}));const J=flarum.core.compat["common/extenders"],X=[(new(e.n(J)().Store)).add("condition",H)]})(),module.exports=n})();
+/******/ (() => { // webpackBootstrap
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/dayjs/dayjs.min.js":
+/*!*****************************************!*\
+  !*** ./node_modules/dayjs/dayjs.min.js ***!
+  \*****************************************/
+/***/ (function(module) {
+
+!function (t, e) {
+   true ? module.exports = e() : 0;
+}(this, function () {
+  "use strict";
+
+  var t = 1e3,
+    e = 6e4,
+    n = 36e5,
+    r = "millisecond",
+    i = "second",
+    s = "minute",
+    u = "hour",
+    a = "day",
+    o = "week",
+    c = "month",
+    f = "quarter",
+    h = "year",
+    d = "date",
+    l = "Invalid Date",
+    $ = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/,
+    y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g,
+    M = {
+      name: "en",
+      weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+      months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+      ordinal: function ordinal(t) {
+        var e = ["th", "st", "nd", "rd"],
+          n = t % 100;
+        return "[" + t + (e[(n - 20) % 10] || e[n] || e[0]) + "]";
+      }
+    },
+    m = function m(t, e, n) {
+      var r = String(t);
+      return !r || r.length >= e ? t : "" + Array(e + 1 - r.length).join(n) + t;
+    },
+    v = {
+      s: m,
+      z: function z(t) {
+        var e = -t.utcOffset(),
+          n = Math.abs(e),
+          r = Math.floor(n / 60),
+          i = n % 60;
+        return (e <= 0 ? "+" : "-") + m(r, 2, "0") + ":" + m(i, 2, "0");
+      },
+      m: function t(e, n) {
+        if (e.date() < n.date()) return -t(n, e);
+        var r = 12 * (n.year() - e.year()) + (n.month() - e.month()),
+          i = e.clone().add(r, c),
+          s = n - i < 0,
+          u = e.clone().add(r + (s ? -1 : 1), c);
+        return +(-(r + (n - i) / (s ? i - u : u - i)) || 0);
+      },
+      a: function a(t) {
+        return t < 0 ? Math.ceil(t) || 0 : Math.floor(t);
+      },
+      p: function p(t) {
+        return {
+          M: c,
+          y: h,
+          w: o,
+          d: a,
+          D: d,
+          h: u,
+          m: s,
+          s: i,
+          ms: r,
+          Q: f
+        }[t] || String(t || "").toLowerCase().replace(/s$/, "");
+      },
+      u: function u(t) {
+        return void 0 === t;
+      }
+    },
+    g = "en",
+    D = {};
+  D[g] = M;
+  var p = "$isDayjsObject",
+    S = function S(t) {
+      return t instanceof _ || !(!t || !t[p]);
+    },
+    w = function t(e, n, r) {
+      var i;
+      if (!e) return g;
+      if ("string" == typeof e) {
+        var s = e.toLowerCase();
+        D[s] && (i = s), n && (D[s] = n, i = s);
+        var u = e.split("-");
+        if (!i && u.length > 1) return t(u[0]);
+      } else {
+        var a = e.name;
+        D[a] = e, i = a;
+      }
+      return !r && i && (g = i), i || !r && g;
+    },
+    O = function O(t, e) {
+      if (S(t)) return t.clone();
+      var n = "object" == typeof e ? e : {};
+      return n.date = t, n.args = arguments, new _(n);
+    },
+    b = v;
+  b.l = w, b.i = S, b.w = function (t, e) {
+    return O(t, {
+      locale: e.$L,
+      utc: e.$u,
+      x: e.$x,
+      $offset: e.$offset
+    });
+  };
+  var _ = function () {
+      function M(t) {
+        this.$L = w(t.locale, null, !0), this.parse(t), this.$x = this.$x || t.x || {}, this[p] = !0;
+      }
+      var m = M.prototype;
+      return m.parse = function (t) {
+        this.$d = function (t) {
+          var e = t.date,
+            n = t.utc;
+          if (null === e) return new Date(NaN);
+          if (b.u(e)) return new Date();
+          if (e instanceof Date) return new Date(e);
+          if ("string" == typeof e && !/Z$/i.test(e)) {
+            var r = e.match($);
+            if (r) {
+              var i = r[2] - 1 || 0,
+                s = (r[7] || "0").substring(0, 3);
+              return n ? new Date(Date.UTC(r[1], i, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, s)) : new Date(r[1], i, r[3] || 1, r[4] || 0, r[5] || 0, r[6] || 0, s);
+            }
+          }
+          return new Date(e);
+        }(t), this.init();
+      }, m.init = function () {
+        var t = this.$d;
+        this.$y = t.getFullYear(), this.$M = t.getMonth(), this.$D = t.getDate(), this.$W = t.getDay(), this.$H = t.getHours(), this.$m = t.getMinutes(), this.$s = t.getSeconds(), this.$ms = t.getMilliseconds();
+      }, m.$utils = function () {
+        return b;
+      }, m.isValid = function () {
+        return !(this.$d.toString() === l);
+      }, m.isSame = function (t, e) {
+        var n = O(t);
+        return this.startOf(e) <= n && n <= this.endOf(e);
+      }, m.isAfter = function (t, e) {
+        return O(t) < this.startOf(e);
+      }, m.isBefore = function (t, e) {
+        return this.endOf(e) < O(t);
+      }, m.$g = function (t, e, n) {
+        return b.u(t) ? this[e] : this.set(n, t);
+      }, m.unix = function () {
+        return Math.floor(this.valueOf() / 1e3);
+      }, m.valueOf = function () {
+        return this.$d.getTime();
+      }, m.startOf = function (t, e) {
+        var n = this,
+          r = !!b.u(e) || e,
+          f = b.p(t),
+          l = function l(t, e) {
+            var i = b.w(n.$u ? Date.UTC(n.$y, e, t) : new Date(n.$y, e, t), n);
+            return r ? i : i.endOf(a);
+          },
+          $ = function $(t, e) {
+            return b.w(n.toDate()[t].apply(n.toDate("s"), (r ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e)), n);
+          },
+          y = this.$W,
+          M = this.$M,
+          m = this.$D,
+          v = "set" + (this.$u ? "UTC" : "");
+        switch (f) {
+          case h:
+            return r ? l(1, 0) : l(31, 11);
+          case c:
+            return r ? l(1, M) : l(0, M + 1);
+          case o:
+            var g = this.$locale().weekStart || 0,
+              D = (y < g ? y + 7 : y) - g;
+            return l(r ? m - D : m + (6 - D), M);
+          case a:
+          case d:
+            return $(v + "Hours", 0);
+          case u:
+            return $(v + "Minutes", 1);
+          case s:
+            return $(v + "Seconds", 2);
+          case i:
+            return $(v + "Milliseconds", 3);
+          default:
+            return this.clone();
+        }
+      }, m.endOf = function (t) {
+        return this.startOf(t, !1);
+      }, m.$set = function (t, e) {
+        var n,
+          o = b.p(t),
+          f = "set" + (this.$u ? "UTC" : ""),
+          l = (n = {}, n[a] = f + "Date", n[d] = f + "Date", n[c] = f + "Month", n[h] = f + "FullYear", n[u] = f + "Hours", n[s] = f + "Minutes", n[i] = f + "Seconds", n[r] = f + "Milliseconds", n)[o],
+          $ = o === a ? this.$D + (e - this.$W) : e;
+        if (o === c || o === h) {
+          var y = this.clone().set(d, 1);
+          y.$d[l]($), y.init(), this.$d = y.set(d, Math.min(this.$D, y.daysInMonth())).$d;
+        } else l && this.$d[l]($);
+        return this.init(), this;
+      }, m.set = function (t, e) {
+        return this.clone().$set(t, e);
+      }, m.get = function (t) {
+        return this[b.p(t)]();
+      }, m.add = function (r, f) {
+        var d,
+          l = this;
+        r = Number(r);
+        var $ = b.p(f),
+          y = function y(t) {
+            var e = O(l);
+            return b.w(e.date(e.date() + Math.round(t * r)), l);
+          };
+        if ($ === c) return this.set(c, this.$M + r);
+        if ($ === h) return this.set(h, this.$y + r);
+        if ($ === a) return y(1);
+        if ($ === o) return y(7);
+        var M = (d = {}, d[s] = e, d[u] = n, d[i] = t, d)[$] || 1,
+          m = this.$d.getTime() + r * M;
+        return b.w(m, this);
+      }, m.subtract = function (t, e) {
+        return this.add(-1 * t, e);
+      }, m.format = function (t) {
+        var e = this,
+          n = this.$locale();
+        if (!this.isValid()) return n.invalidDate || l;
+        var r = t || "YYYY-MM-DDTHH:mm:ssZ",
+          i = b.z(this),
+          s = this.$H,
+          u = this.$m,
+          a = this.$M,
+          o = n.weekdays,
+          c = n.months,
+          f = n.meridiem,
+          h = function h(t, n, i, s) {
+            return t && (t[n] || t(e, r)) || i[n].slice(0, s);
+          },
+          d = function d(t) {
+            return b.s(s % 12 || 12, t, "0");
+          },
+          $ = f || function (t, e, n) {
+            var r = t < 12 ? "AM" : "PM";
+            return n ? r.toLowerCase() : r;
+          };
+        return r.replace(y, function (t, r) {
+          return r || function (t) {
+            switch (t) {
+              case "YY":
+                return String(e.$y).slice(-2);
+              case "YYYY":
+                return b.s(e.$y, 4, "0");
+              case "M":
+                return a + 1;
+              case "MM":
+                return b.s(a + 1, 2, "0");
+              case "MMM":
+                return h(n.monthsShort, a, c, 3);
+              case "MMMM":
+                return h(c, a);
+              case "D":
+                return e.$D;
+              case "DD":
+                return b.s(e.$D, 2, "0");
+              case "d":
+                return String(e.$W);
+              case "dd":
+                return h(n.weekdaysMin, e.$W, o, 2);
+              case "ddd":
+                return h(n.weekdaysShort, e.$W, o, 3);
+              case "dddd":
+                return o[e.$W];
+              case "H":
+                return String(s);
+              case "HH":
+                return b.s(s, 2, "0");
+              case "h":
+                return d(1);
+              case "hh":
+                return d(2);
+              case "a":
+                return $(s, u, !0);
+              case "A":
+                return $(s, u, !1);
+              case "m":
+                return String(u);
+              case "mm":
+                return b.s(u, 2, "0");
+              case "s":
+                return String(e.$s);
+              case "ss":
+                return b.s(e.$s, 2, "0");
+              case "SSS":
+                return b.s(e.$ms, 3, "0");
+              case "Z":
+                return i;
+            }
+            return null;
+          }(t) || i.replace(":", "");
+        });
+      }, m.utcOffset = function () {
+        return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
+      }, m.diff = function (r, d, l) {
+        var $,
+          y = this,
+          M = b.p(d),
+          m = O(r),
+          v = (m.utcOffset() - this.utcOffset()) * e,
+          g = this - m,
+          D = function D() {
+            return b.m(y, m);
+          };
+        switch (M) {
+          case h:
+            $ = D() / 12;
+            break;
+          case c:
+            $ = D();
+            break;
+          case f:
+            $ = D() / 3;
+            break;
+          case o:
+            $ = (g - v) / 6048e5;
+            break;
+          case a:
+            $ = (g - v) / 864e5;
+            break;
+          case u:
+            $ = g / n;
+            break;
+          case s:
+            $ = g / e;
+            break;
+          case i:
+            $ = g / t;
+            break;
+          default:
+            $ = g;
+        }
+        return l ? $ : b.a($);
+      }, m.daysInMonth = function () {
+        return this.endOf(c).$D;
+      }, m.$locale = function () {
+        return D[this.$L];
+      }, m.locale = function (t, e) {
+        if (!t) return this.$L;
+        var n = this.clone(),
+          r = w(t, e, !0);
+        return r && (n.$L = r), n;
+      }, m.clone = function () {
+        return b.w(this.$d, this);
+      }, m.toDate = function () {
+        return new Date(this.valueOf());
+      }, m.toJSON = function () {
+        return this.isValid() ? this.toISOString() : null;
+      }, m.toISOString = function () {
+        return this.$d.toISOString();
+      }, m.toString = function () {
+        return this.$d.toUTCString();
+      }, M;
+    }(),
+    k = _.prototype;
+  return O.prototype = k, [["$ms", r], ["$s", i], ["$m", s], ["$H", u], ["$W", a], ["$M", c], ["$y", h], ["$D", d]].forEach(function (t) {
+    k[t[1]] = function (e) {
+      return this.$g(e, t[0], t[1]);
+    };
+  }), O.extend = function (t, e) {
+    return t.$i || (t(e, _, O), t.$i = !0), O;
+  }, O.locale = w, O.isDayjs = S, O.unix = function (t) {
+    return O(1e3 * t);
+  }, O.en = D[g], O.Ls = D, O.p = {}, O;
+});
+
+/***/ }),
+
+/***/ "./node_modules/decimal-eval/dist/index.esm.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/decimal-eval/dist/index.esm.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BigNumber: () => (/* binding */ BigNumber),
+/* harmony export */   Operator: () => (/* binding */ Operator),
+/* harmony export */   Parser: () => (/* binding */ Parser),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   evaluate: () => (/* binding */ evaluate)
+/* harmony export */ });
+/*
+ *      bignumber.js v9.0.1
+ *      A JavaScript library for arbitrary-precision arithmetic.
+ *      https://github.com/MikeMcl/bignumber.js
+ *      Copyright (c) 2020 Michael Mclaughlin <M8ch88l@gmail.com>
+ *      MIT Licensed.
+ *
+ *      BigNumber.prototype methods     |  BigNumber methods
+ *                                      |
+ *      absoluteValue            abs    |  clone
+ *      comparedTo                      |  config               set
+ *      decimalPlaces            dp     |      DECIMAL_PLACES
+ *      dividedBy                div    |      ROUNDING_MODE
+ *      dividedToIntegerBy       idiv   |      EXPONENTIAL_AT
+ *      exponentiatedBy          pow    |      RANGE
+ *      integerValue                    |      CRYPTO
+ *      isEqualTo                eq     |      MODULO_MODE
+ *      isFinite                        |      POW_PRECISION
+ *      isGreaterThan            gt     |      FORMAT
+ *      isGreaterThanOrEqualTo   gte    |      ALPHABET
+ *      isInteger                       |  isBigNumber
+ *      isLessThan               lt     |  maximum              max
+ *      isLessThanOrEqualTo      lte    |  minimum              min
+ *      isNaN                           |  random
+ *      isNegative                      |  sum
+ *      isPositive                      |
+ *      isZero                          |
+ *      minus                           |
+ *      modulo                   mod    |
+ *      multipliedBy             times  |
+ *      negated                         |
+ *      plus                            |
+ *      precision                sd     |
+ *      shiftedBy                       |
+ *      squareRoot               sqrt   |
+ *      toExponential                   |
+ *      toFixed                         |
+ *      toFormat                        |
+ *      toFraction                      |
+ *      toJSON                          |
+ *      toNumber                        |
+ *      toPrecision                     |
+ *      toString                        |
+ *      valueOf                         |
+ *
+ */
+
+var isNumeric = /^-?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i,
+  mathceil = Math.ceil,
+  mathfloor = Math.floor,
+  bignumberError = '[BigNumber Error] ',
+  tooManyDigits = bignumberError + 'Number primitive has more than 15 significant digits: ',
+  BASE = 1e14,
+  LOG_BASE = 14,
+  MAX_SAFE_INTEGER = 0x1fffffffffffff,
+  // 2^53 - 1
+  // MAX_INT32 = 0x7fffffff,                   // 2^31 - 1
+  POWS_TEN = [1, 10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12, 1e13],
+  SQRT_BASE = 1e7,
+  // EDITABLE
+  // The limit on the value of DECIMAL_PLACES, TO_EXP_NEG, TO_EXP_POS, MIN_EXP, MAX_EXP, and
+  // the arguments to toExponential, toFixed, toFormat, and toPrecision.
+  MAX = 1E9; // 0 to MAX_INT32
+
+/*
+ * Create and return a BigNumber constructor.
+ */
+function clone(configObject) {
+  var div,
+    convertBase,
+    parseNumeric,
+    P = BigNumber.prototype = {
+      constructor: BigNumber,
+      toString: null,
+      valueOf: null
+    },
+    ONE = new BigNumber(1),
+    //----------------------------- EDITABLE CONFIG DEFAULTS -------------------------------
+
+    // The default values below must be integers within the inclusive ranges stated.
+    // The values can also be changed at run-time using BigNumber.set.
+
+    // The maximum number of decimal places for operations involving division.
+    DECIMAL_PLACES = 20,
+    // 0 to MAX
+
+    // The rounding mode used when rounding to the above decimal places, and when using
+    // toExponential, toFixed, toFormat and toPrecision, and round (default value).
+    // UP         0 Away from zero.
+    // DOWN       1 Towards zero.
+    // CEIL       2 Towards +Infinity.
+    // FLOOR      3 Towards -Infinity.
+    // HALF_UP    4 Towards nearest neighbour. If equidistant, up.
+    // HALF_DOWN  5 Towards nearest neighbour. If equidistant, down.
+    // HALF_EVEN  6 Towards nearest neighbour. If equidistant, towards even neighbour.
+    // HALF_CEIL  7 Towards nearest neighbour. If equidistant, towards +Infinity.
+    // HALF_FLOOR 8 Towards nearest neighbour. If equidistant, towards -Infinity.
+    ROUNDING_MODE = 4,
+    // 0 to 8
+
+    // EXPONENTIAL_AT : [TO_EXP_NEG , TO_EXP_POS]
+
+    // The exponent value at and beneath which toString returns exponential notation.
+    // Number type: -7
+    TO_EXP_NEG = -7,
+    // 0 to -MAX
+
+    // The exponent value at and above which toString returns exponential notation.
+    // Number type: 21
+    TO_EXP_POS = 21,
+    // 0 to MAX
+
+    // RANGE : [MIN_EXP, MAX_EXP]
+
+    // The minimum exponent value, beneath which underflow to zero occurs.
+    // Number type: -324  (5e-324)
+    MIN_EXP = -1e7,
+    // -1 to -MAX
+
+    // The maximum exponent value, above which overflow to Infinity occurs.
+    // Number type:  308  (1.7976931348623157e+308)
+    // For MAX_EXP > 1e7, e.g. new BigNumber('1e100000000').plus(1) may be slow.
+    MAX_EXP = 1e7,
+    // 1 to MAX
+
+    // Whether to use cryptographically-secure random number generation, if available.
+    CRYPTO = false,
+    // true or false
+
+    // The modulo mode used when calculating the modulus: a mod n.
+    // The quotient (q = a / n) is calculated according to the corresponding rounding mode.
+    // The remainder (r) is calculated as: r = a - n * q.
+    //
+    // UP        0 The remainder is positive if the dividend is negative, else is negative.
+    // DOWN      1 The remainder has the same sign as the dividend.
+    //             This modulo mode is commonly known as 'truncated division' and is
+    //             equivalent to (a % n) in JavaScript.
+    // FLOOR     3 The remainder has the same sign as the divisor (Python %).
+    // HALF_EVEN 6 This modulo mode implements the IEEE 754 remainder function.
+    // EUCLID    9 Euclidian division. q = sign(n) * floor(a / abs(n)).
+    //             The remainder is always positive.
+    //
+    // The truncated division, floored division, Euclidian division and IEEE 754 remainder
+    // modes are commonly used for the modulus operation.
+    // Although the other rounding modes can also be used, they may not give useful results.
+    MODULO_MODE = 1,
+    // 0 to 9
+
+    // The maximum number of significant digits of the result of the exponentiatedBy operation.
+    // If POW_PRECISION is 0, there will be unlimited significant digits.
+    POW_PRECISION = 0,
+    // 0 to MAX
+
+    // The format specification used by the BigNumber.prototype.toFormat method.
+    FORMAT = {
+      prefix: '',
+      groupSize: 3,
+      secondaryGroupSize: 0,
+      groupSeparator: ',',
+      decimalSeparator: '.',
+      fractionGroupSize: 0,
+      fractionGroupSeparator: '\xA0',
+      // non-breaking space
+      suffix: ''
+    },
+    // The alphabet used for base conversion. It must be at least 2 characters long, with no '+',
+    // '-', '.', whitespace, or repeated character.
+    // '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$_'
+    ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
+
+  //------------------------------------------------------------------------------------------
+
+  // CONSTRUCTOR
+
+  /*
+   * The BigNumber constructor and exported function.
+   * Create and return a new instance of a BigNumber object.
+   *
+   * v {number|string|BigNumber} A numeric value.
+   * [b] {number} The base of v. Integer, 2 to ALPHABET.length inclusive.
+   */
+  function BigNumber(v, b) {
+    var alphabet,
+      c,
+      caseChanged,
+      e,
+      i,
+      isNum,
+      len,
+      str,
+      x = this;
+
+    // Enable constructor call without `new`.
+    if (!(x instanceof BigNumber)) return new BigNumber(v, b);
+    if (b == null) {
+      if (v && v._isBigNumber === true) {
+        x.s = v.s;
+        if (!v.c || v.e > MAX_EXP) {
+          x.c = x.e = null;
+        } else if (v.e < MIN_EXP) {
+          x.c = [x.e = 0];
+        } else {
+          x.e = v.e;
+          x.c = v.c.slice();
+        }
+        return;
+      }
+      if ((isNum = typeof v == 'number') && v * 0 == 0) {
+        // Use `1 / n` to handle minus zero also.
+        x.s = 1 / v < 0 ? (v = -v, -1) : 1;
+
+        // Fast path for integers, where n < 2147483648 (2**31).
+        if (v === ~~v) {
+          for (e = 0, i = v; i >= 10; i /= 10, e++);
+          if (e > MAX_EXP) {
+            x.c = x.e = null;
+          } else {
+            x.e = e;
+            x.c = [v];
+          }
+          return;
+        }
+        str = String(v);
+      } else {
+        if (!isNumeric.test(str = String(v))) return parseNumeric(x, str, isNum);
+        x.s = str.charCodeAt(0) == 45 ? (str = str.slice(1), -1) : 1;
+      }
+
+      // Decimal point?
+      if ((e = str.indexOf('.')) > -1) str = str.replace('.', '');
+
+      // Exponential form?
+      if ((i = str.search(/e/i)) > 0) {
+        // Determine exponent.
+        if (e < 0) e = i;
+        e += +str.slice(i + 1);
+        str = str.substring(0, i);
+      } else if (e < 0) {
+        // Integer.
+        e = str.length;
+      }
+    } else {
+      // '[BigNumber Error] Base {not a primitive number|not an integer|out of range}: {b}'
+      intCheck(b, 2, ALPHABET.length, 'Base');
+
+      // Allow exponential notation to be used with base 10 argument, while
+      // also rounding to DECIMAL_PLACES as with other bases.
+      if (b == 10) {
+        x = new BigNumber(v);
+        return round(x, DECIMAL_PLACES + x.e + 1, ROUNDING_MODE);
+      }
+      str = String(v);
+      if (isNum = typeof v == 'number') {
+        // Avoid potential interpretation of Infinity and NaN as base 44+ values.
+        if (v * 0 != 0) return parseNumeric(x, str, isNum, b);
+        x.s = 1 / v < 0 ? (str = str.slice(1), -1) : 1;
+
+        // '[BigNumber Error] Number primitive has more than 15 significant digits: {n}'
+        if (BigNumber.DEBUG && str.replace(/^0\.0*|\./, '').length > 15) {
+          throw Error(tooManyDigits + v);
+        }
+      } else {
+        x.s = str.charCodeAt(0) === 45 ? (str = str.slice(1), -1) : 1;
+      }
+      alphabet = ALPHABET.slice(0, b);
+      e = i = 0;
+
+      // Check that str is a valid base b number.
+      // Don't use RegExp, so alphabet can contain special characters.
+      for (len = str.length; i < len; i++) {
+        if (alphabet.indexOf(c = str.charAt(i)) < 0) {
+          if (c == '.') {
+            // If '.' is not the first character and it has not be found before.
+            if (i > e) {
+              e = len;
+              continue;
+            }
+          } else if (!caseChanged) {
+            // Allow e.g. hexadecimal 'FF' as well as 'ff'.
+            if (str == str.toUpperCase() && (str = str.toLowerCase()) || str == str.toLowerCase() && (str = str.toUpperCase())) {
+              caseChanged = true;
+              i = -1;
+              e = 0;
+              continue;
+            }
+          }
+          return parseNumeric(x, String(v), isNum, b);
+        }
+      }
+
+      // Prevent later check for length on converted number.
+      isNum = false;
+      str = convertBase(str, b, 10, x.s);
+
+      // Decimal point?
+      if ((e = str.indexOf('.')) > -1) str = str.replace('.', '');else e = str.length;
+    }
+
+    // Determine leading zeros.
+    for (i = 0; str.charCodeAt(i) === 48; i++);
+
+    // Determine trailing zeros.
+    for (len = str.length; str.charCodeAt(--len) === 48;);
+    if (str = str.slice(i, ++len)) {
+      len -= i;
+
+      // '[BigNumber Error] Number primitive has more than 15 significant digits: {n}'
+      if (isNum && BigNumber.DEBUG && len > 15 && (v > MAX_SAFE_INTEGER || v !== mathfloor(v))) {
+        throw Error(tooManyDigits + x.s * v);
+      }
+
+      // Overflow?
+      if ((e = e - i - 1) > MAX_EXP) {
+        // Infinity.
+        x.c = x.e = null;
+
+        // Underflow?
+      } else if (e < MIN_EXP) {
+        // Zero.
+        x.c = [x.e = 0];
+      } else {
+        x.e = e;
+        x.c = [];
+
+        // Transform base
+
+        // e is the base 10 exponent.
+        // i is where to slice str to get the first element of the coefficient array.
+        i = (e + 1) % LOG_BASE;
+        if (e < 0) i += LOG_BASE; // i < 1
+
+        if (i < len) {
+          if (i) x.c.push(+str.slice(0, i));
+          for (len -= LOG_BASE; i < len;) {
+            x.c.push(+str.slice(i, i += LOG_BASE));
+          }
+          i = LOG_BASE - (str = str.slice(i)).length;
+        } else {
+          i -= len;
+        }
+        for (; i--; str += '0');
+        x.c.push(+str);
+      }
+    } else {
+      // Zero.
+      x.c = [x.e = 0];
+    }
+  }
+
+  // CONSTRUCTOR PROPERTIES
+
+  BigNumber.clone = clone;
+  BigNumber.ROUND_UP = 0;
+  BigNumber.ROUND_DOWN = 1;
+  BigNumber.ROUND_CEIL = 2;
+  BigNumber.ROUND_FLOOR = 3;
+  BigNumber.ROUND_HALF_UP = 4;
+  BigNumber.ROUND_HALF_DOWN = 5;
+  BigNumber.ROUND_HALF_EVEN = 6;
+  BigNumber.ROUND_HALF_CEIL = 7;
+  BigNumber.ROUND_HALF_FLOOR = 8;
+  BigNumber.EUCLID = 9;
+
+  /*
+   * Configure infrequently-changing library-wide settings.
+   *
+   * Accept an object with the following optional properties (if the value of a property is
+   * a number, it must be an integer within the inclusive range stated):
+   *
+   *   DECIMAL_PLACES   {number}           0 to MAX
+   *   ROUNDING_MODE    {number}           0 to 8
+   *   EXPONENTIAL_AT   {number|number[]}  -MAX to MAX  or  [-MAX to 0, 0 to MAX]
+   *   RANGE            {number|number[]}  -MAX to MAX (not zero)  or  [-MAX to -1, 1 to MAX]
+   *   CRYPTO           {boolean}          true or false
+   *   MODULO_MODE      {number}           0 to 9
+   *   POW_PRECISION       {number}           0 to MAX
+   *   ALPHABET         {string}           A string of two or more unique characters which does
+   *                                     not contain '.'.
+   *   FORMAT           {object}           An object with some of the following properties:
+   *     prefix                 {string}
+   *     groupSize              {number}
+   *     secondaryGroupSize     {number}
+   *     groupSeparator         {string}
+   *     decimalSeparator       {string}
+   *     fractionGroupSize      {number}
+   *     fractionGroupSeparator {string}
+   *     suffix                 {string}
+   *
+   * (The values assigned to the above FORMAT object properties are not checked for validity.)
+   *
+   * E.g.
+   * BigNumber.config({ DECIMAL_PLACES : 20, ROUNDING_MODE : 4 })
+   *
+   * Ignore properties/parameters set to null or undefined, except for ALPHABET.
+   *
+   * Return an object with the properties current values.
+   */
+  BigNumber.config = BigNumber.set = function (obj) {
+    var p, v;
+    if (obj != null) {
+      if (typeof obj == 'object') {
+        // DECIMAL_PLACES {number} Integer, 0 to MAX inclusive.
+        // '[BigNumber Error] DECIMAL_PLACES {not a primitive number|not an integer|out of range}: {v}'
+        if (obj.hasOwnProperty(p = 'DECIMAL_PLACES')) {
+          v = obj[p];
+          intCheck(v, 0, MAX, p);
+          DECIMAL_PLACES = v;
+        }
+
+        // ROUNDING_MODE {number} Integer, 0 to 8 inclusive.
+        // '[BigNumber Error] ROUNDING_MODE {not a primitive number|not an integer|out of range}: {v}'
+        if (obj.hasOwnProperty(p = 'ROUNDING_MODE')) {
+          v = obj[p];
+          intCheck(v, 0, 8, p);
+          ROUNDING_MODE = v;
+        }
+
+        // EXPONENTIAL_AT {number|number[]}
+        // Integer, -MAX to MAX inclusive or
+        // [integer -MAX to 0 inclusive, 0 to MAX inclusive].
+        // '[BigNumber Error] EXPONENTIAL_AT {not a primitive number|not an integer|out of range}: {v}'
+        if (obj.hasOwnProperty(p = 'EXPONENTIAL_AT')) {
+          v = obj[p];
+          if (v && v.pop) {
+            intCheck(v[0], -MAX, 0, p);
+            intCheck(v[1], 0, MAX, p);
+            TO_EXP_NEG = v[0];
+            TO_EXP_POS = v[1];
+          } else {
+            intCheck(v, -MAX, MAX, p);
+            TO_EXP_NEG = -(TO_EXP_POS = v < 0 ? -v : v);
+          }
+        }
+
+        // RANGE {number|number[]} Non-zero integer, -MAX to MAX inclusive or
+        // [integer -MAX to -1 inclusive, integer 1 to MAX inclusive].
+        // '[BigNumber Error] RANGE {not a primitive number|not an integer|out of range|cannot be zero}: {v}'
+        if (obj.hasOwnProperty(p = 'RANGE')) {
+          v = obj[p];
+          if (v && v.pop) {
+            intCheck(v[0], -MAX, -1, p);
+            intCheck(v[1], 1, MAX, p);
+            MIN_EXP = v[0];
+            MAX_EXP = v[1];
+          } else {
+            intCheck(v, -MAX, MAX, p);
+            if (v) {
+              MIN_EXP = -(MAX_EXP = v < 0 ? -v : v);
+            } else {
+              throw Error(bignumberError + p + ' cannot be zero: ' + v);
+            }
+          }
+        }
+
+        // CRYPTO {boolean} true or false.
+        // '[BigNumber Error] CRYPTO not true or false: {v}'
+        // '[BigNumber Error] crypto unavailable'
+        if (obj.hasOwnProperty(p = 'CRYPTO')) {
+          v = obj[p];
+          if (v === !!v) {
+            if (v) {
+              if (typeof crypto != 'undefined' && crypto && (crypto.getRandomValues || crypto.randomBytes)) {
+                CRYPTO = v;
+              } else {
+                CRYPTO = !v;
+                throw Error(bignumberError + 'crypto unavailable');
+              }
+            } else {
+              CRYPTO = v;
+            }
+          } else {
+            throw Error(bignumberError + p + ' not true or false: ' + v);
+          }
+        }
+
+        // MODULO_MODE {number} Integer, 0 to 9 inclusive.
+        // '[BigNumber Error] MODULO_MODE {not a primitive number|not an integer|out of range}: {v}'
+        if (obj.hasOwnProperty(p = 'MODULO_MODE')) {
+          v = obj[p];
+          intCheck(v, 0, 9, p);
+          MODULO_MODE = v;
+        }
+
+        // POW_PRECISION {number} Integer, 0 to MAX inclusive.
+        // '[BigNumber Error] POW_PRECISION {not a primitive number|not an integer|out of range}: {v}'
+        if (obj.hasOwnProperty(p = 'POW_PRECISION')) {
+          v = obj[p];
+          intCheck(v, 0, MAX, p);
+          POW_PRECISION = v;
+        }
+
+        // FORMAT {object}
+        // '[BigNumber Error] FORMAT not an object: {v}'
+        if (obj.hasOwnProperty(p = 'FORMAT')) {
+          v = obj[p];
+          if (typeof v == 'object') FORMAT = v;else throw Error(bignumberError + p + ' not an object: ' + v);
+        }
+
+        // ALPHABET {string}
+        // '[BigNumber Error] ALPHABET invalid: {v}'
+        if (obj.hasOwnProperty(p = 'ALPHABET')) {
+          v = obj[p];
+
+          // Disallow if only one character,
+          // or if it contains '+', '-', '.', whitespace, or a repeated character.
+          if (typeof v == 'string' && !/^.$|[+-.\s]|(.).*\1/.test(v)) {
+            ALPHABET = v;
+          } else {
+            throw Error(bignumberError + p + ' invalid: ' + v);
+          }
+        }
+      } else {
+        // '[BigNumber Error] Object expected: {v}'
+        throw Error(bignumberError + 'Object expected: ' + obj);
+      }
+    }
+    return {
+      DECIMAL_PLACES: DECIMAL_PLACES,
+      ROUNDING_MODE: ROUNDING_MODE,
+      EXPONENTIAL_AT: [TO_EXP_NEG, TO_EXP_POS],
+      RANGE: [MIN_EXP, MAX_EXP],
+      CRYPTO: CRYPTO,
+      MODULO_MODE: MODULO_MODE,
+      POW_PRECISION: POW_PRECISION,
+      FORMAT: FORMAT,
+      ALPHABET: ALPHABET
+    };
+  };
+
+  /*
+   * Return true if v is a BigNumber instance, otherwise return false.
+   *
+   * If BigNumber.DEBUG is true, throw if a BigNumber instance is not well-formed.
+   *
+   * v {any}
+   *
+   * '[BigNumber Error] Invalid BigNumber: {v}'
+   */
+  BigNumber.isBigNumber = function (v) {
+    if (!v || v._isBigNumber !== true) return false;
+    if (!BigNumber.DEBUG) return true;
+    var i,
+      n,
+      c = v.c,
+      e = v.e,
+      s = v.s;
+    out: if ({}.toString.call(c) == '[object Array]') {
+      if ((s === 1 || s === -1) && e >= -MAX && e <= MAX && e === mathfloor(e)) {
+        // If the first element is zero, the BigNumber value must be zero.
+        if (c[0] === 0) {
+          if (e === 0 && c.length === 1) return true;
+          break out;
+        }
+
+        // Calculate number of digits that c[0] should have, based on the exponent.
+        i = (e + 1) % LOG_BASE;
+        if (i < 1) i += LOG_BASE;
+
+        // Calculate number of digits of c[0].
+        //if (Math.ceil(Math.log(c[0] + 1) / Math.LN10) == i) {
+        if (String(c[0]).length == i) {
+          for (i = 0; i < c.length; i++) {
+            n = c[i];
+            if (n < 0 || n >= BASE || n !== mathfloor(n)) break out;
+          }
+
+          // Last element cannot be zero, unless it is the only element.
+          if (n !== 0) return true;
+        }
+      }
+
+      // Infinity/NaN
+    } else if (c === null && e === null && (s === null || s === 1 || s === -1)) {
+      return true;
+    }
+    throw Error(bignumberError + 'Invalid BigNumber: ' + v);
+  };
+
+  /*
+   * Return a new BigNumber whose value is the maximum of the arguments.
+   *
+   * arguments {number|string|BigNumber}
+   */
+  BigNumber.maximum = BigNumber.max = function () {
+    return maxOrMin(arguments, P.lt);
+  };
+
+  /*
+   * Return a new BigNumber whose value is the minimum of the arguments.
+   *
+   * arguments {number|string|BigNumber}
+   */
+  BigNumber.minimum = BigNumber.min = function () {
+    return maxOrMin(arguments, P.gt);
+  };
+
+  /*
+   * Return a new BigNumber with a random value equal to or greater than 0 and less than 1,
+   * and with dp, or DECIMAL_PLACES if dp is omitted, decimal places (or less if trailing
+   * zeros are produced).
+   *
+   * [dp] {number} Decimal places. Integer, 0 to MAX inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {dp}'
+   * '[BigNumber Error] crypto unavailable'
+   */
+  BigNumber.random = function () {
+    var pow2_53 = 0x20000000000000;
+
+    // Return a 53 bit integer n, where 0 <= n < 9007199254740992.
+    // Check if Math.random() produces more than 32 bits of randomness.
+    // If it does, assume at least 53 bits are produced, otherwise assume at least 30 bits.
+    // 0x40000000 is 2^30, 0x800000 is 2^23, 0x1fffff is 2^21 - 1.
+    var random53bitInt = Math.random() * pow2_53 & 0x1fffff ? function () {
+      return mathfloor(Math.random() * pow2_53);
+    } : function () {
+      return (Math.random() * 0x40000000 | 0) * 0x800000 + (Math.random() * 0x800000 | 0);
+    };
+    return function (dp) {
+      var a,
+        b,
+        e,
+        k,
+        v,
+        i = 0,
+        c = [],
+        rand = new BigNumber(ONE);
+      if (dp == null) dp = DECIMAL_PLACES;else intCheck(dp, 0, MAX);
+      k = mathceil(dp / LOG_BASE);
+      if (CRYPTO) {
+        // Browsers supporting crypto.getRandomValues.
+        if (crypto.getRandomValues) {
+          a = crypto.getRandomValues(new Uint32Array(k *= 2));
+          for (; i < k;) {
+            // 53 bits:
+            // ((Math.pow(2, 32) - 1) * Math.pow(2, 21)).toString(2)
+            // 11111 11111111 11111111 11111111 11100000 00000000 00000000
+            // ((Math.pow(2, 32) - 1) >>> 11).toString(2)
+            //                                     11111 11111111 11111111
+            // 0x20000 is 2^21.
+            v = a[i] * 0x20000 + (a[i + 1] >>> 11);
+
+            // Rejection sampling:
+            // 0 <= v < 9007199254740992
+            // Probability that v >= 9e15, is
+            // 7199254740992 / 9007199254740992 ~= 0.0008, i.e. 1 in 1251
+            if (v >= 9e15) {
+              b = crypto.getRandomValues(new Uint32Array(2));
+              a[i] = b[0];
+              a[i + 1] = b[1];
+            } else {
+              // 0 <= v <= 8999999999999999
+              // 0 <= (v % 1e14) <= 99999999999999
+              c.push(v % 1e14);
+              i += 2;
+            }
+          }
+          i = k / 2;
+
+          // Node.js supporting crypto.randomBytes.
+        } else if (crypto.randomBytes) {
+          // buffer
+          a = crypto.randomBytes(k *= 7);
+          for (; i < k;) {
+            // 0x1000000000000 is 2^48, 0x10000000000 is 2^40
+            // 0x100000000 is 2^32, 0x1000000 is 2^24
+            // 11111 11111111 11111111 11111111 11111111 11111111 11111111
+            // 0 <= v < 9007199254740992
+            v = (a[i] & 31) * 0x1000000000000 + a[i + 1] * 0x10000000000 + a[i + 2] * 0x100000000 + a[i + 3] * 0x1000000 + (a[i + 4] << 16) + (a[i + 5] << 8) + a[i + 6];
+            if (v >= 9e15) {
+              crypto.randomBytes(7).copy(a, i);
+            } else {
+              // 0 <= (v % 1e14) <= 99999999999999
+              c.push(v % 1e14);
+              i += 7;
+            }
+          }
+          i = k / 7;
+        } else {
+          CRYPTO = false;
+          throw Error(bignumberError + 'crypto unavailable');
+        }
+      }
+
+      // Use Math.random.
+      if (!CRYPTO) {
+        for (; i < k;) {
+          v = random53bitInt();
+          if (v < 9e15) c[i++] = v % 1e14;
+        }
+      }
+      k = c[--i];
+      dp %= LOG_BASE;
+
+      // Convert trailing digits to zeros according to dp.
+      if (k && dp) {
+        v = POWS_TEN[LOG_BASE - dp];
+        c[i] = mathfloor(k / v) * v;
+      }
+
+      // Remove trailing elements which are zero.
+      for (; c[i] === 0; c.pop(), i--);
+
+      // Zero?
+      if (i < 0) {
+        c = [e = 0];
+      } else {
+        // Remove leading elements which are zero and adjust exponent accordingly.
+        for (e = -1; c[0] === 0; c.splice(0, 1), e -= LOG_BASE);
+
+        // Count the digits of the first element of c to determine leading zeros, and...
+        for (i = 1, v = c[0]; v >= 10; v /= 10, i++);
+
+        // adjust the exponent accordingly.
+        if (i < LOG_BASE) e -= LOG_BASE - i;
+      }
+      rand.e = e;
+      rand.c = c;
+      return rand;
+    };
+  }();
+
+  /*
+  * Return a BigNumber whose value is the sum of the arguments.
+  *
+  * arguments {number|string|BigNumber}
+  */
+  BigNumber.sum = function () {
+    var i = 1,
+      args = arguments,
+      sum = new BigNumber(args[0]);
+    for (; i < args.length;) sum = sum.plus(args[i++]);
+    return sum;
+  };
+
+  // PRIVATE FUNCTIONS
+
+  // Called by BigNumber and BigNumber.prototype.toString.
+  convertBase = function () {
+    var decimal = '0123456789';
+
+    /*
+     * Convert string of baseIn to an array of numbers of baseOut.
+     * Eg. toBaseOut('255', 10, 16) returns [15, 15].
+     * Eg. toBaseOut('ff', 16, 10) returns [2, 5, 5].
+     */
+    function toBaseOut(str, baseIn, baseOut, alphabet) {
+      var j,
+        arr = [0],
+        arrL,
+        i = 0,
+        len = str.length;
+      for (; i < len;) {
+        for (arrL = arr.length; arrL--; arr[arrL] *= baseIn);
+        arr[0] += alphabet.indexOf(str.charAt(i++));
+        for (j = 0; j < arr.length; j++) {
+          if (arr[j] > baseOut - 1) {
+            if (arr[j + 1] == null) arr[j + 1] = 0;
+            arr[j + 1] += arr[j] / baseOut | 0;
+            arr[j] %= baseOut;
+          }
+        }
+      }
+      return arr.reverse();
+    }
+
+    // Convert a numeric string of baseIn to a numeric string of baseOut.
+    // If the caller is toString, we are converting from base 10 to baseOut.
+    // If the caller is BigNumber, we are converting from baseIn to base 10.
+    return function (str, baseIn, baseOut, sign, callerIsToString) {
+      var alphabet,
+        d,
+        e,
+        k,
+        r,
+        x,
+        xc,
+        y,
+        i = str.indexOf('.'),
+        dp = DECIMAL_PLACES,
+        rm = ROUNDING_MODE;
+
+      // Non-integer.
+      if (i >= 0) {
+        k = POW_PRECISION;
+
+        // Unlimited precision.
+        POW_PRECISION = 0;
+        str = str.replace('.', '');
+        y = new BigNumber(baseIn);
+        x = y.pow(str.length - i);
+        POW_PRECISION = k;
+
+        // Convert str as if an integer, then restore the fraction part by dividing the
+        // result by its base raised to a power.
+
+        y.c = toBaseOut(toFixedPoint(coeffToString(x.c), x.e, '0'), 10, baseOut, decimal);
+        y.e = y.c.length;
+      }
+
+      // Convert the number as integer.
+
+      xc = toBaseOut(str, baseIn, baseOut, callerIsToString ? (alphabet = ALPHABET, decimal) : (alphabet = decimal, ALPHABET));
+
+      // xc now represents str as an integer and converted to baseOut. e is the exponent.
+      e = k = xc.length;
+
+      // Remove trailing zeros.
+      for (; xc[--k] == 0; xc.pop());
+
+      // Zero?
+      if (!xc[0]) return alphabet.charAt(0);
+
+      // Does str represent an integer? If so, no need for the division.
+      if (i < 0) {
+        --e;
+      } else {
+        x.c = xc;
+        x.e = e;
+
+        // The sign is needed for correct rounding.
+        x.s = sign;
+        x = div(x, y, dp, rm, baseOut);
+        xc = x.c;
+        r = x.r;
+        e = x.e;
+      }
+
+      // xc now represents str converted to baseOut.
+
+      // THe index of the rounding digit.
+      d = e + dp + 1;
+
+      // The rounding digit: the digit to the right of the digit that may be rounded up.
+      i = xc[d];
+
+      // Look at the rounding digits and mode to determine whether to round up.
+
+      k = baseOut / 2;
+      r = r || d < 0 || xc[d + 1] != null;
+      r = rm < 4 ? (i != null || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : i > k || i == k && (rm == 4 || r || rm == 6 && xc[d - 1] & 1 || rm == (x.s < 0 ? 8 : 7));
+
+      // If the index of the rounding digit is not greater than zero, or xc represents
+      // zero, then the result of the base conversion is zero or, if rounding up, a value
+      // such as 0.00001.
+      if (d < 1 || !xc[0]) {
+        // 1^-dp or 0
+        str = r ? toFixedPoint(alphabet.charAt(1), -dp, alphabet.charAt(0)) : alphabet.charAt(0);
+      } else {
+        // Truncate xc to the required number of decimal places.
+        xc.length = d;
+
+        // Round up?
+        if (r) {
+          // Rounding up may mean the previous digit has to be rounded up and so on.
+          for (--baseOut; ++xc[--d] > baseOut;) {
+            xc[d] = 0;
+            if (!d) {
+              ++e;
+              xc = [1].concat(xc);
+            }
+          }
+        }
+
+        // Determine trailing zeros.
+        for (k = xc.length; !xc[--k];);
+
+        // E.g. [4, 11, 15] becomes 4bf.
+        for (i = 0, str = ''; i <= k; str += alphabet.charAt(xc[i++]));
+
+        // Add leading zeros, decimal point and trailing zeros as required.
+        str = toFixedPoint(str, e, alphabet.charAt(0));
+      }
+
+      // The caller will add the sign.
+      return str;
+    };
+  }();
+
+  // Perform division in the specified base. Called by div and convertBase.
+  div = function () {
+    // Assume non-zero x and k.
+    function multiply(x, k, base) {
+      var m,
+        temp,
+        xlo,
+        xhi,
+        carry = 0,
+        i = x.length,
+        klo = k % SQRT_BASE,
+        khi = k / SQRT_BASE | 0;
+      for (x = x.slice(); i--;) {
+        xlo = x[i] % SQRT_BASE;
+        xhi = x[i] / SQRT_BASE | 0;
+        m = khi * xlo + xhi * klo;
+        temp = klo * xlo + m % SQRT_BASE * SQRT_BASE + carry;
+        carry = (temp / base | 0) + (m / SQRT_BASE | 0) + khi * xhi;
+        x[i] = temp % base;
+      }
+      if (carry) x = [carry].concat(x);
+      return x;
+    }
+    function compare(a, b, aL, bL) {
+      var i, cmp;
+      if (aL != bL) {
+        cmp = aL > bL ? 1 : -1;
+      } else {
+        for (i = cmp = 0; i < aL; i++) {
+          if (a[i] != b[i]) {
+            cmp = a[i] > b[i] ? 1 : -1;
+            break;
+          }
+        }
+      }
+      return cmp;
+    }
+    function subtract(a, b, aL, base) {
+      var i = 0;
+
+      // Subtract b from a.
+      for (; aL--;) {
+        a[aL] -= i;
+        i = a[aL] < b[aL] ? 1 : 0;
+        a[aL] = i * base + a[aL] - b[aL];
+      }
+
+      // Remove leading zeros.
+      for (; !a[0] && a.length > 1; a.splice(0, 1));
+    }
+
+    // x: dividend, y: divisor.
+    return function (x, y, dp, rm, base) {
+      var cmp,
+        e,
+        i,
+        more,
+        n,
+        prod,
+        prodL,
+        q,
+        qc,
+        rem,
+        remL,
+        rem0,
+        xi,
+        xL,
+        yc0,
+        yL,
+        yz,
+        s = x.s == y.s ? 1 : -1,
+        xc = x.c,
+        yc = y.c;
+
+      // Either NaN, Infinity or 0?
+      if (!xc || !xc[0] || !yc || !yc[0]) {
+        return new BigNumber(
+        // Return NaN if either NaN, or both Infinity or 0.
+        !x.s || !y.s || (xc ? yc && xc[0] == yc[0] : !yc) ? NaN :
+        // Return ±0 if x is ±0 or y is ±Infinity, or return ±Infinity as y is ±0.
+        xc && xc[0] == 0 || !yc ? s * 0 : s / 0);
+      }
+      q = new BigNumber(s);
+      qc = q.c = [];
+      e = x.e - y.e;
+      s = dp + e + 1;
+      if (!base) {
+        base = BASE;
+        e = bitFloor(x.e / LOG_BASE) - bitFloor(y.e / LOG_BASE);
+        s = s / LOG_BASE | 0;
+      }
+
+      // Result exponent may be one less then the current value of e.
+      // The coefficients of the BigNumbers from convertBase may have trailing zeros.
+      for (i = 0; yc[i] == (xc[i] || 0); i++);
+      if (yc[i] > (xc[i] || 0)) e--;
+      if (s < 0) {
+        qc.push(1);
+        more = true;
+      } else {
+        xL = xc.length;
+        yL = yc.length;
+        i = 0;
+        s += 2;
+
+        // Normalise xc and yc so highest order digit of yc is >= base / 2.
+
+        n = mathfloor(base / (yc[0] + 1));
+
+        // Not necessary, but to handle odd bases where yc[0] == (base / 2) - 1.
+        // if (n > 1 || n++ == 1 && yc[0] < base / 2) {
+        if (n > 1) {
+          yc = multiply(yc, n, base);
+          xc = multiply(xc, n, base);
+          yL = yc.length;
+          xL = xc.length;
+        }
+        xi = yL;
+        rem = xc.slice(0, yL);
+        remL = rem.length;
+
+        // Add zeros to make remainder as long as divisor.
+        for (; remL < yL; rem[remL++] = 0);
+        yz = yc.slice();
+        yz = [0].concat(yz);
+        yc0 = yc[0];
+        if (yc[1] >= base / 2) yc0++;
+        // Not necessary, but to prevent trial digit n > base, when using base 3.
+        // else if (base == 3 && yc0 == 1) yc0 = 1 + 1e-15;
+
+        do {
+          n = 0;
+
+          // Compare divisor and remainder.
+          cmp = compare(yc, rem, yL, remL);
+
+          // If divisor < remainder.
+          if (cmp < 0) {
+            // Calculate trial digit, n.
+
+            rem0 = rem[0];
+            if (yL != remL) rem0 = rem0 * base + (rem[1] || 0);
+
+            // n is how many times the divisor goes into the current remainder.
+            n = mathfloor(rem0 / yc0);
+
+            //  Algorithm:
+            //  product = divisor multiplied by trial digit (n).
+            //  Compare product and remainder.
+            //  If product is greater than remainder:
+            //    Subtract divisor from product, decrement trial digit.
+            //  Subtract product from remainder.
+            //  If product was less than remainder at the last compare:
+            //    Compare new remainder and divisor.
+            //    If remainder is greater than divisor:
+            //      Subtract divisor from remainder, increment trial digit.
+
+            if (n > 1) {
+              // n may be > base only when base is 3.
+              if (n >= base) n = base - 1;
+
+              // product = divisor * trial digit.
+              prod = multiply(yc, n, base);
+              prodL = prod.length;
+              remL = rem.length;
+
+              // Compare product and remainder.
+              // If product > remainder then trial digit n too high.
+              // n is 1 too high about 5% of the time, and is not known to have
+              // ever been more than 1 too high.
+              while (compare(prod, rem, prodL, remL) == 1) {
+                n--;
+
+                // Subtract divisor from product.
+                subtract(prod, yL < prodL ? yz : yc, prodL, base);
+                prodL = prod.length;
+                cmp = 1;
+              }
+            } else {
+              // n is 0 or 1, cmp is -1.
+              // If n is 0, there is no need to compare yc and rem again below,
+              // so change cmp to 1 to avoid it.
+              // If n is 1, leave cmp as -1, so yc and rem are compared again.
+              if (n == 0) {
+                // divisor < remainder, so n must be at least 1.
+                cmp = n = 1;
+              }
+
+              // product = divisor
+              prod = yc.slice();
+              prodL = prod.length;
+            }
+            if (prodL < remL) prod = [0].concat(prod);
+
+            // Subtract product from remainder.
+            subtract(rem, prod, remL, base);
+            remL = rem.length;
+
+            // If product was < remainder.
+            if (cmp == -1) {
+              // Compare divisor and new remainder.
+              // If divisor < new remainder, subtract divisor from remainder.
+              // Trial digit n too low.
+              // n is 1 too low about 5% of the time, and very rarely 2 too low.
+              while (compare(yc, rem, yL, remL) < 1) {
+                n++;
+
+                // Subtract divisor from remainder.
+                subtract(rem, yL < remL ? yz : yc, remL, base);
+                remL = rem.length;
+              }
+            }
+          } else if (cmp === 0) {
+            n++;
+            rem = [0];
+          } // else cmp === 1 and n will be 0
+
+          // Add the next digit, n, to the result array.
+          qc[i++] = n;
+
+          // Update the remainder.
+          if (rem[0]) {
+            rem[remL++] = xc[xi] || 0;
+          } else {
+            rem = [xc[xi]];
+            remL = 1;
+          }
+        } while ((xi++ < xL || rem[0] != null) && s--);
+        more = rem[0] != null;
+
+        // Leading zero?
+        if (!qc[0]) qc.splice(0, 1);
+      }
+      if (base == BASE) {
+        // To calculate q.e, first get the number of digits of qc[0].
+        for (i = 1, s = qc[0]; s >= 10; s /= 10, i++);
+        round(q, dp + (q.e = i + e * LOG_BASE - 1) + 1, rm, more);
+
+        // Caller is convertBase.
+      } else {
+        q.e = e;
+        q.r = +more;
+      }
+      return q;
+    };
+  }();
+
+  /*
+   * Return a string representing the value of BigNumber n in fixed-point or exponential
+   * notation rounded to the specified decimal places or significant digits.
+   *
+   * n: a BigNumber.
+   * i: the index of the last digit required (i.e. the digit that may be rounded up).
+   * rm: the rounding mode.
+   * id: 1 (toExponential) or 2 (toPrecision).
+   */
+  function format(n, i, rm, id) {
+    var c0, e, ne, len, str;
+    if (rm == null) rm = ROUNDING_MODE;else intCheck(rm, 0, 8);
+    if (!n.c) return n.toString();
+    c0 = n.c[0];
+    ne = n.e;
+    if (i == null) {
+      str = coeffToString(n.c);
+      str = id == 1 || id == 2 && (ne <= TO_EXP_NEG || ne >= TO_EXP_POS) ? toExponential(str, ne) : toFixedPoint(str, ne, '0');
+    } else {
+      n = round(new BigNumber(n), i, rm);
+
+      // n.e may have changed if the value was rounded up.
+      e = n.e;
+      str = coeffToString(n.c);
+      len = str.length;
+
+      // toPrecision returns exponential notation if the number of significant digits
+      // specified is less than the number of digits necessary to represent the integer
+      // part of the value in fixed-point notation.
+
+      // Exponential notation.
+      if (id == 1 || id == 2 && (i <= e || e <= TO_EXP_NEG)) {
+        // Append zeros?
+        for (; len < i; str += '0', len++);
+        str = toExponential(str, e);
+
+        // Fixed-point notation.
+      } else {
+        i -= ne;
+        str = toFixedPoint(str, e, '0');
+
+        // Append zeros?
+        if (e + 1 > len) {
+          if (--i > 0) for (str += '.'; i--; str += '0');
+        } else {
+          i += e - len;
+          if (i > 0) {
+            if (e + 1 == len) str += '.';
+            for (; i--; str += '0');
+          }
+        }
+      }
+    }
+    return n.s < 0 && c0 ? '-' + str : str;
+  }
+
+  // Handle BigNumber.max and BigNumber.min.
+  function maxOrMin(args, method) {
+    var n,
+      i = 1,
+      m = new BigNumber(args[0]);
+    for (; i < args.length; i++) {
+      n = new BigNumber(args[i]);
+
+      // If any number is NaN, return NaN.
+      if (!n.s) {
+        m = n;
+        break;
+      } else if (method.call(m, n)) {
+        m = n;
+      }
+    }
+    return m;
+  }
+
+  /*
+   * Strip trailing zeros, calculate base 10 exponent and check against MIN_EXP and MAX_EXP.
+   * Called by minus, plus and times.
+   */
+  function normalise(n, c, e) {
+    var i = 1,
+      j = c.length;
+
+    // Remove trailing zeros.
+    for (; !c[--j]; c.pop());
+
+    // Calculate the base 10 exponent. First get the number of digits of c[0].
+    for (j = c[0]; j >= 10; j /= 10, i++);
+
+    // Overflow?
+    if ((e = i + e * LOG_BASE - 1) > MAX_EXP) {
+      // Infinity.
+      n.c = n.e = null;
+
+      // Underflow?
+    } else if (e < MIN_EXP) {
+      // Zero.
+      n.c = [n.e = 0];
+    } else {
+      n.e = e;
+      n.c = c;
+    }
+    return n;
+  }
+
+  // Handle values that fail the validity test in BigNumber.
+  parseNumeric = function () {
+    var basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i,
+      dotAfter = /^([^.]+)\.$/,
+      dotBefore = /^\.([^.]+)$/,
+      isInfinityOrNaN = /^-?(Infinity|NaN)$/,
+      whitespaceOrPlus = /^\s*\+(?=[\w.])|^\s+|\s+$/g;
+    return function (x, str, isNum, b) {
+      var base,
+        s = isNum ? str : str.replace(whitespaceOrPlus, '');
+
+      // No exception on ±Infinity or NaN.
+      if (isInfinityOrNaN.test(s)) {
+        x.s = isNaN(s) ? null : s < 0 ? -1 : 1;
+      } else {
+        if (!isNum) {
+          // basePrefix = /^(-?)0([xbo])(?=\w[\w.]*$)/i
+          s = s.replace(basePrefix, function (m, p1, p2) {
+            base = (p2 = p2.toLowerCase()) == 'x' ? 16 : p2 == 'b' ? 2 : 8;
+            return !b || b == base ? p1 : m;
+          });
+          if (b) {
+            base = b;
+
+            // E.g. '1.' to '1', '.1' to '0.1'
+            s = s.replace(dotAfter, '$1').replace(dotBefore, '0.$1');
+          }
+          if (str != s) return new BigNumber(s, base);
+        }
+
+        // '[BigNumber Error] Not a number: {n}'
+        // '[BigNumber Error] Not a base {b} number: {n}'
+        if (BigNumber.DEBUG) {
+          throw Error(bignumberError + 'Not a' + (b ? ' base ' + b : '') + ' number: ' + str);
+        }
+
+        // NaN
+        x.s = null;
+      }
+      x.c = x.e = null;
+    };
+  }();
+
+  /*
+   * Round x to sd significant digits using rounding mode rm. Check for over/under-flow.
+   * If r is truthy, it is known that there are more digits after the rounding digit.
+   */
+  function round(x, sd, rm, r) {
+    var d,
+      i,
+      j,
+      k,
+      n,
+      ni,
+      rd,
+      xc = x.c,
+      pows10 = POWS_TEN;
+
+    // if x is not Infinity or NaN...
+    if (xc) {
+      // rd is the rounding digit, i.e. the digit after the digit that may be rounded up.
+      // n is a base 1e14 number, the value of the element of array x.c containing rd.
+      // ni is the index of n within x.c.
+      // d is the number of digits of n.
+      // i is the index of rd within n including leading zeros.
+      // j is the actual index of rd within n (if < 0, rd is a leading zero).
+      out: {
+        // Get the number of digits of the first element of xc.
+        for (d = 1, k = xc[0]; k >= 10; k /= 10, d++);
+        i = sd - d;
+
+        // If the rounding digit is in the first element of xc...
+        if (i < 0) {
+          i += LOG_BASE;
+          j = sd;
+          n = xc[ni = 0];
+
+          // Get the rounding digit at index j of n.
+          rd = n / pows10[d - j - 1] % 10 | 0;
+        } else {
+          ni = mathceil((i + 1) / LOG_BASE);
+          if (ni >= xc.length) {
+            if (r) {
+              // Needed by sqrt.
+              for (; xc.length <= ni; xc.push(0));
+              n = rd = 0;
+              d = 1;
+              i %= LOG_BASE;
+              j = i - LOG_BASE + 1;
+            } else {
+              break out;
+            }
+          } else {
+            n = k = xc[ni];
+
+            // Get the number of digits of n.
+            for (d = 1; k >= 10; k /= 10, d++);
+
+            // Get the index of rd within n.
+            i %= LOG_BASE;
+
+            // Get the index of rd within n, adjusted for leading zeros.
+            // The number of leading zeros of n is given by LOG_BASE - d.
+            j = i - LOG_BASE + d;
+
+            // Get the rounding digit at index j of n.
+            rd = j < 0 ? 0 : n / pows10[d - j - 1] % 10 | 0;
+          }
+        }
+        r = r || sd < 0 ||
+        // Are there any non-zero digits after the rounding digit?
+        // The expression  n % pows10[d - j - 1]  returns all digits of n to the right
+        // of the digit at j, e.g. if n is 908714 and j is 2, the expression gives 714.
+        xc[ni + 1] != null || (j < 0 ? n : n % pows10[d - j - 1]);
+        r = rm < 4 ? (rd || r) && (rm == 0 || rm == (x.s < 0 ? 3 : 2)) : rd > 5 || rd == 5 && (rm == 4 || r || rm == 6 &&
+        // Check whether the digit to the left of the rounding digit is odd.
+        (i > 0 ? j > 0 ? n / pows10[d - j] : 0 : xc[ni - 1]) % 10 & 1 || rm == (x.s < 0 ? 8 : 7));
+        if (sd < 1 || !xc[0]) {
+          xc.length = 0;
+          if (r) {
+            // Convert sd to decimal places.
+            sd -= x.e + 1;
+
+            // 1, 0.1, 0.01, 0.001, 0.0001 etc.
+            xc[0] = pows10[(LOG_BASE - sd % LOG_BASE) % LOG_BASE];
+            x.e = -sd || 0;
+          } else {
+            // Zero.
+            xc[0] = x.e = 0;
+          }
+          return x;
+        }
+
+        // Remove excess digits.
+        if (i == 0) {
+          xc.length = ni;
+          k = 1;
+          ni--;
+        } else {
+          xc.length = ni + 1;
+          k = pows10[LOG_BASE - i];
+
+          // E.g. 56700 becomes 56000 if 7 is the rounding digit.
+          // j > 0 means i > number of leading zeros of n.
+          xc[ni] = j > 0 ? mathfloor(n / pows10[d - j] % pows10[j]) * k : 0;
+        }
+
+        // Round up?
+        if (r) {
+          for (;;) {
+            // If the digit to be rounded up is in the first element of xc...
+            if (ni == 0) {
+              // i will be the length of xc[0] before k is added.
+              for (i = 1, j = xc[0]; j >= 10; j /= 10, i++);
+              j = xc[0] += k;
+              for (k = 1; j >= 10; j /= 10, k++);
+
+              // if i != k the length has increased.
+              if (i != k) {
+                x.e++;
+                if (xc[0] == BASE) xc[0] = 1;
+              }
+              break;
+            } else {
+              xc[ni] += k;
+              if (xc[ni] != BASE) break;
+              xc[ni--] = 0;
+              k = 1;
+            }
+          }
+        }
+
+        // Remove trailing zeros.
+        for (i = xc.length; xc[--i] === 0; xc.pop());
+      }
+
+      // Overflow? Infinity.
+      if (x.e > MAX_EXP) {
+        x.c = x.e = null;
+
+        // Underflow? Zero.
+      } else if (x.e < MIN_EXP) {
+        x.c = [x.e = 0];
+      }
+    }
+    return x;
+  }
+  function valueOf(n) {
+    var str,
+      e = n.e;
+    if (e === null) return n.toString();
+    str = coeffToString(n.c);
+    str = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(str, e) : toFixedPoint(str, e, '0');
+    return n.s < 0 ? '-' + str : str;
+  }
+
+  // PROTOTYPE/INSTANCE METHODS
+
+  /*
+   * Return a new BigNumber whose value is the absolute value of this BigNumber.
+   */
+  P.absoluteValue = P.abs = function () {
+    var x = new BigNumber(this);
+    if (x.s < 0) x.s = 1;
+    return x;
+  };
+
+  /*
+   * Return
+   *   1 if the value of this BigNumber is greater than the value of BigNumber(y, b),
+   *   -1 if the value of this BigNumber is less than the value of BigNumber(y, b),
+   *   0 if they have the same value,
+   *   or null if the value of either is NaN.
+   */
+  P.comparedTo = function (y, b) {
+    return compare(this, new BigNumber(y, b));
+  };
+
+  /*
+   * If dp is undefined or null or true or false, return the number of decimal places of the
+   * value of this BigNumber, or null if the value of this BigNumber is ±Infinity or NaN.
+   *
+   * Otherwise, if dp is a number, return a new BigNumber whose value is the value of this
+   * BigNumber rounded to a maximum of dp decimal places using rounding mode rm, or
+   * ROUNDING_MODE if rm is omitted.
+   *
+   * [dp] {number} Decimal places: integer, 0 to MAX inclusive.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {dp|rm}'
+   */
+  P.decimalPlaces = P.dp = function (dp, rm) {
+    var c,
+      n,
+      v,
+      x = this;
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      if (rm == null) rm = ROUNDING_MODE;else intCheck(rm, 0, 8);
+      return round(new BigNumber(x), dp + x.e + 1, rm);
+    }
+    if (!(c = x.c)) return null;
+    n = ((v = c.length - 1) - bitFloor(this.e / LOG_BASE)) * LOG_BASE;
+
+    // Subtract the number of trailing zeros of the last number.
+    if (v = c[v]) for (; v % 10 == 0; v /= 10, n--);
+    if (n < 0) n = 0;
+    return n;
+  };
+
+  /*
+   *  n / 0 = I
+   *  n / N = N
+   *  n / I = 0
+   *  0 / n = 0
+   *  0 / 0 = N
+   *  0 / N = N
+   *  0 / I = 0
+   *  N / n = N
+   *  N / 0 = N
+   *  N / N = N
+   *  N / I = N
+   *  I / n = I
+   *  I / 0 = I
+   *  I / N = N
+   *  I / I = N
+   *
+   * Return a new BigNumber whose value is the value of this BigNumber divided by the value of
+   * BigNumber(y, b), rounded according to DECIMAL_PLACES and ROUNDING_MODE.
+   */
+  P.dividedBy = P.div = function (y, b) {
+    return div(this, new BigNumber(y, b), DECIMAL_PLACES, ROUNDING_MODE);
+  };
+
+  /*
+   * Return a new BigNumber whose value is the integer part of dividing the value of this
+   * BigNumber by the value of BigNumber(y, b).
+   */
+  P.dividedToIntegerBy = P.idiv = function (y, b) {
+    return div(this, new BigNumber(y, b), 0, 1);
+  };
+
+  /*
+   * Return a BigNumber whose value is the value of this BigNumber exponentiated by n.
+   *
+   * If m is present, return the result modulo m.
+   * If n is negative round according to DECIMAL_PLACES and ROUNDING_MODE.
+   * If POW_PRECISION is non-zero and m is not present, round to POW_PRECISION using ROUNDING_MODE.
+   *
+   * The modular power operation works efficiently when x, n, and m are integers, otherwise it
+   * is equivalent to calculating x.exponentiatedBy(n).modulo(m) with a POW_PRECISION of 0.
+   *
+   * n {number|string|BigNumber} The exponent. An integer.
+   * [m] {number|string|BigNumber} The modulus.
+   *
+   * '[BigNumber Error] Exponent not an integer: {n}'
+   */
+  P.exponentiatedBy = P.pow = function (n, m) {
+    var half,
+      isModExp,
+      i,
+      k,
+      more,
+      nIsBig,
+      nIsNeg,
+      nIsOdd,
+      y,
+      x = this;
+    n = new BigNumber(n);
+
+    // Allow NaN and ±Infinity, but not other non-integers.
+    if (n.c && !n.isInteger()) {
+      throw Error(bignumberError + 'Exponent not an integer: ' + valueOf(n));
+    }
+    if (m != null) m = new BigNumber(m);
+
+    // Exponent of MAX_SAFE_INTEGER is 15.
+    nIsBig = n.e > 14;
+
+    // If x is NaN, ±Infinity, ±0 or ±1, or n is ±Infinity, NaN or ±0.
+    if (!x.c || !x.c[0] || x.c[0] == 1 && !x.e && x.c.length == 1 || !n.c || !n.c[0]) {
+      // The sign of the result of pow when x is negative depends on the evenness of n.
+      // If +n overflows to ±Infinity, the evenness of n would be not be known.
+      y = new BigNumber(Math.pow(+valueOf(x), nIsBig ? 2 - isOdd(n) : +valueOf(n)));
+      return m ? y.mod(m) : y;
+    }
+    nIsNeg = n.s < 0;
+    if (m) {
+      // x % m returns NaN if abs(m) is zero, or m is NaN.
+      if (m.c ? !m.c[0] : !m.s) return new BigNumber(NaN);
+      isModExp = !nIsNeg && x.isInteger() && m.isInteger();
+      if (isModExp) x = x.mod(m);
+
+      // Overflow to ±Infinity: >=2**1e10 or >=1.0000024**1e15.
+      // Underflow to ±0: <=0.79**1e10 or <=0.9999975**1e15.
+    } else if (n.e > 9 && (x.e > 0 || x.e < -1 || (x.e == 0
+    // [1, 240000000]
+    ? x.c[0] > 1 || nIsBig && x.c[1] >= 24e7
+    // [80000000000000]  [99999750000000]
+    : x.c[0] < 8e13 || nIsBig && x.c[0] <= 9999975e7))) {
+      // If x is negative and n is odd, k = -0, else k = 0.
+      k = x.s < 0 && isOdd(n) ? -0 : 0;
+
+      // If x >= 1, k = ±Infinity.
+      if (x.e > -1) k = 1 / k;
+
+      // If n is negative return ±0, else return ±Infinity.
+      return new BigNumber(nIsNeg ? 1 / k : k);
+    } else if (POW_PRECISION) {
+      // Truncating each coefficient array to a length of k after each multiplication
+      // equates to truncating significant digits to POW_PRECISION + [28, 41],
+      // i.e. there will be a minimum of 28 guard digits retained.
+      k = mathceil(POW_PRECISION / LOG_BASE + 2);
+    }
+    if (nIsBig) {
+      half = new BigNumber(0.5);
+      if (nIsNeg) n.s = 1;
+      nIsOdd = isOdd(n);
+    } else {
+      i = Math.abs(+valueOf(n));
+      nIsOdd = i % 2;
+    }
+    y = new BigNumber(ONE);
+
+    // Performs 54 loop iterations for n of 9007199254740991.
+    for (;;) {
+      if (nIsOdd) {
+        y = y.times(x);
+        if (!y.c) break;
+        if (k) {
+          if (y.c.length > k) y.c.length = k;
+        } else if (isModExp) {
+          y = y.mod(m); //y = y.minus(div(y, m, 0, MODULO_MODE).times(m));
+        }
+      }
+      if (i) {
+        i = mathfloor(i / 2);
+        if (i === 0) break;
+        nIsOdd = i % 2;
+      } else {
+        n = n.times(half);
+        round(n, n.e + 1, 1);
+        if (n.e > 14) {
+          nIsOdd = isOdd(n);
+        } else {
+          i = +valueOf(n);
+          if (i === 0) break;
+          nIsOdd = i % 2;
+        }
+      }
+      x = x.times(x);
+      if (k) {
+        if (x.c && x.c.length > k) x.c.length = k;
+      } else if (isModExp) {
+        x = x.mod(m); //x = x.minus(div(x, m, 0, MODULO_MODE).times(m));
+      }
+    }
+    if (isModExp) return y;
+    if (nIsNeg) y = ONE.div(y);
+    return m ? y.mod(m) : k ? round(y, POW_PRECISION, ROUNDING_MODE, more) : y;
+  };
+
+  /*
+   * Return a new BigNumber whose value is the value of this BigNumber rounded to an integer
+   * using rounding mode rm, or ROUNDING_MODE if rm is omitted.
+   *
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {rm}'
+   */
+  P.integerValue = function (rm) {
+    var n = new BigNumber(this);
+    if (rm == null) rm = ROUNDING_MODE;else intCheck(rm, 0, 8);
+    return round(n, n.e + 1, rm);
+  };
+
+  /*
+   * Return true if the value of this BigNumber is equal to the value of BigNumber(y, b),
+   * otherwise return false.
+   */
+  P.isEqualTo = P.eq = function (y, b) {
+    return compare(this, new BigNumber(y, b)) === 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is a finite number, otherwise return false.
+   */
+  P.isFinite = function () {
+    return !!this.c;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is greater than the value of BigNumber(y, b),
+   * otherwise return false.
+   */
+  P.isGreaterThan = P.gt = function (y, b) {
+    return compare(this, new BigNumber(y, b)) > 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is greater than or equal to the value of
+   * BigNumber(y, b), otherwise return false.
+   */
+  P.isGreaterThanOrEqualTo = P.gte = function (y, b) {
+    return (b = compare(this, new BigNumber(y, b))) === 1 || b === 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is an integer, otherwise return false.
+   */
+  P.isInteger = function () {
+    return !!this.c && bitFloor(this.e / LOG_BASE) > this.c.length - 2;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is less than the value of BigNumber(y, b),
+   * otherwise return false.
+   */
+  P.isLessThan = P.lt = function (y, b) {
+    return compare(this, new BigNumber(y, b)) < 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is less than or equal to the value of
+   * BigNumber(y, b), otherwise return false.
+   */
+  P.isLessThanOrEqualTo = P.lte = function (y, b) {
+    return (b = compare(this, new BigNumber(y, b))) === -1 || b === 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is NaN, otherwise return false.
+   */
+  P.isNaN = function () {
+    return !this.s;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is negative, otherwise return false.
+   */
+  P.isNegative = function () {
+    return this.s < 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is positive, otherwise return false.
+   */
+  P.isPositive = function () {
+    return this.s > 0;
+  };
+
+  /*
+   * Return true if the value of this BigNumber is 0 or -0, otherwise return false.
+   */
+  P.isZero = function () {
+    return !!this.c && this.c[0] == 0;
+  };
+
+  /*
+   *  n - 0 = n
+   *  n - N = N
+   *  n - I = -I
+   *  0 - n = -n
+   *  0 - 0 = 0
+   *  0 - N = N
+   *  0 - I = -I
+   *  N - n = N
+   *  N - 0 = N
+   *  N - N = N
+   *  N - I = N
+   *  I - n = I
+   *  I - 0 = I
+   *  I - N = N
+   *  I - I = N
+   *
+   * Return a new BigNumber whose value is the value of this BigNumber minus the value of
+   * BigNumber(y, b).
+   */
+  P.minus = function (y, b) {
+    var i,
+      j,
+      t,
+      xLTy,
+      x = this,
+      a = x.s;
+    y = new BigNumber(y, b);
+    b = y.s;
+
+    // Either NaN?
+    if (!a || !b) return new BigNumber(NaN);
+
+    // Signs differ?
+    if (a != b) {
+      y.s = -b;
+      return x.plus(y);
+    }
+    var xe = x.e / LOG_BASE,
+      ye = y.e / LOG_BASE,
+      xc = x.c,
+      yc = y.c;
+    if (!xe || !ye) {
+      // Either Infinity?
+      if (!xc || !yc) return xc ? (y.s = -b, y) : new BigNumber(yc ? x : NaN);
+
+      // Either zero?
+      if (!xc[0] || !yc[0]) {
+        // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
+        return yc[0] ? (y.s = -b, y) : new BigNumber(xc[0] ? x :
+        // IEEE 754 (2008) 6.3: n - n = -0 when rounding to -Infinity
+        ROUNDING_MODE == 3 ? -0 : 0);
+      }
+    }
+    xe = bitFloor(xe);
+    ye = bitFloor(ye);
+    xc = xc.slice();
+
+    // Determine which is the bigger number.
+    if (a = xe - ye) {
+      if (xLTy = a < 0) {
+        a = -a;
+        t = xc;
+      } else {
+        ye = xe;
+        t = yc;
+      }
+      t.reverse();
+
+      // Prepend zeros to equalise exponents.
+      for (b = a; b--; t.push(0));
+      t.reverse();
+    } else {
+      // Exponents equal. Check digit by digit.
+      j = (xLTy = (a = xc.length) < (b = yc.length)) ? a : b;
+      for (a = b = 0; b < j; b++) {
+        if (xc[b] != yc[b]) {
+          xLTy = xc[b] < yc[b];
+          break;
+        }
+      }
+    }
+
+    // x < y? Point xc to the array of the bigger number.
+    if (xLTy) t = xc, xc = yc, yc = t, y.s = -y.s;
+    b = (j = yc.length) - (i = xc.length);
+
+    // Append zeros to xc if shorter.
+    // No need to add zeros to yc if shorter as subtract only needs to start at yc.length.
+    if (b > 0) for (; b--; xc[i++] = 0);
+    b = BASE - 1;
+
+    // Subtract yc from xc.
+    for (; j > a;) {
+      if (xc[--j] < yc[j]) {
+        for (i = j; i && !xc[--i]; xc[i] = b);
+        --xc[i];
+        xc[j] += BASE;
+      }
+      xc[j] -= yc[j];
+    }
+
+    // Remove leading zeros and adjust exponent accordingly.
+    for (; xc[0] == 0; xc.splice(0, 1), --ye);
+
+    // Zero?
+    if (!xc[0]) {
+      // Following IEEE 754 (2008) 6.3,
+      // n - n = +0  but  n - n = -0  when rounding towards -Infinity.
+      y.s = ROUNDING_MODE == 3 ? -1 : 1;
+      y.c = [y.e = 0];
+      return y;
+    }
+
+    // No need to check for Infinity as +x - +y != Infinity && -x - -y != Infinity
+    // for finite x and y.
+    return normalise(y, xc, ye);
+  };
+
+  /*
+   *   n % 0 =  N
+   *   n % N =  N
+   *   n % I =  n
+   *   0 % n =  0
+   *  -0 % n = -0
+   *   0 % 0 =  N
+   *   0 % N =  N
+   *   0 % I =  0
+   *   N % n =  N
+   *   N % 0 =  N
+   *   N % N =  N
+   *   N % I =  N
+   *   I % n =  N
+   *   I % 0 =  N
+   *   I % N =  N
+   *   I % I =  N
+   *
+   * Return a new BigNumber whose value is the value of this BigNumber modulo the value of
+   * BigNumber(y, b). The result depends on the value of MODULO_MODE.
+   */
+  P.modulo = P.mod = function (y, b) {
+    var q,
+      s,
+      x = this;
+    y = new BigNumber(y, b);
+
+    // Return NaN if x is Infinity or NaN, or y is NaN or zero.
+    if (!x.c || !y.s || y.c && !y.c[0]) {
+      return new BigNumber(NaN);
+
+      // Return x if y is Infinity or x is zero.
+    } else if (!y.c || x.c && !x.c[0]) {
+      return new BigNumber(x);
+    }
+    if (MODULO_MODE == 9) {
+      // Euclidian division: q = sign(y) * floor(x / abs(y))
+      // r = x - qy    where  0 <= r < abs(y)
+      s = y.s;
+      y.s = 1;
+      q = div(x, y, 0, 3);
+      y.s = s;
+      q.s *= s;
+    } else {
+      q = div(x, y, 0, MODULO_MODE);
+    }
+    y = x.minus(q.times(y));
+
+    // To match JavaScript %, ensure sign of zero is sign of dividend.
+    if (!y.c[0] && MODULO_MODE == 1) y.s = x.s;
+    return y;
+  };
+
+  /*
+   *  n * 0 = 0
+   *  n * N = N
+   *  n * I = I
+   *  0 * n = 0
+   *  0 * 0 = 0
+   *  0 * N = N
+   *  0 * I = N
+   *  N * n = N
+   *  N * 0 = N
+   *  N * N = N
+   *  N * I = N
+   *  I * n = I
+   *  I * 0 = N
+   *  I * N = N
+   *  I * I = I
+   *
+   * Return a new BigNumber whose value is the value of this BigNumber multiplied by the value
+   * of BigNumber(y, b).
+   */
+  P.multipliedBy = P.times = function (y, b) {
+    var c,
+      e,
+      i,
+      j,
+      k,
+      m,
+      xcL,
+      xlo,
+      xhi,
+      ycL,
+      ylo,
+      yhi,
+      zc,
+      base,
+      sqrtBase,
+      x = this,
+      xc = x.c,
+      yc = (y = new BigNumber(y, b)).c;
+
+    // Either NaN, ±Infinity or ±0?
+    if (!xc || !yc || !xc[0] || !yc[0]) {
+      // Return NaN if either is NaN, or one is 0 and the other is Infinity.
+      if (!x.s || !y.s || xc && !xc[0] && !yc || yc && !yc[0] && !xc) {
+        y.c = y.e = y.s = null;
+      } else {
+        y.s *= x.s;
+
+        // Return ±Infinity if either is ±Infinity.
+        if (!xc || !yc) {
+          y.c = y.e = null;
+
+          // Return ±0 if either is ±0.
+        } else {
+          y.c = [0];
+          y.e = 0;
+        }
+      }
+      return y;
+    }
+    e = bitFloor(x.e / LOG_BASE) + bitFloor(y.e / LOG_BASE);
+    y.s *= x.s;
+    xcL = xc.length;
+    ycL = yc.length;
+
+    // Ensure xc points to longer array and xcL to its length.
+    if (xcL < ycL) zc = xc, xc = yc, yc = zc, i = xcL, xcL = ycL, ycL = i;
+
+    // Initialise the result array with zeros.
+    for (i = xcL + ycL, zc = []; i--; zc.push(0));
+    base = BASE;
+    sqrtBase = SQRT_BASE;
+    for (i = ycL; --i >= 0;) {
+      c = 0;
+      ylo = yc[i] % sqrtBase;
+      yhi = yc[i] / sqrtBase | 0;
+      for (k = xcL, j = i + k; j > i;) {
+        xlo = xc[--k] % sqrtBase;
+        xhi = xc[k] / sqrtBase | 0;
+        m = yhi * xlo + xhi * ylo;
+        xlo = ylo * xlo + m % sqrtBase * sqrtBase + zc[j] + c;
+        c = (xlo / base | 0) + (m / sqrtBase | 0) + yhi * xhi;
+        zc[j--] = xlo % base;
+      }
+      zc[j] = c;
+    }
+    if (c) {
+      ++e;
+    } else {
+      zc.splice(0, 1);
+    }
+    return normalise(y, zc, e);
+  };
+
+  /*
+   * Return a new BigNumber whose value is the value of this BigNumber negated,
+   * i.e. multiplied by -1.
+   */
+  P.negated = function () {
+    var x = new BigNumber(this);
+    x.s = -x.s || null;
+    return x;
+  };
+
+  /*
+   *  n + 0 = n
+   *  n + N = N
+   *  n + I = I
+   *  0 + n = n
+   *  0 + 0 = 0
+   *  0 + N = N
+   *  0 + I = I
+   *  N + n = N
+   *  N + 0 = N
+   *  N + N = N
+   *  N + I = N
+   *  I + n = I
+   *  I + 0 = I
+   *  I + N = N
+   *  I + I = I
+   *
+   * Return a new BigNumber whose value is the value of this BigNumber plus the value of
+   * BigNumber(y, b).
+   */
+  P.plus = function (y, b) {
+    var t,
+      x = this,
+      a = x.s;
+    y = new BigNumber(y, b);
+    b = y.s;
+
+    // Either NaN?
+    if (!a || !b) return new BigNumber(NaN);
+
+    // Signs differ?
+    if (a != b) {
+      y.s = -b;
+      return x.minus(y);
+    }
+    var xe = x.e / LOG_BASE,
+      ye = y.e / LOG_BASE,
+      xc = x.c,
+      yc = y.c;
+    if (!xe || !ye) {
+      // Return ±Infinity if either ±Infinity.
+      if (!xc || !yc) return new BigNumber(a / 0);
+
+      // Either zero?
+      // Return y if y is non-zero, x if x is non-zero, or zero if both are zero.
+      if (!xc[0] || !yc[0]) return yc[0] ? y : new BigNumber(xc[0] ? x : a * 0);
+    }
+    xe = bitFloor(xe);
+    ye = bitFloor(ye);
+    xc = xc.slice();
+
+    // Prepend zeros to equalise exponents. Faster to use reverse then do unshifts.
+    if (a = xe - ye) {
+      if (a > 0) {
+        ye = xe;
+        t = yc;
+      } else {
+        a = -a;
+        t = xc;
+      }
+      t.reverse();
+      for (; a--; t.push(0));
+      t.reverse();
+    }
+    a = xc.length;
+    b = yc.length;
+
+    // Point xc to the longer array, and b to the shorter length.
+    if (a - b < 0) t = yc, yc = xc, xc = t, b = a;
+
+    // Only start adding at yc.length - 1 as the further digits of xc can be ignored.
+    for (a = 0; b;) {
+      a = (xc[--b] = xc[b] + yc[b] + a) / BASE | 0;
+      xc[b] = BASE === xc[b] ? 0 : xc[b] % BASE;
+    }
+    if (a) {
+      xc = [a].concat(xc);
+      ++ye;
+    }
+
+    // No need to check for zero, as +x + +y != 0 && -x + -y != 0
+    // ye = MAX_EXP + 1 possible
+    return normalise(y, xc, ye);
+  };
+
+  /*
+   * If sd is undefined or null or true or false, return the number of significant digits of
+   * the value of this BigNumber, or null if the value of this BigNumber is ±Infinity or NaN.
+   * If sd is true include integer-part trailing zeros in the count.
+   *
+   * Otherwise, if sd is a number, return a new BigNumber whose value is the value of this
+   * BigNumber rounded to a maximum of sd significant digits using rounding mode rm, or
+   * ROUNDING_MODE if rm is omitted.
+   *
+   * sd {number|boolean} number: significant digits: integer, 1 to MAX inclusive.
+   *                     boolean: whether to count integer-part trailing zeros: true or false.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {sd|rm}'
+   */
+  P.precision = P.sd = function (sd, rm) {
+    var c,
+      n,
+      v,
+      x = this;
+    if (sd != null && sd !== !!sd) {
+      intCheck(sd, 1, MAX);
+      if (rm == null) rm = ROUNDING_MODE;else intCheck(rm, 0, 8);
+      return round(new BigNumber(x), sd, rm);
+    }
+    if (!(c = x.c)) return null;
+    v = c.length - 1;
+    n = v * LOG_BASE + 1;
+    if (v = c[v]) {
+      // Subtract the number of trailing zeros of the last element.
+      for (; v % 10 == 0; v /= 10, n--);
+
+      // Add the number of digits of the first element.
+      for (v = c[0]; v >= 10; v /= 10, n++);
+    }
+    if (sd && x.e + 1 > n) n = x.e + 1;
+    return n;
+  };
+
+  /*
+   * Return a new BigNumber whose value is the value of this BigNumber shifted by k places
+   * (powers of 10). Shift to the right if n > 0, and to the left if n < 0.
+   *
+   * k {number} Integer, -MAX_SAFE_INTEGER to MAX_SAFE_INTEGER inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {k}'
+   */
+  P.shiftedBy = function (k) {
+    intCheck(k, -MAX_SAFE_INTEGER, MAX_SAFE_INTEGER);
+    return this.times('1e' + k);
+  };
+
+  /*
+   *  sqrt(-n) =  N
+   *  sqrt(N) =  N
+   *  sqrt(-I) =  N
+   *  sqrt(I) =  I
+   *  sqrt(0) =  0
+   *  sqrt(-0) = -0
+   *
+   * Return a new BigNumber whose value is the square root of the value of this BigNumber,
+   * rounded according to DECIMAL_PLACES and ROUNDING_MODE.
+   */
+  P.squareRoot = P.sqrt = function () {
+    var m,
+      n,
+      r,
+      rep,
+      t,
+      x = this,
+      c = x.c,
+      s = x.s,
+      e = x.e,
+      dp = DECIMAL_PLACES + 4,
+      half = new BigNumber('0.5');
+
+    // Negative/NaN/Infinity/zero?
+    if (s !== 1 || !c || !c[0]) {
+      return new BigNumber(!s || s < 0 && (!c || c[0]) ? NaN : c ? x : 1 / 0);
+    }
+
+    // Initial estimate.
+    s = Math.sqrt(+valueOf(x));
+
+    // Math.sqrt underflow/overflow?
+    // Pass x to Math.sqrt as integer, then adjust the exponent of the result.
+    if (s == 0 || s == 1 / 0) {
+      n = coeffToString(c);
+      if ((n.length + e) % 2 == 0) n += '0';
+      s = Math.sqrt(+n);
+      e = bitFloor((e + 1) / 2) - (e < 0 || e % 2);
+      if (s == 1 / 0) {
+        n = '5e' + e;
+      } else {
+        n = s.toExponential();
+        n = n.slice(0, n.indexOf('e') + 1) + e;
+      }
+      r = new BigNumber(n);
+    } else {
+      r = new BigNumber(s + '');
+    }
+
+    // Check for zero.
+    // r could be zero if MIN_EXP is changed after the this value was created.
+    // This would cause a division by zero (x/t) and hence Infinity below, which would cause
+    // coeffToString to throw.
+    if (r.c[0]) {
+      e = r.e;
+      s = e + dp;
+      if (s < 3) s = 0;
+
+      // Newton-Raphson iteration.
+      for (;;) {
+        t = r;
+        r = half.times(t.plus(div(x, t, dp, 1)));
+        if (coeffToString(t.c).slice(0, s) === (n = coeffToString(r.c)).slice(0, s)) {
+          // The exponent of r may here be one less than the final result exponent,
+          // e.g 0.0009999 (e-4) --> 0.001 (e-3), so adjust s so the rounding digits
+          // are indexed correctly.
+          if (r.e < e) --s;
+          n = n.slice(s - 3, s + 1);
+
+          // The 4th rounding digit may be in error by -1 so if the 4 rounding digits
+          // are 9999 or 4999 (i.e. approaching a rounding boundary) continue the
+          // iteration.
+          if (n == '9999' || !rep && n == '4999') {
+            // On the first iteration only, check to see if rounding up gives the
+            // exact result as the nines may infinitely repeat.
+            if (!rep) {
+              round(t, t.e + DECIMAL_PLACES + 2, 0);
+              if (t.times(t).eq(x)) {
+                r = t;
+                break;
+              }
+            }
+            dp += 4;
+            s += 4;
+            rep = 1;
+          } else {
+            // If rounding digits are null, 0{0,4} or 50{0,3}, check for exact
+            // result. If not, then there are further digits and m will be truthy.
+            if (!+n || !+n.slice(1) && n.charAt(0) == '5') {
+              // Truncate to the first rounding digit.
+              round(r, r.e + DECIMAL_PLACES + 2, 1);
+              m = !r.times(r).eq(x);
+            }
+            break;
+          }
+        }
+      }
+    }
+    return round(r, r.e + DECIMAL_PLACES + 1, ROUNDING_MODE, m);
+  };
+
+  /*
+   * Return a string representing the value of this BigNumber in exponential notation and
+   * rounded using ROUNDING_MODE to dp fixed decimal places.
+   *
+   * [dp] {number} Decimal places. Integer, 0 to MAX inclusive.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {dp|rm}'
+   */
+  P.toExponential = function (dp, rm) {
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      dp++;
+    }
+    return format(this, dp, rm, 1);
+  };
+
+  /*
+   * Return a string representing the value of this BigNumber in fixed-point notation rounding
+   * to dp fixed decimal places using rounding mode rm, or ROUNDING_MODE if rm is omitted.
+   *
+   * Note: as with JavaScript's number type, (-0).toFixed(0) is '0',
+   * but e.g. (-0.00001).toFixed(0) is '-0'.
+   *
+   * [dp] {number} Decimal places. Integer, 0 to MAX inclusive.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {dp|rm}'
+   */
+  P.toFixed = function (dp, rm) {
+    if (dp != null) {
+      intCheck(dp, 0, MAX);
+      dp = dp + this.e + 1;
+    }
+    return format(this, dp, rm);
+  };
+
+  /*
+   * Return a string representing the value of this BigNumber in fixed-point notation rounded
+   * using rm or ROUNDING_MODE to dp decimal places, and formatted according to the properties
+   * of the format or FORMAT object (see BigNumber.set).
+   *
+   * The formatting object may contain some or all of the properties shown below.
+   *
+   * FORMAT = {
+   *   prefix: '',
+   *   groupSize: 3,
+   *   secondaryGroupSize: 0,
+   *   groupSeparator: ',',
+   *   decimalSeparator: '.',
+   *   fractionGroupSize: 0,
+   *   fractionGroupSeparator: '\xA0',      // non-breaking space
+   *   suffix: ''
+   * };
+   *
+   * [dp] {number} Decimal places. Integer, 0 to MAX inclusive.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   * [format] {object} Formatting options. See FORMAT pbject above.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {dp|rm}'
+   * '[BigNumber Error] Argument not an object: {format}'
+   */
+  P.toFormat = function (dp, rm, format) {
+    var str,
+      x = this;
+    if (format == null) {
+      if (dp != null && rm && typeof rm == 'object') {
+        format = rm;
+        rm = null;
+      } else if (dp && typeof dp == 'object') {
+        format = dp;
+        dp = rm = null;
+      } else {
+        format = FORMAT;
+      }
+    } else if (typeof format != 'object') {
+      throw Error(bignumberError + 'Argument not an object: ' + format);
+    }
+    str = x.toFixed(dp, rm);
+    if (x.c) {
+      var i,
+        arr = str.split('.'),
+        g1 = +format.groupSize,
+        g2 = +format.secondaryGroupSize,
+        groupSeparator = format.groupSeparator || '',
+        intPart = arr[0],
+        fractionPart = arr[1],
+        isNeg = x.s < 0,
+        intDigits = isNeg ? intPart.slice(1) : intPart,
+        len = intDigits.length;
+      if (g2) i = g1, g1 = g2, g2 = i, len -= i;
+      if (g1 > 0 && len > 0) {
+        i = len % g1 || g1;
+        intPart = intDigits.substr(0, i);
+        for (; i < len; i += g1) intPart += groupSeparator + intDigits.substr(i, g1);
+        if (g2 > 0) intPart += groupSeparator + intDigits.slice(i);
+        if (isNeg) intPart = '-' + intPart;
+      }
+      str = fractionPart ? intPart + (format.decimalSeparator || '') + ((g2 = +format.fractionGroupSize) ? fractionPart.replace(new RegExp('\\d{' + g2 + '}\\B', 'g'), '$&' + (format.fractionGroupSeparator || '')) : fractionPart) : intPart;
+    }
+    return (format.prefix || '') + str + (format.suffix || '');
+  };
+
+  /*
+   * Return an array of two BigNumbers representing the value of this BigNumber as a simple
+   * fraction with an integer numerator and an integer denominator.
+   * The denominator will be a positive non-zero value less than or equal to the specified
+   * maximum denominator. If a maximum denominator is not specified, the denominator will be
+   * the lowest value necessary to represent the number exactly.
+   *
+   * [md] {number|string|BigNumber} Integer >= 1, or Infinity. The maximum denominator.
+   *
+   * '[BigNumber Error] Argument {not an integer|out of range} : {md}'
+   */
+  P.toFraction = function (md) {
+    var d,
+      d0,
+      d1,
+      d2,
+      e,
+      exp,
+      n,
+      n0,
+      n1,
+      q,
+      r,
+      s,
+      x = this,
+      xc = x.c;
+    if (md != null) {
+      n = new BigNumber(md);
+
+      // Throw if md is less than one or is not an integer, unless it is Infinity.
+      if (!n.isInteger() && (n.c || n.s !== 1) || n.lt(ONE)) {
+        throw Error(bignumberError + 'Argument ' + (n.isInteger() ? 'out of range: ' : 'not an integer: ') + valueOf(n));
+      }
+    }
+    if (!xc) return new BigNumber(x);
+    d = new BigNumber(ONE);
+    n1 = d0 = new BigNumber(ONE);
+    d1 = n0 = new BigNumber(ONE);
+    s = coeffToString(xc);
+
+    // Determine initial denominator.
+    // d is a power of 10 and the minimum max denominator that specifies the value exactly.
+    e = d.e = s.length - x.e - 1;
+    d.c[0] = POWS_TEN[(exp = e % LOG_BASE) < 0 ? LOG_BASE + exp : exp];
+    md = !md || n.comparedTo(d) > 0 ? e > 0 ? d : n1 : n;
+    exp = MAX_EXP;
+    MAX_EXP = 1 / 0;
+    n = new BigNumber(s);
+
+    // n0 = d1 = 0
+    n0.c[0] = 0;
+    for (;;) {
+      q = div(n, d, 0, 1);
+      d2 = d0.plus(q.times(d1));
+      if (d2.comparedTo(md) == 1) break;
+      d0 = d1;
+      d1 = d2;
+      n1 = n0.plus(q.times(d2 = n1));
+      n0 = d2;
+      d = n.minus(q.times(d2 = d));
+      n = d2;
+    }
+    d2 = div(md.minus(d0), d1, 0, 1);
+    n0 = n0.plus(d2.times(n1));
+    d0 = d0.plus(d2.times(d1));
+    n0.s = n1.s = x.s;
+    e = e * 2;
+
+    // Determine which fraction is closer to x, n0/d0 or n1/d1
+    r = div(n1, d1, e, ROUNDING_MODE).minus(x).abs().comparedTo(div(n0, d0, e, ROUNDING_MODE).minus(x).abs()) < 1 ? [n1, d1] : [n0, d0];
+    MAX_EXP = exp;
+    return r;
+  };
+
+  /*
+   * Return the value of this BigNumber converted to a number primitive.
+   */
+  P.toNumber = function () {
+    return +valueOf(this);
+  };
+
+  /*
+   * Return a string representing the value of this BigNumber rounded to sd significant digits
+   * using rounding mode rm or ROUNDING_MODE. If sd is less than the number of digits
+   * necessary to represent the integer part of the value in fixed-point notation, then use
+   * exponential notation.
+   *
+   * [sd] {number} Significant digits. Integer, 1 to MAX inclusive.
+   * [rm] {number} Rounding mode. Integer, 0 to 8 inclusive.
+   *
+   * '[BigNumber Error] Argument {not a primitive number|not an integer|out of range}: {sd|rm}'
+   */
+  P.toPrecision = function (sd, rm) {
+    if (sd != null) intCheck(sd, 1, MAX);
+    return format(this, sd, rm, 2);
+  };
+
+  /*
+   * Return a string representing the value of this BigNumber in base b, or base 10 if b is
+   * omitted. If a base is specified, including base 10, round according to DECIMAL_PLACES and
+   * ROUNDING_MODE. If a base is not specified, and this BigNumber has a positive exponent
+   * that is equal to or greater than TO_EXP_POS, or a negative exponent equal to or less than
+   * TO_EXP_NEG, return exponential notation.
+   *
+   * [b] {number} Integer, 2 to ALPHABET.length inclusive.
+   *
+   * '[BigNumber Error] Base {not a primitive number|not an integer|out of range}: {b}'
+   */
+  P.toString = function (b) {
+    var str,
+      n = this,
+      s = n.s,
+      e = n.e;
+
+    // Infinity or NaN?
+    if (e === null) {
+      if (s) {
+        str = 'Infinity';
+        if (s < 0) str = '-' + str;
+      } else {
+        str = 'NaN';
+      }
+    } else {
+      if (b == null) {
+        str = e <= TO_EXP_NEG || e >= TO_EXP_POS ? toExponential(coeffToString(n.c), e) : toFixedPoint(coeffToString(n.c), e, '0');
+      } else if (b === 10) {
+        n = round(new BigNumber(n), DECIMAL_PLACES + e + 1, ROUNDING_MODE);
+        str = toFixedPoint(coeffToString(n.c), n.e, '0');
+      } else {
+        intCheck(b, 2, ALPHABET.length, 'Base');
+        str = convertBase(toFixedPoint(coeffToString(n.c), e, '0'), 10, b, s, true);
+      }
+      if (s < 0 && n.c[0]) str = '-' + str;
+    }
+    return str;
+  };
+
+  /*
+   * Return as toString, but do not accept a base argument, and include the minus sign for
+   * negative zero.
+   */
+  P.valueOf = P.toJSON = function () {
+    return valueOf(this);
+  };
+  P._isBigNumber = true;
+  P[Symbol.toStringTag] = 'BigNumber';
+
+  // Node.js v10.12.0+
+  P[Symbol["for"]('nodejs.util.inspect.custom')] = P.valueOf;
+  if (configObject != null) BigNumber.set(configObject);
+  return BigNumber;
+}
+
+// PRIVATE HELPER FUNCTIONS
+
+// These functions don't need access to variables,
+// e.g. DECIMAL_PLACES, in the scope of the `clone` function above.
+
+function bitFloor(n) {
+  var i = n | 0;
+  return n > 0 || n === i ? i : i - 1;
+}
+
+// Return a coefficient array as a string of base 10 digits.
+function coeffToString(a) {
+  var s,
+    z,
+    i = 1,
+    j = a.length,
+    r = a[0] + '';
+  for (; i < j;) {
+    s = a[i++] + '';
+    z = LOG_BASE - s.length;
+    for (; z--; s = '0' + s);
+    r += s;
+  }
+
+  // Determine trailing zeros.
+  for (j = r.length; r.charCodeAt(--j) === 48;);
+  return r.slice(0, j + 1 || 1);
+}
+
+// Compare the value of BigNumbers x and y.
+function compare(x, y) {
+  var a,
+    b,
+    xc = x.c,
+    yc = y.c,
+    i = x.s,
+    j = y.s,
+    k = x.e,
+    l = y.e;
+
+  // Either NaN?
+  if (!i || !j) return null;
+  a = xc && !xc[0];
+  b = yc && !yc[0];
+
+  // Either zero?
+  if (a || b) return a ? b ? 0 : -j : i;
+
+  // Signs differ?
+  if (i != j) return i;
+  a = i < 0;
+  b = k == l;
+
+  // Either Infinity?
+  if (!xc || !yc) return b ? 0 : !xc ^ a ? 1 : -1;
+
+  // Compare exponents.
+  if (!b) return k > l ^ a ? 1 : -1;
+  j = (k = xc.length) < (l = yc.length) ? k : l;
+
+  // Compare digit by digit.
+  for (i = 0; i < j; i++) if (xc[i] != yc[i]) return xc[i] > yc[i] ^ a ? 1 : -1;
+
+  // Compare lengths.
+  return k == l ? 0 : k > l ^ a ? 1 : -1;
+}
+
+/*
+ * Check that n is a primitive number, an integer, and in range, otherwise throw.
+ */
+function intCheck(n, min, max, name) {
+  if (n < min || n > max || n !== mathfloor(n)) {
+    throw Error(bignumberError + (name || 'Argument') + (typeof n == 'number' ? n < min || n > max ? ' out of range: ' : ' not an integer: ' : ' not a primitive number: ') + String(n));
+  }
+}
+
+// Assumes finite n.
+function isOdd(n) {
+  var k = n.c.length - 1;
+  return bitFloor(n.e / LOG_BASE) == k && n.c[k] % 2 != 0;
+}
+function toExponential(str, e) {
+  return (str.length > 1 ? str.charAt(0) + '.' + str.slice(1) : str) + (e < 0 ? 'e' : 'e+') + e;
+}
+function toFixedPoint(str, e, z) {
+  var len, zs;
+
+  // Negative exponent?
+  if (e < 0) {
+    // Prepend zeros.
+    for (zs = z + '.'; ++e; zs += z);
+    str = zs + str;
+
+    // Positive exponent
+  } else {
+    len = str.length;
+
+    // Append zeros.
+    if (++e > len) {
+      for (zs = z, e -= len; --e; zs += z);
+      str += zs;
+    } else if (e < len) {
+      str = str.slice(0, e) + '.' + str.slice(e);
+    }
+  }
+  return str;
+}
+
+// EXPORT
+
+var BigNumber = clone();
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+var TokenType =
+/**
+ * Token label
+ */
+
+/**
+ * 是否为二元运算符
+ */
+
+/**
+ * 是否可以作为前缀（一元运算符，仅支持运算符在左侧）
+ */
+
+/**
+ * 运算符优先级
+ * @see https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+ */
+
+/**
+ * 读取 Token 时更新上下文
+ */
+
+/**
+ * constructor
+ * @param label
+ * @param options
+ */
+function TokenType(label) {
+  var _options$precedence;
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  _classCallCheck(this, TokenType);
+  _defineProperty(this, "label", void 0);
+  _defineProperty(this, "isBinary", void 0);
+  _defineProperty(this, "isPrefix", void 0);
+  _defineProperty(this, "precedence", void 0);
+  _defineProperty(this, "updateContext", void 0);
+  this.label = label;
+  this.isBinary = !!options.isBinary;
+  this.isPrefix = !!options.isPrefix;
+  this.precedence = (_options$precedence = options.precedence) !== null && _options$precedence !== void 0 ? _options$precedence : -1;
+};
+var tokenTypes = {
+  start: new TokenType('start'),
+  end: new TokenType('end'),
+  parenL: new TokenType('('),
+  parenR: new TokenType(')'),
+  numeric: new TokenType('numeric'),
+  identifier: new TokenType('identifier'),
+  plus: new TokenType('+', {
+    isBinary: true,
+    precedence: 13
+  }),
+  minus: new TokenType('-', {
+    isBinary: true,
+    precedence: 13
+  }),
+  times: new TokenType('*', {
+    isBinary: true,
+    precedence: 14
+  }),
+  div: new TokenType('/', {
+    isBinary: true,
+    precedence: 14
+  }),
+  prefixPlus: new TokenType('+', {
+    isPrefix: true,
+    precedence: 16
+  }),
+  prefixMinus: new TokenType('-', {
+    isPrefix: true,
+    precedence: 16
+  })
+};
+tokenTypes.parenL.updateContext = function () {
+  this.allowPrefix = true;
+};
+tokenTypes.parenR.updateContext = function () {
+  this.allowPrefix = false;
+};
+tokenTypes.numeric.updateContext = function () {
+  this.allowPrefix = false;
+};
+tokenTypes.identifier.updateContext = function () {
+  this.allowPrefix = false;
+};
+
+/**
+ * AST 节点
+ */
+var Node = function Node(start) {
+  _classCallCheck(this, Node);
+  _defineProperty(this, "type", void 0);
+  _defineProperty(this, "start", void 0);
+  _defineProperty(this, "end", void 0);
+  this.type = '';
+  this.start = start;
+  this.end = start;
+};
+/**
+ * 判断数字可能的字符
+ * @param code
+ */
+
+function isNumericChar(code) {
+  return code >= 48 && code <= 57;
+}
+/**
+ * 判断数字开始字符
+ * @param code
+ */
+
+function isNumericStart(code) {
+  if (code === 46) return true; // `.`
+
+  return isNumericChar(code); // 0-9
+}
+/**
+ * 判断标识符开始字符
+ * @param code
+ */
+
+function isIdentifierStart(code) {
+  if (code >= 65 && code <= 90) return true; // A-Z
+
+  if (code >= 97 && code <= 122) return true; // a-z
+
+  return false;
+}
+/**
+ * 判断是标识符开始字符
+ * @param code
+ */
+
+function isIdentifierChar(code) {
+  if (isIdentifierStart(code)) return true;
+  if (isNumericChar(code)) return true; // 0-9
+
+  if (code === 95) return true; // `_`
+
+  return false;
+}
+/**
+ * 返回一个数字的原始数据
+ * @param rawValue
+ */
+
+function getRealNumeric(rawValue) {
+  var value = rawValue; // 去掉数字分割线线
+
+  var arr = [];
+  for (var i = 0; i < value.length; i++) {
+    var code = value.charCodeAt(i);
+    if (code !== 95) {
+      // `_`
+      arr.push(value[i]);
+    }
+  }
+  if (arr.length !== value.length) {
+    value = arr.join('');
+  }
+  return value;
+}
+
+// 保留字符
+var reserved = ['+', '-', '*', '/', '(', ')'];
+/**
+ * 注册的所有自定义运算符
+ */
+
+var installedOperators = [];
+/**
+ * 注册自定义运算符
+ * @param operator
+ */
+
+function useOperator(operator) {
+  if (!installedOperators.includes(operator)) {
+    installedOperators.unshift(operator); // 注册相同运算符，保证后面注册的覆盖前面的
+  }
+}
+/**
+ * 检查参数
+ * @param value
+ * @param precedence
+ */
+
+function checkCreateArgs(value, precedence) {
+  if (typeof value !== 'string' || !/^\S+$/.test(value)) {
+    throw new Error('The custom operator should be a non-empty string');
+  }
+  if (reserved.includes(value)) {
+    throw new Error("The custom operator cannot use reserved character, including: ".concat(reserved.join(', ')));
+  }
+  if (isNumericStart(value.charCodeAt(0))) {
+    // 0-9, `.`
+    throw new Error('The custom operator cannot start with a possible number, including: `.`, 0-9');
+  }
+  if (value.charCodeAt(0) === 63) {
+    // `?`
+    throw new Error('The custom operator cannot start with `?`');
+  }
+  if (precedence != null && (typeof precedence !== 'number' || precedence < 0)) {
+    throw new Error('The precedence should be a number greater than 0');
+  }
+}
+/**
+ * 运算符
+ */
+
+var Operator = function Operator(value, precedence, calc) {
+  var isUnary = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  _classCallCheck(this, Operator);
+  _defineProperty(this, "value", void 0);
+  _defineProperty(this, "codes", void 0);
+  _defineProperty(this, "type", void 0);
+  _defineProperty(this, "calc", void 0);
+  this.value = value;
+  this.codes = value.split('').map(function (_, i) {
+    return value.charCodeAt(i);
+  });
+  this.type = new TokenType(value, {
+    isBinary: !isUnary,
+    isPrefix: isUnary,
+    precedence: precedence
+  });
+  this.calc = calc;
+};
+function createBinaryOperator(value, precedence, calc) {
+  checkCreateArgs(value, precedence);
+  if (typeof calc !== 'function') {
+    throw new Error('Expected to receive a calculation method, like: `(left, right) => String(left - right)`');
+  }
+  return new Operator(value, precedence, calc, false);
+}
+/**
+ * 创建一个一元运算符
+ * @param value
+ * @param precedence
+ * @param calc
+ * * @see 运算符优先级参考: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+ */
+
+function createUnaryOperator(value, precedence, calc) {
+  checkCreateArgs(value, precedence);
+  if (typeof calc !== 'function') {
+    throw new Error('Expected to receive a calculation method, like: `(value) => String(Math.abs(value))`');
+  }
+  return new Operator(value, precedence, calc, true);
+}
+
+/**
+ * 二元表达式计算方法适配器
+ */
+
+var _adapter = {
+  '+': function _(left, right) {
+    return String(Number(left) + Number(right));
+  },
+  '-': function _(left, right) {
+    return String(Number(left) - Number(right));
+  },
+  '*': function _(left, right) {
+    return String(Number(left) * Number(right));
+  },
+  '/': function _(left, right) {
+    return String(Number(left) / Number(right));
+  }
+};
+/**
+ * 使用指定的计算方法适配器用于计算值
+ * @param adapter
+ */
+
+function useAdapter(adapter) {
+  var baseOperators = ['+', '-', '*', '/'];
+  adapter = adapter || {};
+  baseOperators.forEach(function (op) {
+    if (typeof adapter[op] !== 'function') {
+      throw new Error("Missing method for calculation operator `".concat(op, "`"));
+    }
+  });
+  _adapter = adapter;
+}
+/**
+ * 二元表达式计算
+ * @param left
+ * @param right
+ * @param operator
+ */
+
+function binaryCalculation(left, right, operator) {
+  switch (operator) {
+    case '+':
+    case '-':
+    case '*':
+    case '/':
+      return _adapter[operator](left, right);
+    default:
+      for (var i = 0; i < installedOperators.length; i++) {
+        var op = installedOperators[i];
+        if (op.type.isBinary && op.value === operator) {
+          return op.calc(left, right);
+        }
+      }
+  }
+  /* istanbul ignore next */
+
+  throw new Error("Unexpected binary operator: ".concat(operator));
+}
+/**
+ * 一元表达式计算
+ * @param value
+ * @param operator
+ */
+
+function unaryCalculation(value, operator) {
+  switch (operator) {
+    case '+':
+      return value;
+    case '-':
+      return String(-value);
+    default:
+      for (var i = 0; i < installedOperators.length; i++) {
+        var op = installedOperators[i];
+        if (op.type.isPrefix && op.value === operator) {
+          return op.calc(value);
+        }
+      }
+  }
+  /* istanbul ignore next */
+
+  throw new Error("Unexpected unary operator: ".concat(operator));
+}
+/**
+ * 转换 AST -> 计算结果
+ * @param node
+ * @param scope
+ */
+
+function transform(node) {
+  var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  if (node instanceof Node) {
+    var scopeValue;
+    switch (node.type) {
+      case 'Expression':
+        return transform(node.expression, scope);
+      case 'BinaryExpression':
+        return binaryCalculation(transform(node.left, scope), transform(node.right, scope), node.operator);
+      case 'UnaryExpression':
+        return unaryCalculation(transform(node.argument, scope), node.operator);
+      case 'NumericLiteral':
+        return node.value;
+      case 'Identifier':
+        scopeValue = scope[node.name];
+        if (scopeValue === undefined) {
+          throw new Error("The scope name `".concat(node.name, "` is not initialized"));
+        }
+        return String(scopeValue);
+      default:
+        /* istanbul ignore next */
+        throw new Error("Unexpected type: ".concat(node.type));
+    }
+  }
+  return node;
+}
+
+/**
+ * AST Parser
+ */
+
+var Parser = /*#__PURE__*/function () {
+  /**
+   * 解析的字符串
+   * @param input
+   */
+  function Parser(input) {
+    _classCallCheck(this, Parser);
+    _defineProperty(this, "input", void 0);
+    _defineProperty(this, "node", void 0);
+    _defineProperty(this, "pos", void 0);
+    _defineProperty(this, "tokenType", void 0);
+    _defineProperty(this, "value", void 0);
+    _defineProperty(this, "start", void 0);
+    _defineProperty(this, "end", void 0);
+    _defineProperty(this, "lastTokenStart", void 0);
+    _defineProperty(this, "lastTokenEnd", void 0);
+    _defineProperty(this, "allowPrefix", void 0);
+    this.input = String(input);
+    this.tokenType = tokenTypes.start;
+    this.value = '';
+    this.pos = 0;
+    this.start = 0;
+    this.end = 0;
+    this.lastTokenStart = 0;
+    this.lastTokenEnd = 0;
+    this.allowPrefix = true;
+  }
+  /**
+   * 编译表达式
+   */
+
+  _createClass(Parser, [{
+    key: "compile",
+    value: function compile() {
+      var node = this.node;
+      if (node === undefined) {
+        node = this.parse();
+      }
+      return function (scope) {
+        if (!node) return '0';
+        return transform(node, scope !== null && scope !== void 0 ? scope : {});
+      };
+    }
+    /**
+     * 开始解析，如果是空字符串返回 `null`
+     */
+  }, {
+    key: "parse",
+    value: function parse() {
+      this.next();
+      var node = this.startNode(this.start);
+      if (this.tokenType === tokenTypes.end) {
+        return this.node = null; // 空字符
+      }
+      node.expression = this.parseExpression();
+      if (this.tokenType !== tokenTypes.end) {
+        // 其后遇到其他非法字符
+        this.unexpected(this.value);
+      }
+      return this.node = this.finishNode(node, 'Expression');
+    }
+    /**
+     * 解析表达式
+     */
+  }, {
+    key: "parseExpression",
+    value: function parseExpression() {
+      return this.parseExprAtom(this.start, -1);
+    }
+    /**
+     * 解析一个表达式原子, 如: `1 + 2`、`(1 + 2 + 3)`、`1` 都作为一个表达式原子解析
+     * @param leftStartPos 左侧开始位置
+     * @param minPrecedence 当前上下文的优先级
+     */
+  }, {
+    key: "parseExprAtom",
+    value: function parseExprAtom(leftStartPos, minPrecedence) {
+      if (this.tokenType === tokenTypes.parenL) {
+        // 遇到 `(` 则递归解析表达式原子
+        this.next();
+        var left = this.parseExprAtom(this.start, -1);
+        this.expect(tokenTypes.parenR);
+        return this.parseExprOp(left, leftStartPos, minPrecedence); // 将 `(expr)` 整体作为左值，进入优先级解析流程
+      } else {
+        var _left = this.parseMaybeUnary(minPrecedence);
+        return this.parseExprOp(_left, leftStartPos, minPrecedence); // 读取一个数字作为左值，进入优先级解析流程
+      }
+    }
+    /**
+     * 解析二元表达式优先级
+     * @param left 左值
+     * @param leftStartPos 左值节点起始位置
+     * @param minPrecedence 当前上下文的优先级
+     */
+  }, {
+    key: "parseExprOp",
+    value: function parseExprOp(left, leftStartPos, minPrecedence) {
+      var precedence = this.tokenType.precedence;
+      if (this.tokenType.isBinary && precedence > minPrecedence) {
+        // 比较当前运算符与上下文优先级
+        var node = this.startNode(leftStartPos);
+        var operator = this.value;
+        this.next(); // 解析可能更高优先级的右侧表达式，如: `1 + 2 * 3` 将解析 `2 * 3` 作为右值
+
+        var start = this.start;
+        var maybeHighPrecedenceExpr = this.parseExprAtom(start, precedence);
+        var right = this.parseExprOp(maybeHighPrecedenceExpr, start, precedence);
+        node.left = left;
+        node.operator = operator;
+        node.right = right;
+        this.finishNode(node, 'BinaryExpression'); // 将已经解析的二元表达式作为左值，然后递归解析后面可能的同等优先级或低优先级的表达式作为右值
+        // 如: `1 + 2 + 3`, 当前已经解析 `1 + 2`, 然后将该节点作为左值递归解析表达式优先级
+
+        return this.parseExprOp(node, leftStartPos, minPrecedence);
+      }
+      return left;
+    }
+    /**
+     * 解析可能带前缀的表达式，如: `+1`, `-(2)`, `3`, `-(3 + 4)`, `+-+5`
+     * @param minPrecedence 当前上下文的优先级
+     */
+  }, {
+    key: "parseMaybeUnary",
+    value: function parseMaybeUnary(minPrecedence) {
+      var precedence = this.tokenType.precedence;
+      var node = this.startNode();
+      var start = this.start;
+      var value = this.value; // Note: `1 ++ 1` 会当作 `1 + (+1)` 对待，与 JS 会作为 `1++` 对待不同
+
+      if (this.tokenType.isPrefix) {
+        if (precedence >= minPrecedence) {
+          // 相同优先级的一元运算符可以连续
+          node.operator = value;
+          node.prefix = true;
+          this.next();
+          node.argument = this.parseExprAtom(this.start, precedence);
+          return this.finishNode(node, 'UnaryExpression');
+        }
+      }
+      if (this.tokenType === tokenTypes.numeric) {
+        var realValue = getRealNumeric(value);
+        node.rawValue = value;
+        node.value = realValue;
+        this.next();
+        return this.finishNode(node, 'NumericLiteral');
+      }
+      if (this.tokenType === tokenTypes.identifier) {
+        node.name = value;
+        this.next();
+        return this.finishNode(node, 'Identifier');
+      }
+      return this.unexpected(value, start);
+    }
+    /**
+     * 读取并移到下一个 Token
+     */
+  }, {
+    key: "next",
+    value: function next() {
+      this.lastTokenStart = this.start;
+      this.lastTokenEnd = this.end;
+      this.skipSpace();
+      this.start = this.pos;
+      if (this.pos >= this.input.length) {
+        if (this.tokenType === tokenTypes.end) return;
+        this.finishToken(tokenTypes.end);
+      } else {
+        this.readToken();
+      }
+    }
+    /**
+     * 读取一个 token
+     */
+  }, {
+    key: "readToken",
+    value: function readToken() {
+      var code = this.codeAt(this.pos);
+      if (isNumericStart(code)) {
+        return this.readNumeric();
+      }
+      return this.readTokenFromCode();
+    }
+    /**
+     * 读取一个数字
+     */
+  }, {
+    key: "readNumeric",
+    value: function readNumeric() {
+      var chunkStart = this.pos;
+      var countE = -1; // 统计字符 `e` 出现次数，-1 表示当前位置不允许出现 `e`
+
+      var allowDot = true;
+      var allowUnderline = false;
+      var expectANumber = false; // 是否期望字符是数字
+
+      var unexpectedPos = -1;
+      while (this.isValidPosition()) {
+        var code = this.codeAt(this.pos);
+        if (isNumericChar(code)) {
+          // 0-9
+          if (countE === -1) {
+            countE = 0;
+          }
+          this.pos++;
+          expectANumber = false;
+          allowUnderline = true;
+        } else if (expectANumber) {
+          unexpectedPos = this.pos;
+          expectANumber = false;
+          break;
+        } else if (code === 69 || code === 101) {
+          // `E` / `e`
+          if (countE !== 0) {
+            unexpectedPos = this.pos;
+            break;
+          }
+          countE++;
+          this.pos++;
+          if (this.isValidPosition() && (this.codeAt(this.pos) === 43 || this.codeAt(this.pos) === 45) // `+` / `-`
+          ) {
+            this.pos++;
+          }
+          allowDot = false;
+          expectANumber = true;
+        } else if (code === 46) {
+          // `.`
+          if (!allowDot) {
+            unexpectedPos = this.pos;
+            break;
+          }
+          allowDot = false;
+          this.pos++;
+          if (this.pos - chunkStart === 1) {
+            expectANumber = true;
+          }
+        } else if (code === 95) {
+          // `_`
+          if (!allowUnderline) {
+            unexpectedPos = this.pos;
+            break;
+          }
+          allowUnderline = false;
+          expectANumber = true;
+          this.pos++;
+        } else {
+          break;
+        }
+      }
+      if (expectANumber) {
+        unexpectedPos = this.pos - 1;
+      }
+      if (unexpectedPos >= 0) {
+        this.unexpected(this.input[unexpectedPos], unexpectedPos);
+      }
+      var value = this.input.slice(chunkStart, this.pos);
+      this.finishToken(tokenTypes.numeric, value);
+    }
+    /**
+     * 根据字符 code 读取一个 Token，包括自定义注册的运算符
+     */
+  }, {
+    key: "readTokenFromCode",
+    value: function readTokenFromCode() {
+      var code = this.codeAt(this.pos); // 优先解析自定义运算符
+
+      var operator, i, j;
+      for (i = 0; i < installedOperators.length; i++) {
+        var op = installedOperators[i];
+        for (j = 0; j < op.codes.length; j++) {
+          if (op.codes[j] !== this.codeAt(this.pos + j)) break;
+        }
+        if (j === op.codes.length) {
+          operator = op;
+          break;
+        }
+      }
+      if (operator) {
+        this.pos += operator.codes.length;
+        return this.finishToken(operator.type, operator.value);
+      }
+      switch (code) {
+        case 40:
+          // `(`
+          this.pos++;
+          return this.finishToken(tokenTypes.parenL, '(');
+        case 41:
+          // `)`
+          this.pos++;
+          return this.finishToken(tokenTypes.parenR, ')');
+        case 42:
+          // `*`
+          this.pos++;
+          return this.finishToken(tokenTypes.times, '*');
+        case 43:
+          // `+`
+          this.pos++;
+          if (this.allowPrefix) {
+            return this.finishToken(tokenTypes.prefixPlus, '+');
+          }
+          return this.finishToken(tokenTypes.plus, '+');
+        case 45:
+          // `-`
+          this.pos++;
+          if (this.allowPrefix) {
+            return this.finishToken(tokenTypes.prefixMinus, '-');
+          }
+          return this.finishToken(tokenTypes.minus, '-');
+        case 47:
+          // `/`
+          this.pos++;
+          return this.finishToken(tokenTypes.div, '/');
+        default:
+          if (isIdentifierStart(code)) {
+            return this.readIdentifier();
+          }
+      }
+      this.unexpected(this.input[this.pos]);
+    }
+    /**
+     * 读取一个 scope 变量 Token
+     */
+  }, {
+    key: "readIdentifier",
+    value: function readIdentifier() {
+      var chunkStart = this.pos;
+      while (this.isValidPosition()) {
+        var code = this.codeAt(this.pos);
+        if (isIdentifierChar(code)) {
+          this.pos++;
+        } else {
+          break;
+        }
+      }
+      var value = this.input.slice(chunkStart, this.pos);
+      this.finishToken(tokenTypes.identifier, value);
+    }
+    /**
+     * 完善一个 Token
+     * @param type
+     * @param value
+     */
+  }, {
+    key: "finishToken",
+    value: function finishToken(type) {
+      var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var prevType = this.tokenType;
+      this.end = this.pos;
+      this.tokenType = type;
+      this.value = value;
+      this.updateContext(prevType);
+    }
+    /**
+     * 读取 Token 完成后更新上下文
+     * @param prevType
+     */
+  }, {
+    key: "updateContext",
+    value: function updateContext(prevType) {
+      var type = this.tokenType;
+      if (type.isBinary || type.isPrefix) {
+        this.allowPrefix = true;
+      } else if (type.updateContext) {
+        type.updateContext.call(this, prevType);
+      }
+    }
+  }, {
+    key: "codeAt",
+    value: function codeAt(index) {
+      return this.input.charCodeAt(index);
+    }
+  }, {
+    key: "isValidPosition",
+    value: function isValidPosition() {
+      return this.pos < this.input.length;
+    }
+    /**
+     * 在当前位置创建一个新节点
+     */
+  }, {
+    key: "startNode",
+    value: function startNode(pos) {
+      return new Node(pos !== null && pos !== void 0 ? pos : this.start);
+    }
+    /**
+     * 完善一个节点
+     * @param node
+     * @param type
+     */
+  }, {
+    key: "finishNode",
+    value: function finishNode(node, type) {
+      node.type = type;
+      node.end = this.lastTokenEnd;
+      return node;
+    }
+    /**
+     * 跳过空白字符
+     */
+  }, {
+    key: "skipSpace",
+    value: function skipSpace() {
+      while (this.isValidPosition()) {
+        var code = this.codeAt(this.pos);
+        if (code === 32 || code === 160) {
+          // ` `
+          this.pos++;
+        } else if (code === 13 || code === 10 || code === 8232 || code === 8233) {
+          // new line
+          if (code === 13 && this.codeAt(this.pos + 1) === 10) {
+            // CRLF
+            this.pos++;
+          }
+          this.pos++;
+        } else if (code > 8 && code < 14) {
+          // 制表符等
+          this.pos++;
+        } else {
+          break;
+        }
+      }
+    }
+    /**
+     * 消费当前指定类型的 token，否则抛出异常
+     * @param type
+     */
+  }, {
+    key: "expect",
+    value: function expect(type) {
+      if (!this.eat(type)) {
+        this.unexpected(this.value);
+      }
+    }
+    /**
+     * 消费一个 token，如果是指定的 token 类型，则移动到下一个 token ，返回 true，否则返回 false
+     * @param type
+     */
+  }, {
+    key: "eat",
+    value: function eat(type) {
+      if (this.tokenType === type) {
+        this.next();
+        return true;
+      }
+      return false;
+    }
+    /**
+     * 抛出 Unexpected token 异常
+     * @param token
+     * @param pos
+     */
+  }, {
+    key: "unexpected",
+    value: function unexpected() {
+      var token = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var pos = arguments.length > 1 ? arguments[1] : undefined;
+      this.raise(pos !== null && pos !== void 0 ? pos : this.start, "Unexpected token ".concat(token));
+    }
+    /**
+     * 抛出异常
+     * @param pos
+     * @param message
+     */
+  }, {
+    key: "raise",
+    value: function raise(pos, message) {
+      if (pos > this.input.length - 1) {
+        message = 'Unexpected end of input';
+      } else {
+        message += " at position ".concat(pos);
+      }
+      throw new SyntaxError(message);
+    }
+  }], [{
+    key: "evaluate",
+    value:
+    // 输入的解析字符串
+    // 解析后的 AST 节点
+    // 当前位置
+    // 当前 Token 的类型
+    // 当前 Token 的值
+    // 当前 Token 的开始位置
+    // 当前 Token 的结束位置
+    // 上一个 Token 的开始位置
+    // 上一个 Token 的结束位置
+    // 当前上下文是否允许前缀
+    // pubic static method
+    function evaluate(expression, scope) {
+      return new Parser(expression).compile()(scope);
+    } // internal static
+  }]);
+  return Parser;
+}();
+_defineProperty(Parser, "createBinaryOperator", void 0);
+_defineProperty(Parser, "createUnaryOperator", void 0);
+_defineProperty(Parser, "useOperator", void 0);
+_defineProperty(Parser, "useAdapter", void 0);
+_defineProperty(Parser, "Node", Node);
+_defineProperty(Parser, "TokenType", TokenType);
+_defineProperty(Parser, "tokenTypes", tokenTypes);
+_defineProperty(Parser, "installedOperators", installedOperators);
+var evaluate = Parser.evaluate;
+Parser.createBinaryOperator = createBinaryOperator;
+Parser.createUnaryOperator = createUnaryOperator;
+Parser.useOperator = useOperator;
+Parser.useAdapter = useAdapter;
+var DecimalEval = {
+  evaluate: evaluate,
+  Parser: Parser,
+  Operator: Operator,
+  version: "0.1.1"
+};
+
+/**
+ * big.js 计算适配器
+ */
+var bigJSAdapter = {
+  '+': function _(left, right) {
+    return new BigNumber(left).plus(right).toString();
+  },
+  '-': function _(left, right) {
+    return new BigNumber(left).minus(right).toString();
+  },
+  '*': function _(left, right) {
+    return new BigNumber(left).times(right).toString();
+  },
+  '/': function _(left, right) {
+    return new BigNumber(left).div(right).toString();
+  }
+};
+Parser.useAdapter(bigJSAdapter);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DecimalEval);
+
+
+/***/ }),
+
+/***/ "./src/common/components/commonSelectionModal.tsx":
+/*!********************************************************!*\
+  !*** ./src/common/components/commonSelectionModal.tsx ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ commonSelectionModal)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_common_components_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/components/Modal */ "flarum/common/components/Modal");
+/* harmony import */ var flarum_common_components_Modal__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Modal__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! flarum/common/components/Button */ "flarum/common/components/Button");
+/* harmony import */ var flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! flarum/common/components/Select */ "flarum/common/components/Select");
+/* harmony import */ var flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+
+var commonSelectionModal = /*#__PURE__*/function (_Modal) {
+  function commonSelectionModal() {
+    var _this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _Modal.call.apply(_Modal, [this].concat(args)) || this;
+    _this.selection = "";
+    _this.done = false;
+    return _this;
+  }
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_1__["default"])(commonSelectionModal, _Modal);
+  var _proto = commonSelectionModal.prototype;
+  _proto.oninit = function oninit(vnode) {
+    _Modal.prototype.oninit.call(this, vnode);
+    this.selection = this.attrs.items[Object.keys(this.attrs.items)[0]];
+  };
+  _proto.className = function className() {
+    return 'Modal';
+  };
+  _proto.title = function title() {
+    return this.attrs.title;
+  };
+  _proto.oncreate = function oncreate(vnode) {
+    _Modal.prototype.oncreate.call(this, vnode);
+  };
+  _proto.onremove = function onremove(vnode) {
+    _Modal.prototype.onremove.call(this, vnode);
+    if (!this.done) this.attrs.cancel();
+  };
+  _proto.content = function content() {
+    var _this2 = this;
+    var that = this;
+    return m("div", {
+      className: "Modal-body"
+    }, m("div", {
+      className: "Form"
+    }, m("div", {
+      className: "Form-group"
+    }, m((flarum_common_components_Select__WEBPACK_IMPORTED_MODULE_5___default()), {
+      className: "FormControl",
+      value: this.selection,
+      options: this.attrs.items,
+      onchange: function (name) {
+        _this2.selection = name;
+      }.bind(this)
+    })), m("div", {
+      className: "Form-group"
+    }, m((flarum_common_components_Button__WEBPACK_IMPORTED_MODULE_4___default()), {
+      "class": "Button Button--primary",
+      type: "submit",
+      loading: this.loading
+    }, this.attrs.button))));
+  };
+  _proto.onsubmit = /*#__PURE__*/function () {
+    var _onsubmit = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee(e) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            e.preventDefault();
+            this.done = true;
+            this.attrs.callback(this.selection);
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this);
+    }));
+    function onsubmit(_x) {
+      return _onsubmit.apply(this, arguments);
+    }
+    return onsubmit;
+  }();
+  commonSelectionModal.open = function open(app, items, title, button) {
+    return new Promise(function (resolve, reject) {
+      app.modal.show(commonSelectionModal, {
+        items: items,
+        title: title,
+        button: button,
+        cancel: function cancel() {
+          reject();
+        },
+        callback: function callback(name) {
+          resolve(name);
+          app.modal.close();
+        }
+      }, true);
+    });
+  };
+  return commonSelectionModal;
+}((flarum_common_components_Modal__WEBPACK_IMPORTED_MODULE_3___default()));
+
+
+/***/ }),
+
+/***/ "./src/common/extend.ts":
+/*!******************************!*\
+  !*** ./src/common/extend.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/common/extenders */ "flarum/common/extenders");
+/* harmony import */ var flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _models_Condition__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./models/Condition */ "./src/common/models/Condition.ts");
+/* harmony import */ var _models_CustomCondition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./models/CustomCondition */ "./src/common/models/CustomCondition.ts");
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([new (flarum_common_extenders__WEBPACK_IMPORTED_MODULE_0___default().Store)().add('condition', _models_Condition__WEBPACK_IMPORTED_MODULE_1__["default"]).add(_models_CustomCondition__WEBPACK_IMPORTED_MODULE_2__["default"].type, _models_CustomCondition__WEBPACK_IMPORTED_MODULE_2__["default"])]);
+
+/***/ }),
+
+/***/ "./src/common/integration/index.ts":
+/*!*****************************************!*\
+  !*** ./src/common/integration/index.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   init: () => (/* binding */ init)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_AddFrontend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/AddFrontend */ "./src/common/utils/AddFrontend.ts");
+/* harmony import */ var _components_commonSelectionModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/commonSelectionModal */ "./src/common/components/commonSelectionModal.tsx");
+
+
+
+
+function init(app, fe) {
+  var base = "xypp-collector." + fe + ".integration";
+  if (flarum.extensions['xypp-store']) addStoreItem(app, base);
+  if (flarum.extensions['v17development-user-badges']) addBadge(app, base);
+}
+function addStoreItem(app, base) {
+  var storeItemLoadingMap = {};
+  // addReward("store_item", app.translator.trans(`${base}.reward.store_item`) + "");
+  (0,_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_2__.rewardValueConvert)("store_item", function (value) {
+    var item = app.store.getById("store-item", value);
+    if (!item) {
+      if (storeItemLoadingMap[value] === undefined) {
+        storeItemLoadingMap[value] = true;
+        app.store.find("store-item", value).then(function () {
+          m.redraw();
+        })["catch"](function () {
+          storeItemLoadingMap[value] = false;
+        });
+        return app.translator.trans(base + ".reward.store_item_loading") + "";
+      } else if (storeItemLoadingMap[value] === false) {
+        return app.translator.trans(base + ".reward.store_item_error") + "";
+      } else {
+        return app.translator.trans(base + ".reward.store_item_loading") + "";
+      }
+    }
+    return item.attribute("name");
+  });
+  (0,_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_2__.addRewardSelection)("store_item", /*#__PURE__*/(0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee() {
+    var items, itemsMap;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return app.store.find("store-item");
+        case 2:
+          items = _context.sent;
+          itemsMap = items.reduce(function (map, item) {
+            map[item.id()] = item.attribute("name");
+            return map;
+          }, {});
+          _context.next = 6;
+          return _components_commonSelectionModal__WEBPACK_IMPORTED_MODULE_3__["default"].open(app, itemsMap, app.translator.trans(base + ".reward.store_item_select"), app.translator.trans(base + ".reward.store_item_select_button"));
+        case 6:
+          return _context.abrupt("return", _context.sent);
+        case 7:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  })));
+}
+function addBadge(app, base) {
+  var badgeLoadingMap = {};
+  // addReward("badge", app.translator.trans(`${base}.reward.badge`) + "");
+  (0,_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_2__.rewardValueConvert)("badge", function (value) {
+    var item = app.store.getById("badges", value);
+    if (!item) {
+      if (badgeLoadingMap[value] === undefined) {
+        badgeLoadingMap[value] = true;
+        app.store.find("badges", value).then(function () {
+          m.redraw();
+        })["catch"](function () {
+          badgeLoadingMap[value] = false;
+        });
+        return app.translator.trans(base + ".reward.badge_loading") + "";
+      } else if (badgeLoadingMap[value] === false) {
+        return app.translator.trans(base + ".reward.badge_error") + "";
+      } else {
+        return app.translator.trans(base + ".reward.badge_loading") + "";
+      }
+    }
+    return item.attribute("name");
+  });
+  (0,_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_2__.addRewardSelection)("badge", /*#__PURE__*/(0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee2() {
+    var items, itemsMap;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return app.store.find("badges");
+        case 2:
+          items = _context2.sent;
+          itemsMap = items.reduce(function (map, item) {
+            map[item.id()] = item.attribute("name");
+            return map;
+          }, {});
+          _context2.next = 6;
+          return _components_commonSelectionModal__WEBPACK_IMPORTED_MODULE_3__["default"].open(app, itemsMap, app.translator.trans(base + ".reward.badge_select"), app.translator.trans(base + ".reward.badge_select_button"));
+        case 6:
+          return _context2.abrupt("return", _context2.sent);
+        case 7:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  })));
+}
+
+/***/ }),
+
+/***/ "./src/common/models/Condition.ts":
+/*!****************************************!*\
+  !*** ./src/common/models/Condition.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Condition)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/common/Model */ "flarum/common/Model");
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_common_Model__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _types_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types/data */ "./src/common/types/data.ts");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! dayjs */ "./node_modules/dayjs/dayjs.min.js");
+/* harmony import */ var dayjs__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(dayjs__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+// For more details about frontend models
+// checkout https://docs.flarum.org/extend/models.html#frontend-models
+function optionalJsonParser(data) {
+  if (!data) {
+    return null;
+  }
+  ;
+  try {
+    return JSON.parse(data);
+  } catch (ignore) {
+    return null;
+  }
+}
+var Condition = /*#__PURE__*/function (_Model) {
+  function Condition() {
+    var _this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _Model.call.apply(_Model, [this].concat(args)) || this;
+    _this.name = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('name');
+    _this.value = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('value');
+    _this.user_id = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('user_id');
+    _this.accumulation = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('accumulation', optionalJsonParser);
+    return _this;
+  }
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(Condition, _Model);
+  var _proto = Condition.prototype;
+  _proto.getSpan = function getSpan(span, calculate) {
+    if (calculate === void 0) {
+      calculate = _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM;
+    }
+    if (!calculate) calculate = _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM;
+    var accumulation = this.accumulation();
+    if (!accumulation || span < 1) return 0;
+    var cut = dayjs__WEBPACK_IMPORTED_MODULE_3___default()(dayjs__WEBPACK_IMPORTED_MODULE_3___default()().format("YYYYMMDD"), "YYYYMMDD");
+    if (span != 1) {
+      cut = cut.subtract(span - 1, 'day');
+    }
+    var ret = 0;
+    Object.keys(accumulation).forEach(function (key) {
+      if (key == 'all' || key == 'rest') return;
+      var d = dayjs__WEBPACK_IMPORTED_MODULE_3___default()(key, "YYYYMMDD");
+      if (d.isAfter(cut) || d.isSame(cut)) {
+        if (calculate == _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX) ret = Math.max(ret, accumulation[key]);else if (calculate == _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM) ret += accumulation[key];else if (calculate == _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT && accumulation[key] > 0) ret += 1;
+      }
+    });
+    return ret;
+  };
+  _proto.getTotal = function getTotal(calculate) {
+    var _this$accumulation, _this$accumulation2, _this$accumulation3;
+    if (calculate === void 0) {
+      calculate = _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM;
+    }
+    if (!calculate) calculate = _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM;
+    if (calculate == _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX) return ((_this$accumulation = this.accumulation()) == null ? void 0 : _this$accumulation.max) || 0;else if (calculate == _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT) return ((_this$accumulation2 = this.accumulation()) == null ? void 0 : _this$accumulation2.days) || 0;else return ((_this$accumulation3 = this.accumulation()) == null ? void 0 : _this$accumulation3.all) || 0;
+  };
+  return Condition;
+}((flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default()));
+
+
+/***/ }),
+
+/***/ "./src/common/models/CustomCondition.ts":
+/*!**********************************************!*\
+  !*** ./src/common/models/CustomCondition.ts ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CustomCondition)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/common/Model */ "flarum/common/Model");
+/* harmony import */ var flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_common_Model__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var CustomCondition = /*#__PURE__*/function (_Model) {
+  function CustomCondition() {
+    var _this;
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+    _this = _Model.call.apply(_Model, [this].concat(args)) || this;
+    _this.name = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('name');
+    _this.display_name = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('display_name');
+    _this.evaluation = flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default().attribute('evaluation');
+    return _this;
+  }
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(CustomCondition, _Model);
+  return CustomCondition;
+}((flarum_common_Model__WEBPACK_IMPORTED_MODULE_1___default()));
+CustomCondition.type = 'custom-condition';
+
+
+/***/ }),
+
+/***/ "./src/common/types/data.ts":
+/*!**********************************!*\
+  !*** ./src/common/types/data.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CALCULATE: () => (/* binding */ CALCULATE),
+/* harmony export */   OPERATOR: () => (/* binding */ OPERATOR)
+/* harmony export */ });
+var OPERATOR = /*#__PURE__*/function (OPERATOR) {
+  OPERATOR["EQUAL"] = "=";
+  OPERATOR["NOT_EQUAL"] = "!=";
+  OPERATOR["GREATER_THAN"] = ">";
+  OPERATOR["LESS_THAN"] = "<";
+  OPERATOR["GREATER_THAN_OR_EQUAL"] = ">=";
+  OPERATOR["LESS_THAN_OR_EQUAL"] = "<=";
+  return OPERATOR;
+}({});
+;
+var CALCULATE = /*#__PURE__*/function (CALCULATE) {
+  CALCULATE[CALCULATE["SUM"] = 1] = "SUM";
+  CALCULATE[CALCULATE["MAX"] = 2] = "MAX";
+  CALCULATE[CALCULATE["DAY_COUNT"] = 3] = "DAY_COUNT";
+  return CALCULATE;
+}({});
+
+/***/ }),
+
+/***/ "./src/common/utils/AddFrontend.ts":
+/*!*****************************************!*\
+  !*** ./src/common/utils/AddFrontend.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   addCondition: () => (/* binding */ addCondition),
+/* harmony export */   addReward: () => (/* binding */ addReward),
+/* harmony export */   addRewardSelection: () => (/* binding */ addRewardSelection),
+/* harmony export */   rewardValueConvert: () => (/* binding */ rewardValueConvert)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/extend */ "flarum/common/extend");
+/* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./HumanizeUtils */ "./src/common/utils/HumanizeUtils.tsx");
+
+
+
+
+function addCondition(key, name) {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.extend)(_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].prototype, "getAllConditions", function (list) {
+    list.add(key, name);
+  });
+}
+function addReward(key, name) {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.extend)(_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].prototype, "getAllRewards", function (list) {
+    list.add(key, name);
+  });
+}
+function rewardValueConvert(key, callback) {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.override)(_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].prototype, "getRewardValue", function (ofunction, _key, value) {
+    if (key === _key) {
+      return callback(value);
+    } else {
+      return ofunction(_key, value);
+    }
+  });
+}
+function addRewardSelection(key, callback) {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_2__.override)(_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].prototype, "rewardSelection", /*#__PURE__*/function () {
+    var _ref = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(ofunction, _key) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            if (!(key === _key)) {
+              _context.next = 4;
+              break;
+            }
+            return _context.abrupt("return", callback());
+          case 4:
+            return _context.abrupt("return", ofunction(_key));
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function (_x, _x2) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+}
+
+/***/ }),
+
+/***/ "./src/common/utils/HumanizeUtils.tsx":
+/*!********************************************!*\
+  !*** ./src/common/utils/HumanizeUtils.tsx ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ HumanizeUtils)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _types_data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../types/data */ "./src/common/types/data.ts");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/utils/ItemList */ "flarum/common/utils/ItemList");
+/* harmony import */ var flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3__);
+
+var _HumanizeUtils;
+
+
+
+var HumanizeUtils = /*#__PURE__*/function () {
+  function HumanizeUtils(app) {
+    this.app = void 0;
+    this.definitionLoaded = false;
+    this.rawConditionDefinition = {};
+    this.conditionTranslations = {};
+    this.rewardTranslations = {};
+    this.conditionsKeys = [];
+    this.rewardsKeys = [];
+    this.app = app;
+  }
+  var _proto = HumanizeUtils.prototype;
+  _proto.loadDefinition = /*#__PURE__*/function () {
+    var _loadDefinition2 = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee() {
+      var data;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            if (!this.definitionLoaded) {
+              _context.next = 2;
+              break;
+            }
+            return _context.abrupt("return");
+          case 2:
+            if (!this.app.data['collector-definition']) {
+              _context.next = 5;
+              break;
+            }
+            this._loadDefinition(this.app.data['collector-definition']);
+            return _context.abrupt("return");
+          case 5:
+            _context.next = 7;
+            return this.app.request({
+              method: "GET",
+              url: this.app.forum.attribute("apiUrl") + "/collector-data"
+            });
+          case 7:
+            data = _context.sent;
+            this._loadDefinition(data);
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this);
+    }));
+    function loadDefinition() {
+      return _loadDefinition2.apply(this, arguments);
+    }
+    return loadDefinition;
+  }();
+  _proto._loadDefinition = function _loadDefinition(data) {
+    var _this = this;
+    data.conditions.forEach(function (value) {
+      _this.conditionTranslations[value.key] = value.trans;
+      _this.conditionsKeys.push(value.key);
+      _this.rawConditionDefinition[value.key] = value;
+    });
+    data.rewards.forEach(function (value) {
+      _this.rewardTranslations[value.key] = value.trans;
+      _this.rewardsKeys.push(value.key);
+    });
+    this.definitionLoaded = true;
+  };
+  HumanizeUtils.getInstance = function getInstance(app) {
+    if (!this.instance) {
+      this.instance = new HumanizeUtils(app);
+    }
+    return this.instance;
+  };
+  _proto.getAllConditions = function getAllConditions(containsGlobal) {
+    var _this2 = this;
+    if (containsGlobal === void 0) {
+      containsGlobal = false;
+    }
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
+    this.conditionsKeys.forEach(function (key) {
+      if (containsGlobal || !_this2.rawConditionDefinition[key].global) ret.add(key, _this2.conditionTranslations[key]);
+    });
+    return ret;
+  };
+  _proto.getAllRewards = function getAllRewards() {
+    var _this3 = this;
+    var ret = new (flarum_common_utils_ItemList__WEBPACK_IMPORTED_MODULE_3___default())();
+    this.rewardsKeys.forEach(function (key) {
+      ret.add(key, _this3.rewardTranslations[key]);
+    });
+    return ret;
+  };
+  _proto.getConditionName = function getConditionName(key) {
+    if (!this.getAllConditions().has(key)) {
+      return key;
+    }
+    return this.getAllConditions().get(key);
+  };
+  _proto.getRewardName = function getRewardName(key) {
+    if (!this.getAllRewards().has(key)) {
+      return key;
+    }
+    return this.getAllRewards().get(key);
+  };
+  _proto.getRewardValue = function getRewardValue(key, value) {
+    return value;
+  };
+  _proto.rewardSelection = /*#__PURE__*/function () {
+    var _rewardSelection = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee2(type) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee2$(_context2) {
+        while (1) switch (_context2.prev = _context2.next) {
+          case 0:
+            return _context2.abrupt("return", "");
+          case 1:
+          case "end":
+            return _context2.stop();
+        }
+      }, _callee2);
+    }));
+    function rewardSelection(_x) {
+      return _rewardSelection.apply(this, arguments);
+    }
+    return rewardSelection;
+  }();
+  _proto.humanizeCondition = function humanizeCondition(conditionData) {
+    var _this4 = this;
+    if (Array.isArray(conditionData)) {
+      return conditionData.map(function (condition) {
+        return _this4.humanizeCondition(condition);
+      });
+    } else {
+      if (conditionData.alter_name) {
+        return conditionData.alter_name;
+      }
+      var span = conditionData.span ? this.app.translator.trans("xypp-collector.forum.condition.span", {
+        span: conditionData.span
+      }) : '';
+      if (Array.isArray(span)) {
+        span = span.join("");
+      }
+      return this.app.translator.trans("xypp-collector.forum.condition.format", {
+        b: m("b", null),
+        name: this.getConditionName(conditionData.name),
+        operator: conditionData.operator,
+        value: conditionData.value,
+        calculate: this.getCalculate(conditionData.calculate || _types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM),
+        span: span
+      });
+    }
+  };
+  _proto.humanizeReward = function humanizeReward(rewardData) {
+    var _this5 = this;
+    if (Array.isArray(rewardData)) {
+      return rewardData.map(function (condition) {
+        return _this5.humanizeReward(condition);
+      });
+    } else {
+      if (rewardData.alter_name) {
+        return rewardData.alter_name;
+      }
+      return this.app.translator.trans("xypp-collector.forum.reward.format", {
+        b: m("b", null),
+        name: this.getRewardName(rewardData.name),
+        value: this.getRewardValue(rewardData.name, rewardData.value)
+      });
+    }
+  };
+  _proto.getCalculate = function getCalculate(calculate) {
+    var _CALCULATE_MAPPING;
+    var CALCULATE_MAPPING = (_CALCULATE_MAPPING = {}, _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.SUM] = 'sum', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.MAX] = 'max', _CALCULATE_MAPPING[_types_data__WEBPACK_IMPORTED_MODULE_2__.CALCULATE.DAY_COUNT] = 'days', _CALCULATE_MAPPING);
+    return this.app.translator.trans("xypp-collector.lib.calculate." + CALCULATE_MAPPING[calculate]);
+  };
+  _proto.getRawConditionDefinition = function getRawConditionDefinition(key) {
+    return this.rawConditionDefinition[key] || false;
+  };
+  return HumanizeUtils;
+}();
+_HumanizeUtils = HumanizeUtils;
+HumanizeUtils.instance = void 0;
+
+
+/***/ }),
+
+/***/ "./src/forum/components/ConditionList.tsx":
+/*!************************************************!*\
+  !*** ./src/forum/components/ConditionList.tsx ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ConditionList)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_common_Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/Component */ "flarum/common/Component");
+/* harmony import */ var flarum_common_Component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_Component__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _common_types_data__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/types/data */ "./src/common/types/data.ts");
+/* harmony import */ var _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../common/utils/HumanizeUtils */ "./src/common/utils/HumanizeUtils.tsx");
+/* harmony import */ var _utils_userValueUtil__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils/userValueUtil */ "./src/forum/utils/userValueUtil.ts");
+
+
+
+
+
+
+var ConditionList = /*#__PURE__*/function (_Component) {
+  function ConditionList() {
+    return _Component.apply(this, arguments) || this;
+  }
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(ConditionList, _Component);
+  var _proto = ConditionList.prototype;
+  _proto.view = function view(vnode) {
+    var _this = this;
+    var humanize = _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_4__["default"].getInstance((flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default()));
+    return m("div", {
+      className: "collector-condition"
+    }, m("div", {
+      className: "collector-condition-title"
+    }, m("i", {
+      "class": "fas fa-tasks"
+    }), " ", flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans("xypp-collector.forum.condition.condition")), this.attrs.conditions.map(function (condition) {
+      return m("div", {
+        className: "collector-condition-line"
+      }, m("span", null, humanize.humanizeCondition(condition)), _this.progress(condition, humanize));
+    }));
+  };
+  _proto.progress = function progress(condition, humanize) {
+    if (!this.attrs.conditionMap) return "";
+    var valueHelper = new _utils_userValueUtil__WEBPACK_IMPORTED_MODULE_5__["default"](humanize, this.attrs.conditionMap);
+    var value = valueHelper.getValue(condition);
+    var satisfy = this.conditionOp(value, condition.operator, condition.value);
+    if (satisfy) {
+      return m("span", {
+        className: "collector-progress-satisfy"
+      }, "[", m("i", {
+        "class": "fas fa-check"
+      }), "]");
+    }
+    return m("span", {
+      className: "collector-progress-not-satisfy"
+    }, "[", value, "/", condition.value, "]");
+  };
+  _proto.conditionOp = function conditionOp(value1, op, value2) {
+    switch (op) {
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.EQUAL:
+        return value1 == value2;
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.GREATER_THAN:
+        return value1 > value2;
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.GREATER_THAN_OR_EQUAL:
+        return value1 >= value2;
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.LESS_THAN:
+        return value1 < value2;
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.LESS_THAN_OR_EQUAL:
+        return value1 <= value2;
+      case _common_types_data__WEBPACK_IMPORTED_MODULE_3__.OPERATOR.NOT_EQUAL:
+        return value1 != value2;
+    }
+  };
+  return ConditionList;
+}((flarum_common_Component__WEBPACK_IMPORTED_MODULE_2___default()));
+
+
+/***/ }),
+
+/***/ "./src/forum/components/RewardList.tsx":
+/*!*********************************************!*\
+  !*** ./src/forum/components/RewardList.tsx ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ RewardList)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/inheritsLoose */ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_common_Component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/common/Component */ "flarum/common/Component");
+/* harmony import */ var flarum_common_Component__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_common_Component__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/utils/HumanizeUtils */ "./src/common/utils/HumanizeUtils.tsx");
+
+
+
+
+var RewardList = /*#__PURE__*/function (_Component) {
+  function RewardList() {
+    return _Component.apply(this, arguments) || this;
+  }
+  (0,_babel_runtime_helpers_esm_inheritsLoose__WEBPACK_IMPORTED_MODULE_0__["default"])(RewardList, _Component);
+  var _proto = RewardList.prototype;
+  _proto.view = function view(vnode) {
+    var humanize = _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_3__["default"].getInstance((flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default()));
+    return m("div", {
+      className: "collector-reward"
+    }, m("div", {
+      className: "collector-reward-title"
+    }, m("i", {
+      "class": "fas fa-gift"
+    }), " ", flarum_forum_app__WEBPACK_IMPORTED_MODULE_1___default().translator.trans("xypp-collector.forum.reward.reward")), humanize.humanizeReward(this.attrs.rewards).map(function (e) {
+      return m("div", null, e);
+    }));
+  };
+  return RewardList;
+}((flarum_common_Component__WEBPACK_IMPORTED_MODULE_2___default()));
+
+
+/***/ }),
+
+/***/ "./src/forum/index.ts":
+/*!****************************!*\
+  !*** ./src/forum/index.ts ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Condition: () => (/* reexport safe */ _common_models_Condition__WEBPACK_IMPORTED_MODULE_6__["default"]),
+/* harmony export */   ConditionList: () => (/* reexport safe */ _components_ConditionList__WEBPACK_IMPORTED_MODULE_8__["default"]),
+/* harmony export */   HumanizeUtils: () => (/* reexport safe */ _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_5__["default"]),
+/* harmony export */   OPERATOR: () => (/* reexport safe */ _common_types_data__WEBPACK_IMPORTED_MODULE_11__.OPERATOR),
+/* harmony export */   RewardList: () => (/* reexport safe */ _components_RewardList__WEBPACK_IMPORTED_MODULE_9__["default"]),
+/* harmony export */   addCondition: () => (/* reexport safe */ _common_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_3__.addCondition),
+/* harmony export */   addReward: () => (/* reexport safe */ _common_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_3__.addReward),
+/* harmony export */   addRewardSelection: () => (/* reexport safe */ _common_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_3__.addRewardSelection),
+/* harmony export */   getConditionMap: () => (/* reexport safe */ _utils_userCondition__WEBPACK_IMPORTED_MODULE_7__.getConditionMap),
+/* harmony export */   getConditions: () => (/* reexport safe */ _utils_userCondition__WEBPACK_IMPORTED_MODULE_7__.getConditions),
+/* harmony export */   rewardValueConvert: () => (/* reexport safe */ _common_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_3__.rewardValueConvert),
+/* harmony export */   triggerCondition: () => (/* reexport safe */ _utils_frontendTrigger__WEBPACK_IMPORTED_MODULE_4__.triggerCondition),
+/* harmony export */   triggerConditions: () => (/* reexport safe */ _utils_frontendTrigger__WEBPACK_IMPORTED_MODULE_4__.triggerConditions),
+/* harmony export */   userValueUtil: () => (/* reexport safe */ _utils_userValueUtil__WEBPACK_IMPORTED_MODULE_10__["default"])
+/* harmony export */ });
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _common_integration__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../common/integration */ "./src/common/integration/index.ts");
+/* harmony import */ var _integration_pageCount__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./integration/pageCount */ "./src/forum/integration/pageCount.ts");
+/* harmony import */ var _common_utils_AddFrontend__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common/utils/AddFrontend */ "./src/common/utils/AddFrontend.ts");
+/* harmony import */ var _utils_frontendTrigger__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils/frontendTrigger */ "./src/forum/utils/frontendTrigger.ts");
+/* harmony import */ var _common_utils_HumanizeUtils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../common/utils/HumanizeUtils */ "./src/common/utils/HumanizeUtils.tsx");
+/* harmony import */ var _common_models_Condition__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../common/models/Condition */ "./src/common/models/Condition.ts");
+/* harmony import */ var _utils_userCondition__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./utils/userCondition */ "./src/forum/utils/userCondition.ts");
+/* harmony import */ var _components_ConditionList__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/ConditionList */ "./src/forum/components/ConditionList.tsx");
+/* harmony import */ var _components_RewardList__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/RewardList */ "./src/forum/components/RewardList.tsx");
+/* harmony import */ var _utils_userValueUtil__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./utils/userValueUtil */ "./src/forum/utils/userValueUtil.ts");
+/* harmony import */ var _common_types_data__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../common/types/data */ "./src/common/types/data.ts");
+
+
+
+flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().initializers.add('xypp/collector', function () {
+  (0,_common_integration__WEBPACK_IMPORTED_MODULE_1__.init)((flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default()), "forum");
+  (0,_integration_pageCount__WEBPACK_IMPORTED_MODULE_2__.registerCount)();
+});
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "./src/forum/integration/pageCount.ts":
+/*!********************************************!*\
+  !*** ./src/forum/integration/pageCount.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   registerCount: () => (/* binding */ registerCount)
+/* harmony export */ });
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! flarum/common/extend */ "flarum/common/extend");
+/* harmony import */ var flarum_common_extend__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_forum_components_UserPage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/forum/components/UserPage */ "flarum/forum/components/UserPage");
+/* harmony import */ var flarum_forum_components_UserPage__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_components_UserPage__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _utils_frontendTrigger__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/frontendTrigger */ "./src/forum/utils/frontendTrigger.ts");
+
+
+
+
+var typeCnt = {};
+var records = {};
+function limitCount(type, count, cb) {
+  typeCnt[type] = typeCnt[type] || 0;
+  if (typeCnt[type] < count) {
+    typeCnt[type]++;
+    cb(type);
+  }
+}
+function limitTypeOnce(type, newKey, cb) {
+  var dict = records[type] = records[type] || {};
+  if (!dict[newKey]) {
+    dict[newKey] = true;
+    cb(type);
+  }
+}
+function registerCount() {
+  (0,flarum_common_extend__WEBPACK_IMPORTED_MODULE_1__.extend)((flarum_forum_components_UserPage__WEBPACK_IMPORTED_MODULE_2___default().prototype), "show", function () {
+    var _app$session, _this$user;
+    if ((_app$session = (flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().session)) != null && _app$session.user) limitTypeOnce("user_page_view", (_this$user = this.user) == null ? void 0 : _this$user.slug(), function (t) {
+      return limitCount(t, 5, function (t) {
+        return (0,_utils_frontendTrigger__WEBPACK_IMPORTED_MODULE_3__.triggerCondition)(t, 1);
+      });
+    });
+  });
+}
+
+/***/ }),
+
+/***/ "./src/forum/utils/frontendTrigger.ts":
+/*!********************************************!*\
+  !*** ./src/forum/utils/frontendTrigger.ts ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   triggerCondition: () => (/* binding */ triggerCondition),
+/* harmony export */   triggerConditions: () => (/* binding */ triggerConditions)
+/* harmony export */ });
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_0__);
+
+function triggerCondition(key, value) {
+  var _triggerConditions;
+  return triggerConditions((_triggerConditions = {}, _triggerConditions[key] = value, _triggerConditions));
+}
+function triggerConditions(records) {
+  var rec = Object.keys(records).map(function (key) {
+    return {
+      name: key,
+      value: records[key]
+    };
+  });
+  return flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().request({
+    url: flarum_forum_app__WEBPACK_IMPORTED_MODULE_0___default().forum.attribute('apiUrl') + "/collector-condition",
+    method: "POST",
+    body: {
+      data: rec
+    }
+  });
+}
+
+/***/ }),
+
+/***/ "./src/forum/utils/userCondition.ts":
+/*!******************************************!*\
+  !*** ./src/forum/utils/userCondition.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getConditionMap: () => (/* binding */ getConditionMap),
+/* harmony export */   getConditions: () => (/* binding */ getConditions)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! flarum/forum/app */ "flarum/forum/app");
+/* harmony import */ var flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(flarum_forum_app__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var flarum_common_models_User__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! flarum/common/models/User */ "flarum/common/models/User");
+/* harmony import */ var flarum_common_models_User__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(flarum_common_models_User__WEBPACK_IMPORTED_MODULE_3__);
+
+
+
+
+function getConditionMap(_x, _x2) {
+  return _getConditionMap.apply(this, arguments);
+}
+function _getConditionMap() {
+  _getConditionMap = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(forceRefresh, user) {
+    var conditions, conditionMap;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          if (forceRefresh === void 0) {
+            forceRefresh = false;
+          }
+          if (user === void 0) {
+            user = null;
+          }
+          _context.next = 4;
+          return getConditions(forceRefresh, user);
+        case 4:
+          conditions = _context.sent;
+          conditionMap = {};
+          conditions.forEach(function (item) {
+            conditionMap[item.name()] = item;
+          });
+          return _context.abrupt("return", conditionMap);
+        case 8:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }));
+  return _getConditionMap.apply(this, arguments);
+}
+function getConditions(_x3, _x4) {
+  return _getConditions.apply(this, arguments);
+}
+function _getConditions() {
+  _getConditions = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee2(forceRefresh, user) {
+    var data, conditions;
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          if (forceRefresh === void 0) {
+            forceRefresh = false;
+          }
+          if (user === void 0) {
+            user = null;
+          }
+          data = undefined;
+          if (user) {
+            if (user instanceof (flarum_common_models_User__WEBPACK_IMPORTED_MODULE_3___default())) data = {
+              id: user.id()
+            };else data = {
+              id: user
+            };
+          }
+          conditions = flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default().store.all("collector-condition");
+          if (data && data.id) {
+            conditions = conditions.filter(function (c) {
+              return c.user_id() == data.id;
+            });
+          }
+          if (!(forceRefresh || conditions.length == 0)) {
+            _context2.next = 10;
+            break;
+          }
+          _context2.next = 9;
+          return flarum_forum_app__WEBPACK_IMPORTED_MODULE_2___default().store.find('collector-condition', data);
+        case 9:
+          conditions = _context2.sent;
+        case 10:
+          return _context2.abrupt("return", conditions);
+        case 11:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2);
+  }));
+  return _getConditions.apply(this, arguments);
+}
+
+/***/ }),
+
+/***/ "./src/forum/utils/userValueUtil.ts":
+/*!******************************************!*\
+  !*** ./src/forum/utils/userValueUtil.ts ***!
+  \******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ userValueUtil)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/esm/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _userCondition__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./userCondition */ "./src/forum/utils/userCondition.ts");
+/* harmony import */ var decimal_eval__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! decimal-eval */ "./node_modules/decimal-eval/dist/index.esm.js");
+
+function _createForOfIteratorHelperLoose(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (t) return (t = t.call(r)).next.bind(t); if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var o = 0; return function () { return o >= r.length ? { done: !0 } : { done: !1, value: r[o++] }; }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+
+
+
+var userValueUtil = /*#__PURE__*/function () {
+  function userValueUtil(humanize, conditionMap) {
+    this.humanize = void 0;
+    this.conditionMap = {};
+    this.humanize = humanize;
+    if (conditionMap) this.conditionMap = conditionMap;
+  }
+  var _proto = userValueUtil.prototype;
+  _proto.load = /*#__PURE__*/function () {
+    var _load = (0,_babel_runtime_helpers_esm_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])(/*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return (0,_userCondition__WEBPACK_IMPORTED_MODULE_2__.getConditionMap)();
+          case 2:
+            this.conditionMap = _context.sent;
+          case 3:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this);
+    }));
+    function load() {
+      return _load.apply(this, arguments);
+    }
+    return load;
+  }();
+  _proto.parse = function parse(evaluation, data) {
+    if (!this.conditionMap) return false;
+    var match = evaluation.matchAll(/\{([^\}]*)\}/ig);
+    for (var _iterator = _createForOfIteratorHelperLoose(match), _step; !(_step = _iterator()).done;) {
+      var m = _step.value;
+      var condition = this.conditionMap[m[1]];
+      var value = condition.getTotal(data.calculate);
+      if (data.span) {
+        value = condition.getSpan(data.span, data.calculate);
+      }
+      evaluation = evaluation.replace(m[0], value + "");
+    }
+    try {
+      return parseFloat((0,decimal_eval__WEBPACK_IMPORTED_MODULE_3__.evaluate)(evaluation));
+    } catch (e) {
+      return false;
+    }
+  };
+  _proto.getValue = function getValue(condition) {
+    var def = this.humanize.getRawConditionDefinition(condition.name);
+    if (!def) return 0;
+    if (!def.evaluation) {
+      var users = this.conditionMap[condition.name];
+      if (!users) return 0;
+      var value = users.getTotal(condition.calculate);
+      if (condition.span) {
+        value = users.getSpan(condition.span, condition.calculate);
+      }
+      return value;
+    }
+    return this.parse(def.evaluation, condition) || 0;
+  };
+  return userValueUtil;
+}();
+
+
+/***/ }),
+
+/***/ "flarum/common/Component":
+/*!*********************************************************!*\
+  !*** external "flarum.core.compat['common/Component']" ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/Component'];
+
+/***/ }),
+
+/***/ "flarum/common/Model":
+/*!*****************************************************!*\
+  !*** external "flarum.core.compat['common/Model']" ***!
+  \*****************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/Model'];
+
+/***/ }),
+
+/***/ "flarum/common/components/Button":
+/*!*****************************************************************!*\
+  !*** external "flarum.core.compat['common/components/Button']" ***!
+  \*****************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/components/Button'];
+
+/***/ }),
+
+/***/ "flarum/common/components/Modal":
+/*!****************************************************************!*\
+  !*** external "flarum.core.compat['common/components/Modal']" ***!
+  \****************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/components/Modal'];
+
+/***/ }),
+
+/***/ "flarum/common/components/Select":
+/*!*****************************************************************!*\
+  !*** external "flarum.core.compat['common/components/Select']" ***!
+  \*****************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/components/Select'];
+
+/***/ }),
+
+/***/ "flarum/common/extend":
+/*!******************************************************!*\
+  !*** external "flarum.core.compat['common/extend']" ***!
+  \******************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/extend'];
+
+/***/ }),
+
+/***/ "flarum/common/extenders":
+/*!*********************************************************!*\
+  !*** external "flarum.core.compat['common/extenders']" ***!
+  \*********************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/extenders'];
+
+/***/ }),
+
+/***/ "flarum/common/models/User":
+/*!***********************************************************!*\
+  !*** external "flarum.core.compat['common/models/User']" ***!
+  \***********************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/models/User'];
+
+/***/ }),
+
+/***/ "flarum/common/utils/ItemList":
+/*!**************************************************************!*\
+  !*** external "flarum.core.compat['common/utils/ItemList']" ***!
+  \**************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['common/utils/ItemList'];
+
+/***/ }),
+
+/***/ "flarum/forum/app":
+/*!**************************************************!*\
+  !*** external "flarum.core.compat['forum/app']" ***!
+  \**************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['forum/app'];
+
+/***/ }),
+
+/***/ "flarum/forum/components/UserPage":
+/*!******************************************************************!*\
+  !*** external "flarum.core.compat['forum/components/UserPage']" ***!
+  \******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = flarum.core.compat['forum/components/UserPage'];
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/regeneratorRuntime.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/regeneratorRuntime.js ***!
+  \*******************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var _typeof = (__webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/typeof.js")["default"]);
+function _regeneratorRuntime() {
+  "use strict";
+
+  /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+  module.exports = _regeneratorRuntime = function _regeneratorRuntime() {
+    return e;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports;
+  var t,
+    e = {},
+    r = Object.prototype,
+    n = r.hasOwnProperty,
+    o = Object.defineProperty || function (t, e, r) {
+      t[e] = r.value;
+    },
+    i = "function" == typeof Symbol ? Symbol : {},
+    a = i.iterator || "@@iterator",
+    c = i.asyncIterator || "@@asyncIterator",
+    u = i.toStringTag || "@@toStringTag";
+  function define(t, e, r) {
+    return Object.defineProperty(t, e, {
+      value: r,
+      enumerable: !0,
+      configurable: !0,
+      writable: !0
+    }), t[e];
+  }
+  try {
+    define({}, "");
+  } catch (t) {
+    define = function define(t, e, r) {
+      return t[e] = r;
+    };
+  }
+  function wrap(t, e, r, n) {
+    var i = e && e.prototype instanceof Generator ? e : Generator,
+      a = Object.create(i.prototype),
+      c = new Context(n || []);
+    return o(a, "_invoke", {
+      value: makeInvokeMethod(t, r, c)
+    }), a;
+  }
+  function tryCatch(t, e, r) {
+    try {
+      return {
+        type: "normal",
+        arg: t.call(e, r)
+      };
+    } catch (t) {
+      return {
+        type: "throw",
+        arg: t
+      };
+    }
+  }
+  e.wrap = wrap;
+  var h = "suspendedStart",
+    l = "suspendedYield",
+    f = "executing",
+    s = "completed",
+    y = {};
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+  var p = {};
+  define(p, a, function () {
+    return this;
+  });
+  var d = Object.getPrototypeOf,
+    v = d && d(d(values([])));
+  v && v !== r && n.call(v, a) && (p = v);
+  var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p);
+  function defineIteratorMethods(t) {
+    ["next", "throw", "return"].forEach(function (e) {
+      define(t, e, function (t) {
+        return this._invoke(e, t);
+      });
+    });
+  }
+  function AsyncIterator(t, e) {
+    function invoke(r, o, i, a) {
+      var c = tryCatch(t[r], t, o);
+      if ("throw" !== c.type) {
+        var u = c.arg,
+          h = u.value;
+        return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) {
+          invoke("next", t, i, a);
+        }, function (t) {
+          invoke("throw", t, i, a);
+        }) : e.resolve(h).then(function (t) {
+          u.value = t, i(u);
+        }, function (t) {
+          return invoke("throw", t, i, a);
+        });
+      }
+      a(c.arg);
+    }
+    var r;
+    o(this, "_invoke", {
+      value: function value(t, n) {
+        function callInvokeWithMethodAndArg() {
+          return new e(function (e, r) {
+            invoke(t, n, e, r);
+          });
+        }
+        return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
+      }
+    });
+  }
+  function makeInvokeMethod(e, r, n) {
+    var o = h;
+    return function (i, a) {
+      if (o === f) throw Error("Generator is already running");
+      if (o === s) {
+        if ("throw" === i) throw a;
+        return {
+          value: t,
+          done: !0
+        };
+      }
+      for (n.method = i, n.arg = a;;) {
+        var c = n.delegate;
+        if (c) {
+          var u = maybeInvokeDelegate(c, n);
+          if (u) {
+            if (u === y) continue;
+            return u;
+          }
+        }
+        if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) {
+          if (o === h) throw o = s, n.arg;
+          n.dispatchException(n.arg);
+        } else "return" === n.method && n.abrupt("return", n.arg);
+        o = f;
+        var p = tryCatch(e, r, n);
+        if ("normal" === p.type) {
+          if (o = n.done ? s : l, p.arg === y) continue;
+          return {
+            value: p.arg,
+            done: n.done
+          };
+        }
+        "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg);
+      }
+    };
+  }
+  function maybeInvokeDelegate(e, r) {
+    var n = r.method,
+      o = e.iterator[n];
+    if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y;
+    var i = tryCatch(o, e.iterator, r.arg);
+    if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y;
+    var a = i.arg;
+    return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y);
+  }
+  function pushTryEntry(t) {
+    var e = {
+      tryLoc: t[0]
+    };
+    1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e);
+  }
+  function resetTryEntry(t) {
+    var e = t.completion || {};
+    e.type = "normal", delete e.arg, t.completion = e;
+  }
+  function Context(t) {
+    this.tryEntries = [{
+      tryLoc: "root"
+    }], t.forEach(pushTryEntry, this), this.reset(!0);
+  }
+  function values(e) {
+    if (e || "" === e) {
+      var r = e[a];
+      if (r) return r.call(e);
+      if ("function" == typeof e.next) return e;
+      if (!isNaN(e.length)) {
+        var o = -1,
+          i = function next() {
+            for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next;
+            return next.value = t, next.done = !0, next;
+          };
+        return i.next = i;
+      }
+    }
+    throw new TypeError(_typeof(e) + " is not iterable");
+  }
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", {
+    value: GeneratorFunctionPrototype,
+    configurable: !0
+  }), o(GeneratorFunctionPrototype, "constructor", {
+    value: GeneratorFunction,
+    configurable: !0
+  }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) {
+    var e = "function" == typeof t && t.constructor;
+    return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name));
+  }, e.mark = function (t) {
+    return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t;
+  }, e.awrap = function (t) {
+    return {
+      __await: t
+    };
+  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () {
+    return this;
+  }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) {
+    void 0 === i && (i = Promise);
+    var a = new AsyncIterator(wrap(t, r, n, o), i);
+    return e.isGeneratorFunction(r) ? a : a.next().then(function (t) {
+      return t.done ? t.value : a.next();
+    });
+  }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () {
+    return this;
+  }), define(g, "toString", function () {
+    return "[object Generator]";
+  }), e.keys = function (t) {
+    var e = Object(t),
+      r = [];
+    for (var n in e) r.push(n);
+    return r.reverse(), function next() {
+      for (; r.length;) {
+        var t = r.pop();
+        if (t in e) return next.value = t, next.done = !1, next;
+      }
+      return next.done = !0, next;
+    };
+  }, e.values = values, Context.prototype = {
+    constructor: Context,
+    reset: function reset(e) {
+      if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t);
+    },
+    stop: function stop() {
+      this.done = !0;
+      var t = this.tryEntries[0].completion;
+      if ("throw" === t.type) throw t.arg;
+      return this.rval;
+    },
+    dispatchException: function dispatchException(e) {
+      if (this.done) throw e;
+      var r = this;
+      function handle(n, o) {
+        return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o;
+      }
+      for (var o = this.tryEntries.length - 1; o >= 0; --o) {
+        var i = this.tryEntries[o],
+          a = i.completion;
+        if ("root" === i.tryLoc) return handle("end");
+        if (i.tryLoc <= this.prev) {
+          var c = n.call(i, "catchLoc"),
+            u = n.call(i, "finallyLoc");
+          if (c && u) {
+            if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+          } else if (c) {
+            if (this.prev < i.catchLoc) return handle(i.catchLoc, !0);
+          } else {
+            if (!u) throw Error("try statement without catch or finally");
+            if (this.prev < i.finallyLoc) return handle(i.finallyLoc);
+          }
+        }
+      }
+    },
+    abrupt: function abrupt(t, e) {
+      for (var r = this.tryEntries.length - 1; r >= 0; --r) {
+        var o = this.tryEntries[r];
+        if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) {
+          var i = o;
+          break;
+        }
+      }
+      i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null);
+      var a = i ? i.completion : {};
+      return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a);
+    },
+    complete: function complete(t, e) {
+      if ("throw" === t.type) throw t.arg;
+      return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y;
+    },
+    finish: function finish(t) {
+      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+        var r = this.tryEntries[e];
+        if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y;
+      }
+    },
+    "catch": function _catch(t) {
+      for (var e = this.tryEntries.length - 1; e >= 0; --e) {
+        var r = this.tryEntries[e];
+        if (r.tryLoc === t) {
+          var n = r.completion;
+          if ("throw" === n.type) {
+            var o = n.arg;
+            resetTryEntry(r);
+          }
+          return o;
+        }
+      }
+      throw Error("illegal catch attempt");
+    },
+    delegateYield: function delegateYield(e, r, n) {
+      return this.delegate = {
+        iterator: values(e),
+        resultName: r,
+        nextLoc: n
+      }, "next" === this.method && (this.arg = t), y;
+    }
+  }, e;
+}
+module.exports = _regeneratorRuntime, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/typeof.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/typeof.js ***!
+  \*******************************************************/
+/***/ ((module) => {
+
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return module.exports = _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, module.exports.__esModule = true, module.exports["default"] = module.exports, _typeof(o);
+}
+module.exports = _typeof, module.exports.__esModule = true, module.exports["default"] = module.exports;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+// TODO(Babel 8): Remove this file.
+
+var runtime = __webpack_require__(/*! ../helpers/regeneratorRuntime */ "./node_modules/@babel/runtime/helpers/regeneratorRuntime.js")();
+module.exports = runtime;
+
+// Copied from https://github.com/facebook/regenerator/blob/main/packages/runtime/runtime.js#L736=
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  if (typeof globalThis === "object") {
+    globalThis.regeneratorRuntime = runtime;
+  } else {
+    Function("r", "regeneratorRuntime = r")(runtime);
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js ***!
+  \*********************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _asyncToGenerator)
+/* harmony export */ });
+function asyncGeneratorStep(n, t, e, r, o, a, c) {
+  try {
+    var i = n[a](c),
+      u = i.value;
+  } catch (n) {
+    return void e(n);
+  }
+  i.done ? t(u) : Promise.resolve(u).then(r, o);
+}
+function _asyncToGenerator(n) {
+  return function () {
+    var t = this,
+      e = arguments;
+    return new Promise(function (r, o) {
+      var a = n.apply(t, e);
+      function _next(n) {
+        asyncGeneratorStep(a, r, o, _next, _throw, "next", n);
+      }
+      function _throw(n) {
+        asyncGeneratorStep(a, r, o, _next, _throw, "throw", n);
+      }
+      _next(void 0);
+    });
+  };
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/inheritsLoose.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _inheritsLoose)
+/* harmony export */ });
+/* harmony import */ var _setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./setPrototypeOf.js */ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js");
+
+function _inheritsLoose(t, o) {
+  t.prototype = Object.create(o.prototype), t.prototype.constructor = t, (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t, o);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/setPrototypeOf.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ _setPrototypeOf)
+/* harmony export */ });
+function _setPrototypeOf(t, e) {
+  return _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function (t, e) {
+    return t.__proto__ = e, t;
+  }, _setPrototypeOf(t, e);
+}
+
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+/*!******************!*\
+  !*** ./forum.ts ***!
+  \******************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Condition: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.Condition),
+/* harmony export */   ConditionList: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.ConditionList),
+/* harmony export */   HumanizeUtils: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.HumanizeUtils),
+/* harmony export */   OPERATOR: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.OPERATOR),
+/* harmony export */   RewardList: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.RewardList),
+/* harmony export */   addCondition: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addCondition),
+/* harmony export */   addReward: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addReward),
+/* harmony export */   addRewardSelection: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.addRewardSelection),
+/* harmony export */   extend: () => (/* reexport safe */ _src_common_extend__WEBPACK_IMPORTED_MODULE_1__["default"]),
+/* harmony export */   getConditionMap: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.getConditionMap),
+/* harmony export */   getConditions: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.getConditions),
+/* harmony export */   rewardValueConvert: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.rewardValueConvert),
+/* harmony export */   triggerCondition: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.triggerCondition),
+/* harmony export */   triggerConditions: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.triggerConditions),
+/* harmony export */   userValueUtil: () => (/* reexport safe */ _src_forum__WEBPACK_IMPORTED_MODULE_0__.userValueUtil)
+/* harmony export */ });
+/* harmony import */ var _src_forum__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./src/forum */ "./src/forum/index.ts");
+/* harmony import */ var _src_common_extend__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./src/common/extend */ "./src/common/extend.ts");
+
+
+})();
+
+module.exports = __webpack_exports__;
+/******/ })()
+;
 //# sourceMappingURL=forum.js.map

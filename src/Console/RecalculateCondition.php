@@ -8,6 +8,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Xypp\Collector\Data\ConditionAccumulation;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\ConditionChange;
+use Xypp\Collector\Event\GlobalConditionChange;
+use Xypp\Collector\GlobalCondition;
+use Xypp\Collector\Helper\CommandContextHelper;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Condition;
 use Illuminate\Events\Dispatcher;
@@ -28,7 +31,7 @@ class RecalculateCondition extends Command
     protected ConditionHelper $conditionHelper;
     protected Dispatcher $events;
     protected SettingHelper $settingHelper;
-    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events, SettingHelper $settingHelper)
+    public function __construct(ConditionHelper $conditionHelper, Dispatcher $events, SettingHelper $settingHelper, CommandContextHelper $commandContextHelper)
     {
         parent::__construct();
 
@@ -40,6 +43,7 @@ class RecalculateCondition extends Command
         $this->conditionHelper = $conditionHelper;
         $this->events = $events;
         $this->settingHelper = $settingHelper;
+        $commandContextHelper->setCommand($this);
     }
     public function handle()
     {
@@ -47,6 +51,32 @@ class RecalculateCondition extends Command
         if ($names && !is_array($names)) {
             $names = [$names];
         }
+
+        $this->info("Recalculate Global Condition");
+        $updatedGlobalCondition = [];
+        foreach ($this->conditionHelper->getGlobalConditionName() as $conditionDefinitionName) {
+            if ($names && !in_array($conditionDefinitionName, $names))
+                continue;
+            if (!$this->settingHelper->enable("abs", $conditionDefinitionName) && !$this->option("overwrite"))
+                continue;
+            $this->info("Calculating $conditionDefinitionName");
+            $globalConditionDefinition = $this->conditionHelper->getGlobalConditionDefinition($conditionDefinitionName);
+            $accumulation = new ConditionAccumulation("{}");
+            $result = $globalConditionDefinition->getAbsoluteValue($accumulation);
+            $condition = GlobalCondition::where("name", $conditionDefinitionName)->first();
+            if (!$condition) {
+                $condition = new GlobalCondition();
+                $condition->name = $conditionDefinitionName;
+            }
+            $condition->setAccumulation($accumulation);
+            $condition->value = $accumulation->total;
+            $condition->updateTimestamps();
+            $condition->save();
+
+            $updatedGlobalCondition[$conditionDefinitionName] = $condition;
+            $this->info("Done");
+        }
+
         $users = User::all();
         $this->info("Recalculate all conditions for " . $users->count() . " users.");
 
@@ -94,13 +124,14 @@ class RecalculateCondition extends Command
                     $condition->value = $accumulation->total;
                     $condition->updateTimestamps();
                     $condition->save();
-                    
+
                     if ($result)
                         $userConditionChange[$user->id][] = $condition;
                 }
             );
             $this->info("Done");
         }
+
         $this->info("All Done");
         if ($this->option("no-dispatch-update"))
             return;
@@ -121,6 +152,16 @@ class RecalculateCondition extends Command
                 }
             }
         );
+        $this->info("Done");
+        foreach ($this->conditionHelper->getGlobalConditionName() as $conditionDefinitionName) {
+            if (isset($updatedGlobalCondition[$conditionDefinitionName])) {
+                $this->info("Dispatch Global $conditionDefinitionName");
+                $this->events->dispatch(new GlobalConditionChange(
+                    new ConditionData($condition->name, $condition->value, $condition->getAccumulation()->updateFlag, true),
+                    $updatedGlobalCondition[$conditionDefinitionName]
+                ));
+            }
+        }
         $this->info("All Done");
     }
 }

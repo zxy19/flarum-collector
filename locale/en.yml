@@ -15,6 +15,9 @@ xypp-collector:
     settings: "Settings"
     allow_update: "Allow user update manually"
     max_keep: "Max Record Days"
+    use_custom: "Use Custom"
+    custom_global_update: "Custom Update with Global"
+    auto_update: "Auto Update Custom Condition pre day (Local time 00:00)"
     limited_accumulation_support: "This condition is not able to get all data in recalculate. It will ask you when running the command."
     emit_control:
       title: "Update Emitter and Recalculate"
@@ -37,6 +40,15 @@ xypp-collector:
       reward-get_value: "Get Value"
       reward-alter_name: "Display Name"
       new_item: "New Item"
+    custom:
+      title: "Custom Condition"
+      name: "Name"
+      add: "New"
+      display_name: "Display Name"
+      evaluation: "Evaluation"
+      button-edit: Edit
+      button: Create
+      delete-confirm: "Are you sure to delete this item?"
     permissions:
       view-condition: "View Condition Value"
   api:
