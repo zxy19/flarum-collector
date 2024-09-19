@@ -17,6 +17,8 @@ class PostCount extends ConditionDefinition
     {
         $posts = $user->posts()->orderByDesc('created_at')->get();
         foreach ($posts as $post) {
+            if ($post->type != 'comment')
+                continue;
             if ($post->discussion->hidden_at)
                 continue;
             if ($post->hidden_at)

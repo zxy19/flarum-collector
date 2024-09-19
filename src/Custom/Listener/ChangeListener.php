@@ -26,6 +26,10 @@ class ChangeListener
 
     public function conditionChange(ConditionChange $event)
     {
+        if (!$this->settingHelper->useCustom())
+            return;
+        if (!$this->settingHelper->normalChangeCustom())
+            return;
         $effectedConditions = ConditionCustomCondition::where("name", $event->data->name)->get();
         $effectedConditions->each(function (ConditionCustomCondition $conditionCustom) use ($event) {
             $custom = $conditionCustom->custom()->first();
@@ -37,6 +41,8 @@ class ChangeListener
 
     public function globalConditionChange(GlobalConditionChange $event)
     {
+        if (!$this->settingHelper->useCustom())
+            return;
         if (!$this->settingHelper->globalChangeCustom())
             return;
         $allUsers = User::all();

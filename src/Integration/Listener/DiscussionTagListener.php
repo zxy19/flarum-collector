@@ -8,6 +8,7 @@ use Flarum\Tags\Tag;
 use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\UpdateCondition;
+use Xypp\Collector\Event\UpdateGlobalCondition;
 use Xypp\Collector\Integration\Helper\ValidTagsHelper;
 
 class DiscussionTagListener
@@ -54,6 +55,11 @@ class DiscussionTagListener
                 [new ConditionData('valid_discussion_count', $amount)]
             )
         );
+        $this->events->dispatch(
+            new UpdateGlobalCondition(
+                [new ConditionData('global.valid_discussion_count', $amount)]
+            )
+        );
         $model->posts->each(function ($post) use ($amount) {
             if ($post->type != 'comment')
                 return;
@@ -63,6 +69,11 @@ class DiscussionTagListener
                 new UpdateCondition(
                     $post->user,
                     [new ConditionData('valid_post_count', $amount)]
+                )
+            );
+            $this->events->dispatch(
+                new UpdateGlobalCondition(
+                    [new ConditionData('global.valid_post_count', $amount)]
                 )
             );
         });

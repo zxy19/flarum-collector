@@ -20,6 +20,8 @@ class GlobalPostCount extends GlobalConditionDefinition
     {
         $posts = Post::query()->orderByDesc('created_at')->get();
         $this->commandContextHelper->withProgressBar($posts, function (Post $post) use (&$conditionAccumulation) {
+            if ($post->type != 'comment')
+                return;
             if ($post->discussion->hidden_at)
                 return;
             if ($post->hidden_at)

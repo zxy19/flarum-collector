@@ -11,6 +11,7 @@ use Flarum\User\User;
 use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\UpdateCondition;
+use Xypp\Collector\Event\UpdateGlobalCondition;
 use Xypp\Collector\Integration\Helper\ValidTagsHelper;
 
 class PostCountListener
@@ -62,15 +63,26 @@ class PostCountListener
                 [new ConditionData('post_count', $amount)]
             )
         );
+        $this->events->dispatch(
+            new UpdateGlobalCondition(
+                [new ConditionData('global.post_count', $amount)]
+            )
+        );
 
         if (class_exists(\Flarum\Tags\Tag::class)) {
-            if ($this->helper->isAllTagValid($post->discussion->tags))
+            if ($this->helper->isAllTagValid($post->discussion->tags)) {
                 $this->events->dispatch(
                     new UpdateCondition(
                         $user,
                         [new ConditionData('valid_post_count', $amount)]
                     )
                 );
+                $this->events->dispatch(
+                    new UpdateGlobalCondition(
+                        [new ConditionData('global.valid_post_recv', $amount)]
+                    )
+                );
+            }
         }
     }
 }

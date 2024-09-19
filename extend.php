@@ -23,6 +23,7 @@ use Xypp\Collector\Console\RecalculateCondition;
 use Xypp\Collector\Listener\ConditionModifierListener;
 use Xypp\Collector\Console\UpdateCondition;
 use Xypp\Collector\Console\UpdateRefreshCommand;
+use Xypp\Collector\Listener\GlobalConditionModifierListener;
 use Xypp\Collector\Provider\CollectorServiceProvider;
 use Xypp\Collector\Provider\QuestSeriviceProvider;
 
@@ -37,7 +38,8 @@ return array_merge(
         new Extend\Locales(__DIR__ . '/locale'),
         new Extend\Locales(__DIR__ . '/integration-locale'),
         (new Extend\Event())
-            ->listen(\Xypp\Collector\Event\UpdateCondition::class, ConditionModifierListener::class),
+            ->listen(\Xypp\Collector\Event\UpdateCondition::class, ConditionModifierListener::class)
+            ->listen(\Xypp\Collector\Event\UpdateGlobalCondition::class, GlobalConditionModifierListener::class),
         (new Extend\Routes('api'))
             ->post('/collector-condition', 'collector-condition.trigger', Api\Controller\FrontendConditionUpdateController::class)
             ->get('/collector-condition', 'collector-condition.index', Api\Controller\ListUserConditionsController::class)

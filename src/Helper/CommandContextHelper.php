@@ -15,10 +15,11 @@ class CommandContextHelper
     {
         return $this->commandContext;
     }
-    public function withProgressBar($iter,$callback)
+    public function withProgressBar($iter, $callback)
     {
-        if($this->commandContext){
-            $this->commandContext->withProgressBar($iter,$callback);
+        if ($this->commandContext) {
+            $this->commandContext->withProgressBar($iter, $callback);
+            return;
         }
         foreach ($iter as $item) {
             $callback($item);

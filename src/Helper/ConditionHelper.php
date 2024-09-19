@@ -138,7 +138,7 @@ class ConditionHelper
             }
             return;
         }
-        if (!$this->setting->enableGlobal($from, $data->name)) {
+        if (!$this->setting->enable($from, $data->name)) {
             return;
         }
         $conditionDefine = $this->collection->getGlobalConditionDefinition($data->name);

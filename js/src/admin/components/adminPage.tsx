@@ -88,6 +88,13 @@ export default class adminPage extends ExtensionPage {
             }
             {
                 this.buildSettingComponent({
+                    setting: "xypp.collector.custom-normal-update",
+                    label: app.translator.trans('xypp-collector.admin.custom_normal_update'),
+                    type: "boolean"
+                })
+            }
+            {
+                this.buildSettingComponent({
                     setting: "xypp.collector.custom-global-update",
                     label: app.translator.trans('xypp-collector.admin.custom_global_update'),
                     type: "boolean"

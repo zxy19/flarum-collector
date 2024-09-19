@@ -11,6 +11,7 @@ use Flarum\User\User;
 use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\UpdateCondition;
+use Xypp\Collector\Event\UpdateGlobalCondition;
 use Xypp\Collector\Integration\Helper\ValidTagsHelper;
 
 class DiscussionCountListener
@@ -57,14 +58,25 @@ class DiscussionCountListener
                 [new ConditionData('discussion_count', $amount)]
             )
         );
+        $this->events->dispatch(
+            new UpdateGlobalCondition(
+                [new ConditionData('global.discussion_count', $amount)]
+            )
+        );
         if (class_exists(\Flarum\Tags\Tag::class)) {
-            if ($this->helper->isAllTagValid($discussion->tags))
+            if ($this->helper->isAllTagValid($discussion->tags)) {
                 $this->events->dispatch(
                     new UpdateCondition(
                         $user,
                         [new ConditionData('valid_discussion_count', $amount)]
                     )
                 );
+                $this->events->dispatch(
+                    new UpdateGlobalCondition(
+                        [new ConditionData('global.valid_discussion_count', $amount)]
+                    )
+                );
+            }
         }
     }
     public function discussionPostCondition(User $user, Discussion $discussion, int $amount)
@@ -86,11 +98,21 @@ class DiscussionCountListener
                     [new ConditionData('post_count', $amount)]
                 )
             );
+            $this->events->dispatch(
+                new UpdateGlobalCondition(
+                    [new ConditionData('global.post_count', $amount)]
+                )
+            );
             if ($updateValid) {
                 $this->events->dispatch(
                     new UpdateCondition(
                         $post->user,
                         [new ConditionData('valid_post_count', $amount)]
+                    )
+                );
+                $this->events->dispatch(
+                    new UpdateGlobalCondition(
+                        [new ConditionData('global.valid_post_count', $amount)]
                     )
                 );
             }

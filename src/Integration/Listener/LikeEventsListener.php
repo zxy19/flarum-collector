@@ -5,6 +5,7 @@ namespace Xypp\Collector\Integration\Listener;
 use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Data\ConditionData;
 use Xypp\Collector\Event\UpdateCondition;
+use Xypp\Collector\Event\UpdateGlobalCondition;
 
 class LikeEventsListener
 {
@@ -35,6 +36,11 @@ class LikeEventsListener
                 [new ConditionData('like_recv', 1)]
             )
         );
+        $this->events->dispatch(
+            new UpdateGlobalCondition(
+                [new ConditionData('global.like', 1)]
+            )
+        );
     }
 
     public function unliked($event)
@@ -49,6 +55,11 @@ class LikeEventsListener
             new UpdateCondition(
                 $event->post->user()->first(),
                 [new ConditionData('like_recv', -1)]
+            )
+        );
+        $this->events->dispatch(
+            new UpdateGlobalCondition(
+                [new ConditionData('global.like', -1)]
             )
         );
     }

@@ -17,6 +17,7 @@ xypp-collector:
     max_keep: "Max Record Days"
     use_custom: "Use Custom"
     custom_global_update: "Custom Update with Global"
+    custom_normal_update: "Custom Update with normal condition"
     auto_update: "Auto Update Custom Condition pre day (Local time 00:00)"
     limited_accumulation_support: "This condition is not able to get all data in recalculate. It will ask you when running the command."
     emit_control:
