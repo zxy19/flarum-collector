@@ -27,7 +27,7 @@ export default class userValueUtil {
             evaluation = evaluation.replace(m[0], value + "");
         }
         try {
-            return parseFloat(evaluate(evaluation));
+            return Math.floor(parseFloat(evaluate(evaluation)));
         } catch (e) {
             return false;
         }
