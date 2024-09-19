@@ -18,7 +18,7 @@ class GlobalPostCount extends GlobalConditionDefinition
     }
     public function getAbsoluteValue(ConditionAccumulation $conditionAccumulation): bool
     {
-        $posts = Post::query()->orderByDesc('created_at')->get();
+        $posts = Post::query()->orderByDesc('created_at')->get(['created_at', 'discussion_id', 'type']);
         $this->commandContextHelper->withProgressBar($posts, function (Post $post) use (&$conditionAccumulation) {
             if ($post->type != 'comment')
                 return;

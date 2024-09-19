@@ -20,7 +20,7 @@ class GlobalDiscussionCount extends GlobalConditionDefinition
     }
     public function getAbsoluteValue(ConditionAccumulation $conditionAccumulation): bool
     {
-        $discussions = Discussion::query()->orderByDesc('created_at')->get();
+        $discussions = Discussion::query()->orderByDesc('created_at')->get(['created_at', 'hidden_at']);
         $this->commandContextHelper->withProgressBar($discussions, function ($discuss) use (&$conditionAccumulation) {
             if ($discuss->hidden_at)
                 return;

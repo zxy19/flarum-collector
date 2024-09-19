@@ -21,7 +21,7 @@ class GlobalValidPostCount extends GlobalConditionDefinition
     }
     public function getAbsoluteValue(ConditionAccumulation $conditionAccumulation): bool
     {
-        $posts = Post::query()->orderByDesc('created_at')->get();
+        $posts = Post::query()->orderByDesc('created_at')->get(['created_at', 'discussion_id', 'hidden_at']);
         $this->commandContextHelper->withProgressBar($posts, function ($post) use (&$conditionAccumulation) {
             if ($post->discussion->hidden_at)
                 return;
