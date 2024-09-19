@@ -19,6 +19,7 @@ export default class userValueUtil {
         const match = evaluation.matchAll(/\{([^\}]*)\}/ig);
         for (const m of match) {
             const condition = this.conditionMap[m[1]];
+            if (!condition) return false;
             let value: number = condition.getTotal(data.calculate);
             if (data.span) {
                 value = condition.getSpan(data.span, data.calculate);
