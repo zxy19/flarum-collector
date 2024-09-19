@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Tobscure\JsonApi\Document;
 use Xypp\Collector\Api\Serializer\ConditionSerializer;
 use Xypp\Collector\Condition;
+use Xypp\Collector\GlobalCondition;
 
 class ListUserConditionsController extends AbstractListController
 {
@@ -31,6 +32,7 @@ class ListUserConditionsController extends AbstractListController
             $actor = $user;
         }
         $results = Condition::where('user_id', $actor->id)->get();
-        return $results;
+        
+        return $results->concat(GlobalCondition::all());
     }
 }

@@ -17,7 +17,7 @@ export async function getConditions(forceRefresh: boolean = false, user: number 
     }
     let conditions = app.store.all<Condition>("collector-condition");
     if (data && data.id) {
-        conditions = conditions.filter(c => c.user_id() == data.id);
+        conditions = conditions.filter(c => c.global() || c.user_id() == data.id);
     }
 
     if (forceRefresh || conditions.length == 0) {

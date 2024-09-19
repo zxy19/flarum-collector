@@ -5,6 +5,7 @@ namespace Xypp\Collector\Api\Serializer;
 use Flarum\Api\Serializer\AbstractSerializer;
 use Xypp\Collector\Condition;
 use InvalidArgumentException;
+use Xypp\Collector\GlobalCondition;
 
 class ConditionSerializer extends AbstractSerializer
 {
@@ -20,7 +21,7 @@ class ConditionSerializer extends AbstractSerializer
      */
     protected function getDefaultAttributes($model)
     {
-        if (!($model instanceof Condition)) {
+        if (!($model instanceof Condition || $model instanceof GlobalCondition)) {
             throw new InvalidArgumentException(
                 get_class($this) . ' can only serialize instances of ' . Condition::class
             );
@@ -30,11 +31,20 @@ class ConditionSerializer extends AbstractSerializer
         if ($accumulation === null) {
             $accumulation = "{}";
         }
-        return [
-            "user_id" => $model->user_id,
+
+        $ret = [
             "name" => $model->name,
             "value" => $model->value,
-            "accumulation" => $accumulation
+            "accumulation" => $accumulation,
+            "global" => false,
         ];
+
+        if ($model instanceof GlobalCondition) {
+            $ret["global"] = true;
+        }else{
+            $ret["user_id"] = $model->user_id;
+        }
+
+        return $ret;
     }
 }
