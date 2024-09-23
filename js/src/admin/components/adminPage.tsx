@@ -213,30 +213,33 @@ export default class adminPage extends ExtensionPage {
     toggleRow(name: string) {
         return ((e: MouseEvent) => {
             e.preventDefault();
-            const types = ["event", "update", "manual"].filter(type => this.checkType(type, name));
+            const types = ["event", "update", "manual"].filter(type => this.checkType(type, name)).concat("abs");
 
             const target = types.find(type => {
                 return this.autoEmitObj[type] && this.autoEmitObj[type][name]
             }) === undefined;
 
             types.forEach(type => {
+                if(!this.autoEmitObj[type]) this.autoEmitObj[type] = {}
                 if (target) this.autoEmitObj[type][name] = true;
                 else if (this.autoEmitObj[type][name]) delete this.autoEmitObj[type][name];
             });
+
+            this.autoEmit!(JSON.stringify(this.autoEmitObj));
         }).bind(this);
     }
     toggleAll(type: string) {
         return ((e: MouseEvent) => {
             e.preventDefault();
-            const all = Object.keys(HumanizeUtils.getInstance(app).getAllConditions().toObject()).filter(key => this.checkType(type, key));
+            const all = Object.keys(HumanizeUtils.getInstance(app).getAllConditions(true).toObject()).filter(key => this.checkType(type, key) || type === "abs");
             if (!this.autoEmitObj[type]) this.autoEmitObj[type] = {};
-            let target = true;
-            if (Object.keys(this.autoEmitObj[type]).length == 0) target = false;
+            let target = false;
+            if (Object.keys(this.autoEmitObj[type]).length == 0) target = true;
             all.forEach(key => {
                 if (target) this.autoEmitObj[type][key] = true;
                 else if (this.autoEmitObj[type][key]) delete this.autoEmitObj[type][key];
             });
-            this.autoEmit!(JSON.stringify(this.autoEmit));
+            this.autoEmit!(JSON.stringify(this.autoEmitObj));
         }).bind(this)
     }
     changeStateCbMaker(type: string, name: string) {
