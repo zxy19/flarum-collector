@@ -23,8 +23,10 @@ export default class adminPage extends ExtensionPage {
     oncreate(vnode: any): void {
         this.autoEmit = this.setting('xypp.collector.emit_control', "{}");
         this.autoEmitObj = JSON.parse(this.autoEmit!());
+        if (Array.isArray(this.autoEmitObj)) this.autoEmitObj = {};
         this.invalidTags = this.setting('xypp.collector.invalid_tags', "{}");
         this.invalidTagsObj = JSON.parse(this.invalidTags!());
+        if (Array.isArray(this.invalidTagsObj)) this.invalidTagsObj = {};
         super.oncreate(vnode);
         this.loadData();
     }
@@ -220,7 +222,7 @@ export default class adminPage extends ExtensionPage {
             }) === undefined;
 
             types.forEach(type => {
-                if(!this.autoEmitObj[type]) this.autoEmitObj[type] = {}
+                if (!this.autoEmitObj[type]) this.autoEmitObj[type] = {}
                 if (target) this.autoEmitObj[type][name] = true;
                 else if (this.autoEmitObj[type][name]) delete this.autoEmitObj[type][name];
             });

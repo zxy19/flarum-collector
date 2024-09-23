@@ -57,7 +57,7 @@ return array_merge(
             ->register(CollectorServiceProvider::class),
         (new Extend\Settings)
             ->default("xypp.collector.max_keep", 30)
-            ->default('xypp.collector.emit_control', "[]")
+            ->default('xypp.collector.emit_control', "{}")
             ->default('xypp.collector.auto_update', false)
             ->serializeToForum('xypp.collector.max_keep', "xypp.collector.max_keep"),
     ]
