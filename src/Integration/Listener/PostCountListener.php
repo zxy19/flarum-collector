@@ -79,7 +79,7 @@ class PostCountListener
                 );
                 $this->events->dispatch(
                     new UpdateGlobalCondition(
-                        [new ConditionData('global.valid_post_recv', $amount)]
+                        [new ConditionData('global.valid_post_count', $amount)]
                     )
                 );
             }
