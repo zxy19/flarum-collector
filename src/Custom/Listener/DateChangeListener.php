@@ -2,8 +2,10 @@
 
 namespace Xypp\Collector\Custom\Listener;
 use Flarum\User\User;
+use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Condition;
 use Xypp\Collector\Custom\CustomCondition;
+use Xypp\Collector\Event\DailyUpdate;
 use Xypp\Collector\Helper\SettingHelper;
 use Xypp\ForumQuests\Helper\ConditionHelper;
 use Xypp\LocalizeDate\Event\DateChangeEvent;
@@ -13,10 +15,12 @@ class DateChangeListener
 
     private $settingHelper;
     private $conditionHelper;
-    public function __construct(SettingHelper $settingHelper, ConditionHelper $conditionHelper)
+    private $events;
+    public function __construct(SettingHelper $settingHelper, ConditionHelper $conditionHelper, Dispatcher $events)
     {
         $this->settingHelper = $settingHelper;
         $this->conditionHelper = $conditionHelper;
+        $this->events = $events;
     }
     public function __invoke(DateChangeEvent $event)
     {
@@ -41,5 +45,7 @@ class DateChangeListener
                 }
             });
         });
+
+        $this->events->dispatch(new DailyUpdate());
     }
 }

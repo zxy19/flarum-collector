@@ -39,7 +39,6 @@ class RecalculateCondition extends Command
         $this->addOption("overwrite", "o", InputArgument::OPTIONAL, "Overwrite item that cannot get absolute accumulation data");
         $this->addOption("skip", "s", InputArgument::OPTIONAL, "Skip item that cannot get absolute accumulation data");
         $this->addOption("no-dispatch-update", "a", InputArgument::OPTIONAL, "Do not dispatch update event");
-
         $this->conditionHelper = $conditionHelper;
         $this->events = $events;
         $this->settingHelper = $settingHelper;

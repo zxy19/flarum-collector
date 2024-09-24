@@ -17,6 +17,7 @@ use Xypp\Collector\Api\Controller\DeleteCustomConditionController;
 use Xypp\Collector\Api\Controller\EditCustomConditionController;
 use Xypp\Collector\Api\Controller\GetCollectorDefinitionController;
 use Xypp\Collector\Api\Controller\ListCustomConditionController;
+use Xypp\Collector\Console\Daily;
 use Xypp\Collector\Console\Debug;
 use Xypp\Collector\Console\Migrate;
 use Xypp\Collector\Console\RecalculateCondition;
@@ -52,7 +53,8 @@ return array_merge(
             ->command(UpdateCondition::class)
             ->command(RecalculateCondition::class)
             ->command(Debug::class)
-            ->command(Migrate::class),
+            ->command(Migrate::class)
+            ->command(Daily::class),
         (new Extend\ServiceProvider())
             ->register(CollectorServiceProvider::class),
         (new Extend\Settings)
