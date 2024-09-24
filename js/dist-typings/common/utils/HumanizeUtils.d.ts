@@ -8,11 +8,13 @@ export default class HumanizeUtils {
     protected app: ForumApplication | AdminApplication;
     protected definitionLoaded: boolean;
     protected rawConditionDefinition: Record<string, {
+        global: boolean;
         trans: string;
         key: string;
         manual: boolean;
         abs: boolean;
         update: boolean;
+        evaluation?: string;
     }>;
     protected conditionTranslations: Record<string, string>;
     protected rewardTranslations: Record<string, string>;
@@ -22,11 +24,13 @@ export default class HumanizeUtils {
     loadDefinition(): Promise<void>;
     protected _loadDefinition(data: {
         conditions: {
+            global: boolean;
             trans: string;
             key: string;
             manual: boolean;
             abs: boolean;
             update: boolean;
+            evaluation?: string;
         }[];
         rewards: {
             trans: string;
@@ -34,7 +38,7 @@ export default class HumanizeUtils {
         }[];
     }): void;
     static getInstance(app: ForumApplication | AdminApplication): HumanizeUtils;
-    getAllConditions(): ItemList<string>;
+    getAllConditions(containsGlobal?: boolean): ItemList<string>;
     getAllRewards(): ItemList<string>;
     getConditionName(key: string): string;
     getRewardName(key: string): string;
@@ -44,10 +48,12 @@ export default class HumanizeUtils {
     humanizeReward(rewardData: RewardData[] | RewardData): any;
     getCalculate(calculate: CALCULATE): import("@askvortsov/rich-icu-message-formatter").NestedStringArray;
     getRawConditionDefinition(key: string): {
+        global: boolean;
         trans: string;
         key: string;
         manual: boolean;
         abs: boolean;
         update: boolean;
+        evaluation?: string;
     } | false;
 }

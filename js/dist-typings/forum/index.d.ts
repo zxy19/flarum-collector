@@ -5,5 +5,6 @@ import Condition from '../common/models/Condition';
 import { getConditionMap, getConditions } from './utils/userCondition';
 import ConditionList from './components/ConditionList';
 import RewardList from './components/RewardList';
+import userValueUtil from './utils/userValueUtil';
 import { OPERATOR } from '../common/types/data';
-export { addCondition, addReward, addRewardSelection, rewardValueConvert, triggerCondition, triggerConditions, HumanizeUtils, Condition, getConditionMap, getConditions, ConditionList, RewardList, OPERATOR };
+export { addCondition, addReward, addRewardSelection, rewardValueConvert, triggerCondition, triggerConditions, HumanizeUtils, Condition, getConditionMap, getConditions, ConditionList, RewardList, userValueUtil, OPERATOR };

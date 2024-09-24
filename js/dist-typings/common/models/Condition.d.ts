@@ -4,6 +4,7 @@ export default class Condition extends Model {
     name: () => string;
     value: () => number;
     user_id: () => number;
+    global: () => boolean;
     accumulation: () => ConditionAccumulation | null;
     getSpan(span: number, calculate?: CALCULATE): number;
     getTotal(calculate?: CALCULATE): number;

@@ -5,7 +5,7 @@ use Illuminate\Console\Command;
 
 class CommandContextHelper
 {
-    public ?Command $commandContext;
+    public ?Command $commandContext = null;
 
     public function setCommand(Command $command)
     {
