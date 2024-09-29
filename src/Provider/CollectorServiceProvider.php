@@ -21,6 +21,7 @@ use Xypp\Collector\Integration\Conditions\DiscussionReplied;
 use Xypp\Collector\Integration\Conditions\DiscussionViews;
 use Xypp\Collector\Integration\Conditions\LikeRecv;
 use Xypp\Collector\Integration\Conditions\LikeSend;
+use Xypp\Collector\Integration\Conditions\ModeratorWarnings;
 use Xypp\Collector\Integration\Conditions\Money;
 use Xypp\Collector\Integration\Conditions\PostCount;
 use Xypp\Collector\Integration\Conditions\StoreItemPurchase;
@@ -100,6 +101,9 @@ class CollectorServiceProvider extends AbstractServiceProvider
                 $collector->addGlobalDefinition($container->make(GlobalValidDiscussionCount::class));
             }
 
+            if ($extensionManager->isEnabled("askvortsov-moderator-warnings")) {
+                $collector->addDefinition($container->make(ModeratorWarnings::class));
+            }
             return $collector;
         });
         $this->container->singleton(RewardDefinitionCollection::class, function (Container $container) {

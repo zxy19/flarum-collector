@@ -18,6 +18,7 @@ xypp-collector:
         set_best_answer: "设置最佳答案"
         valid_post_count: "有效发帖数"
         valid_discussion_count: "有效讨论数"
+        moderator_warnings: "警告"
         money: "货币"
       reward:
         money: "货币"

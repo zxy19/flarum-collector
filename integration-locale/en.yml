@@ -18,6 +18,8 @@ xypp-collector:
         set_best_answer: "Set Best Answer"
         valid_post_count: "Valid Post Count"
         valid_discussion_count: "Valid Discussion Count"
+        moderator_warnings: "Moderator Warnings"
+        
         money: "Money"
       global-condition:
         post_count: "Global Post Count"
