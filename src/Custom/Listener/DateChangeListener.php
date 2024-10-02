@@ -39,6 +39,11 @@ class DateChangeListener
                 return;
             $users->each(function (User $user) use ($condition, $def, $event) {
                 $model = Condition::lockForUpdate()->where('user_id', $user->id)->where('name', $def->name)->first();
+                if (!$model) {
+                    $model = new Condition();
+                    $model->name = $def->name;
+                    $model->user_id = $user->id;
+                }
                 if ($def->updateValue($user, $model->getAccumulation())) {
                     $model->value = $model->getAccumulation()->total;
                     $model->save();
