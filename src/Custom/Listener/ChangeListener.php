@@ -60,6 +60,11 @@ class ChangeListener
     protected function updateForUser(string $name, User $user)
     {
         $model = Condition::lockForUpdate()->where('user_id', $user->id)->where('name', $name)->first();
+        if (!$model) {
+            $model = new Condition();
+            $model->name = $name;
+            $model->user_id = $user->id;
+        }
         $definition = $this->conditionHelper->getConditionDefinition($name);
         if ($definition->updateValue($user, $model->getAccumulation())) {
             $model->value = $model->getAccumulation()->total;
