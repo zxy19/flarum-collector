@@ -32,7 +32,11 @@ class ListUserConditionsController extends AbstractListController
             $actor = $user;
         }
         $results = Condition::where('user_id', $actor->id)->get();
-        
-        return $results->concat(GlobalCondition::all());
+
+        $maxId = $results->max("id") + 1;
+        return $results->concat(GlobalCondition::all()->transform(function ($model) use ($maxId) {
+            $model->id = $maxId + $model->id;
+            return $model;
+        }));
     }
 }
