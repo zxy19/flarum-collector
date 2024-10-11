@@ -12,4 +12,5 @@ export default class ConditionConfigure extends Component<{
     oninit(vnode: any): void;
     onbeforeupdate(vnode: any): void;
     view(vnode: any): JSX.Element;
+    swap(id: number, dir: number): () => void;
 }
