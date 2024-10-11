@@ -60,3 +60,10 @@ xypp-collector:
       sum: "总和"
       max: "最大值"
       days: "天数"
+    operator:
+      ge: "大于等于"
+      gt: "大于"
+      le: "小于等于"
+      lt: "小于"
+      eq: "等于"
+      ne: "不等于"

@@ -54,7 +54,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
         super.onbeforeupdate(vnode);
     }
     view(vnode: any) {
-        return <table className='Table'>
+        return <table className='Table condition-table'>
             <thead>
                 <tr>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-name')}</th>
@@ -63,6 +63,7 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-span')}</th>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-calculate')}</th>
                     <th>{app.translator.trans('xypp-collector.admin.list.condition-alter_name')}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -125,11 +126,34 @@ export default class ConditionConfigure extends Component<{ conditions: Stream<C
                                         <i class="fas fa-trash"></i>
                                     </Button>
                                 )}
+                                {showIf((this.conditions[index - 1] && item.name != '*'),
+                                    <Button className="Button Button--secondary" onclick={this.swap(index, -1)}>
+                                        <i class="fas fa-sort-up"></i>
+                                    </Button>
+                                )}
+                                {showIf((this.conditions[index + 2] && item.name != '*'),
+                                    <Button className="Button Button--secondary" onclick={this.swap(index, 1)}>
+                                        <i class="fas fa-sort-down"></i>
+                                    </Button>
+                                )}
                             </td>
                         </tr>
                     )
                 })}
             </tbody>
         </table>
+    }
+
+
+    swap(id: number, dir: number) {
+        return (() => {
+            const swap1 = Math.max(id + dir, id);
+            const swap2 = Math.min(id + dir, id);
+            const tmp = this.conditions[swap1];
+            this.conditions[swap1] = this.conditions[swap2];
+            this.conditions[swap2] = tmp;
+            this.attrs.conditions(this.conditions.filter(noNewItem));;
+            m.redraw();
+        }).bind(this);
     }
 }

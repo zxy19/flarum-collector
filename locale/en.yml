@@ -60,3 +60,10 @@ xypp-collector:
       sum: "Sum"
       max: "Max"
       days: "Count Days"
+    operator:
+      ge: ">="
+      gt: ">"
+      le: "<="
+      lt: "<"
+      eq: "="
+      ne: "!="

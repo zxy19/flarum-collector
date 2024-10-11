@@ -13,6 +13,9 @@ function optionalJsonParser<T>(data: any): T | null {
     return null;
   }
 }
+
+const META_FIELDS = ["all", "rest", "flg", "max", "days"];
+
 export default class Condition extends Model {
   name = Model.attribute<string>('name');
   value = Model.attribute<number>('value');
@@ -29,7 +32,7 @@ export default class Condition extends Model {
     }
     let ret = 0;
     Object.keys(accumulation).forEach((key: string) => {
-      if (key == 'all' || key == 'rest') return;
+      if (META_FIELDS.includes(key)) return;
       const d = dayjs(key, "YYYYMMDD");
       if (d.isAfter(cut) || d.isSame(cut)) {
         if (calculate == CALCULATE.MAX)

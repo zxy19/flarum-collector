@@ -6,6 +6,15 @@ import ItemList from "flarum/common/utils/ItemList";
 import Condition from "../models/Condition";
 import { showIf } from "./NodeUtil";
 
+const CONDITION_OPERATOR_MAP = {
+    ">=":"ge",
+    ">":"gt",
+    "<=":"le",
+    "<":"lt",
+    "=":"eq",
+    "!=":"ne"
+}
+
 export default class HumanizeUtils {
     public static instance?: HumanizeUtils;
     protected app: ForumApplication | AdminApplication;
@@ -104,7 +113,7 @@ export default class HumanizeUtils {
             return this.app.translator.trans("xypp-collector.forum.condition.format", {
                 b: <b />,
                 name: this.getConditionName(conditionData.name),
-                operator: conditionData.operator,
+                operator: this.app.translator.trans(`xypp-collector.lib.operator.${CONDITION_OPERATOR_MAP[conditionData.operator]}`),
                 value: conditionData.value,
                 calculate: this.getCalculate(conditionData.calculate || CALCULATE.SUM),
                 span
