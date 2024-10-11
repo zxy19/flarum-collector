@@ -14,7 +14,7 @@ import { getConditionMap, getConditions } from './utils/userCondition';
 import ConditionList from './components/ConditionList';
 import RewardList from './components/RewardList';
 import userValueUtil from './utils/userValueUtil';
-import { OPERATOR } from '../common/types/data';
+import { OPERATOR,CALCULATE } from '../common/types/data';
 export {
   addCondition,
   addReward,
@@ -29,5 +29,6 @@ export {
   ConditionList,
   RewardList,
   userValueUtil,
-  OPERATOR
+  OPERATOR,
+  CALCULATE
 };

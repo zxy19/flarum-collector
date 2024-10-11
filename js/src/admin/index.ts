@@ -19,7 +19,7 @@ import HumanizeUtils from '../common/utils/HumanizeUtils';
 import Condition from '../common/models/Condition';
 import RewardConfigure from './components/RewardConfigure';
 import ConditionConfigure from './components/ConditionConfigure';
-import { OPERATOR } from '../common/types/data';
+import { OPERATOR,CALCULATE } from '../common/types/data';
 import adminPage from './components/adminPage';
 export {
   addCondition,
@@ -30,5 +30,6 @@ export {
   Condition,
   RewardConfigure,
   ConditionConfigure,
-  OPERATOR
+  OPERATOR,
+  CALCULATE
 };
