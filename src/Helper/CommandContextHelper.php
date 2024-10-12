@@ -19,6 +19,10 @@ class CommandContextHelper
     {
         return $this->commandContext;
     }
+    public function getProgressBar($max)
+    {
+        return $this->commandContext ? $this->commandContext->getOutput()->createProgressBar($max) : null;
+    }
     public function withProgressBar($iter, $callback)
     {
         if ($this->commandContext && !$this->commandContext->isHidden()) {
