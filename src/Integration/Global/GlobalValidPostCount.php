@@ -39,7 +39,7 @@ class GlobalValidPostCount extends GlobalConditionDefinition
         });
         if ($progress)
             $progress->finish();
-        
+
         if (!$conditionAccumulation->dirty)
             return false;
         return true;

@@ -48,7 +48,8 @@ class RecalculateCondition extends Command
             ->overwrite($this->option("overwrite") ?? false)
             ->updateGlobal()
             ->update();
-        if (!!$this->option("no-dispatch-update"))
+
+        if (!$this->option("no-dispatch-update"))
             $this->updateAndRecalculateHelper->dispatch();
 
         $this->info("All Done");

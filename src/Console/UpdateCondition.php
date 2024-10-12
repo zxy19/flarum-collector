@@ -53,7 +53,8 @@ class UpdateCondition extends Command
             ->overwrite(false)
             ->updateGlobal()
             ->update();
-        if (!!$this->option("no-dispatch-update"))
+            
+        if (!$this->option("no-dispatch-update"))
             $this->updateAndRecalculateHelper->dispatch();
 
 
