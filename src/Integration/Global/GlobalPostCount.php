@@ -22,7 +22,7 @@ class GlobalPostCount extends GlobalConditionDefinition
         $total = Post::query()->count();
         $posts = Post::query()->orderByDesc('created_at')->select(['created_at', 'discussion_id', 'type']);
         $progress = $this->commandContextHelper->getProgressBar($total);
-        $posts->chunk(100, function (Collection $posts) use (&$conditionAccumulation, &$progress) {
+        $posts->chunk(2000, function (Collection $posts) use (&$conditionAccumulation, &$progress) {
             foreach ($posts->getIterator() as $post) {
                 if ($post->type != 'comment')
                     return;
