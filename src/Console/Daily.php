@@ -9,6 +9,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Illuminate\Events\Dispatcher;
 use Xypp\Collector\Event\DailyUpdate;
 use Xypp\Collector\Helper\CommandContextHelper;
+use Xypp\Collector\Helper\SettingHelper;
+use Xypp\Collector\Helper\UpdateAndRecalculateHelper;
+use Xypp\LocalizeDate\Helper\CarbonZoneHelper;
 
 class Daily extends Command
 {
@@ -20,19 +23,33 @@ class Daily extends Command
     /**
      * @var string
      */
-    protected $description = 'Dispatch a event indicates that daily update is completed.';
+    protected $description = 'Execute daily update and dispatch daily update event.';
 
-    protected Dispatcher $events;
-    public function __construct(Dispatcher $events, CommandContextHelper $commandContextHelper)
+    private $settingHelper;
+    private $updateAndRecalculateHelper;
+    private $events;
+    private $carbonZoneHelper;
+    public function __construct(SettingHelper $settingHelper, UpdateAndRecalculateHelper $updateAndRecalculateHelper, Dispatcher $events, CarbonZoneHelper $carbonZoneHelper)
     {
         parent::__construct();
+        $this->settingHelper = $settingHelper;
+        $this->updateAndRecalculateHelper = $updateAndRecalculateHelper;
         $this->events = $events;
-        $commandContextHelper->setCommand($this);
+        $this->carbonZoneHelper = $carbonZoneHelper;
     }
     public function handle()
     {
-        $this->info("Daily update dispatched");
-        $this->events->dispatch(new DailyUpdate());
-        $this->info("Done");
+        if ($this->settingHelper->autoUpdate())
+            if ($this->carbonZoneHelper->now()->hour == $this->settingHelper->autoUpdateHour()) {
+                $this->updateAndRecalculateHelper
+                    ->reConfig()
+                    ->abs(false)
+                    ->overwrite(false)
+                    ->updateGlobal()
+                    ->update()
+                    ->dispatch();
+
+                $this->events->dispatch(new DailyUpdate());
+            }
     }
 }

@@ -11,13 +11,17 @@ class CommandContextHelper
     {
         $this->commandContext = $command;
     }
+    public function clearCommand()
+    {
+        $this->commandContext = null;
+    }
     public function getCommand(): ?Command
     {
         return $this->commandContext;
     }
     public function withProgressBar($iter, $callback)
     {
-        if ($this->commandContext) {
+        if ($this->commandContext && !$this->commandContext->isHidden()) {
             $this->commandContext->withProgressBar($iter, $callback);
             return;
         }

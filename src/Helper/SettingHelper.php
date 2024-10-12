@@ -48,4 +48,8 @@ class SettingHelper
     {
         return $this->settings->get("xypp.collector.auto_update") ?? false;
     }
+    public function autoUpdateHour()
+    {
+        return $this->settings->get("xypp.collector.auto_update_hour") ?? 0;
+    }
 }

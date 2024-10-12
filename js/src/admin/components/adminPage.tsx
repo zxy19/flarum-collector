@@ -108,6 +108,12 @@ export default class adminPage extends ExtensionPage {
                     label: app.translator.trans('xypp-collector.admin.auto_update'),
                     type: "boolean"
                 })
+            }{
+                this.buildSettingComponent({
+                    setting: "xypp.collector.auto_update_hour",
+                    label: app.translator.trans('xypp-collector.admin.auto_update_hour'),
+                    type: "number"
+                })
             }
             {this.submitButton()}
 
