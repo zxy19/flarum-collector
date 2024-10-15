@@ -17,8 +17,8 @@ class ModeratorWarnings
     }
     public function checks(string $source, Warning $model, ServerRequestInterface $request)
     {
-        $user = RequestUtil::getActor($request);
-        $model->user_id = $user->id;
+        $user = $model->warnedUser;
+        
         if ($source === "create") {
             $this->events->dispatch(
                 new UpdateCondition(
