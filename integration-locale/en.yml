@@ -19,7 +19,6 @@ xypp-collector:
         valid_post_count: "Valid Post Count"
         valid_discussion_count: "Valid Discussion Count"
         moderator_warnings: "Moderator Warnings"
-        
         money: "Money"
       global-condition:
         post_count: "Global Post Count"
@@ -39,5 +38,10 @@ xypp-collector:
         badge_error: "Not Found"
         badge_select: "Select Badge"
         badge_select_button: "Select"
+        group: "Group"
+        group_loading: "..."
+        group_error: "Not Found"
+        group_select: "Select Group"
+        group_select_button: "Select"
   admin:
     valid_tag: "Valid Tags"

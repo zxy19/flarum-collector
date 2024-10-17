@@ -35,6 +35,7 @@ use Xypp\Collector\Integration\Global\GlobalLike;
 use Xypp\Collector\Integration\Rewards\BadgeReward;
 use Xypp\Collector\Integration\Rewards\MoneyReward;
 use Xypp\Collector\Integration\Rewards\StoreItemReward;
+use Xypp\Collector\Integration\Rewards\UserGroupReward;
 use Xypp\Collector\RewardDefinition;
 
 class CollectorServiceProvider extends AbstractServiceProvider
@@ -112,6 +113,8 @@ class CollectorServiceProvider extends AbstractServiceProvider
             );
 
             $extensionManager = resolve(ExtensionManager::class);
+
+            $collector->addDefinition($container->make(UserGroupReward::class));
 
             // Integrate with AntoineFr/money
             if ($extensionManager->isEnabled("antoinefr-money"))

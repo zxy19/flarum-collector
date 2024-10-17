@@ -32,5 +32,10 @@ xypp-collector:
         badge_error: "未找到徽章"
         badge_select: "选择徽章"
         badge_select_button: "选择"
+        group: "用户组"
+        group_loading: "..."
+        group_error: "未找到用户组"
+        group_select: "选择用户组"
+        group_select_button: "选择"
   admin:
     valid_tag: "有效标签"

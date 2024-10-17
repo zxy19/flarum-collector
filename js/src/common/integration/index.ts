@@ -5,6 +5,8 @@ import commonSelectionModal from "../components/commonSelectionModal";
 
 export function init(app: ForumApplication | AdminApplication, fe: string) {
     const base = `xypp-collector.${fe}.integration`
+    addGroup(app, base);
+
     if (flarum.extensions['xypp-store'])
         addStoreItem(app, base);
 
@@ -77,5 +79,39 @@ function addBadge(app: ForumApplication | AdminApplication, base: string) {
             itemsMap,
             app.translator.trans(`${base}.reward.badge_select`) as string,
             app.translator.trans(`${base}.reward.badge_select_button`) as string);
+    });
+}
+
+function addGroup(app: ForumApplication | AdminApplication, base: string) {
+    const storeItemLoadingMap: Record<string, boolean> = {}
+    rewardValueConvert("group", function (value: string) {
+        const item = app.store.getById("groups", value);
+        if (!item) {
+            if (storeItemLoadingMap[value] === undefined) {
+                storeItemLoadingMap[value] = true;
+                app.store.find("groups", value).then(() => {
+                    m.redraw();
+                }).catch(() => {
+                    storeItemLoadingMap[value] = false;
+                });
+                return app.translator.trans(`${base}.reward.group_loading`) + "";
+            } else if (storeItemLoadingMap[value] === false) {
+                return app.translator.trans(`${base}.reward.group_error`) + "";
+            } else {
+                return app.translator.trans(`${base}.reward.group_loading`) + "";
+            }
+        }
+        return item.attribute("nameSingular");
+    });
+    addRewardSelection("group", async () => {
+        const items = await app.store.find("groups") as unknown as any[];
+        const itemsMap = items.reduce((map, item) => {
+            map[item.id()] = item.attribute("nameSingular");
+            return map;
+        }, {} as Record<string, string>);
+        return await commonSelectionModal.open(app,
+            itemsMap,
+            app.translator.trans(`${base}.reward.group_select`) as string,
+            app.translator.trans(`${base}.reward.group_select_button`) as string);
     });
 }
