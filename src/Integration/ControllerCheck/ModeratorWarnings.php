@@ -18,12 +18,18 @@ class ModeratorWarnings
     public function checks(string $source, Warning $model, ServerRequestInterface $request)
     {
         $user = $model->warnedUser;
-        
+
         if ($source === "create") {
             $this->events->dispatch(
                 new UpdateCondition(
                     $user,
                     [new ConditionData('moderator_warnings', 1)]
+                )
+            );
+            $this->events->dispatch(
+                new UpdateCondition(
+                    $user,
+                    [new ConditionData('moderator_warning_strikes', $model->strikes)]
                 )
             );
         } else if ($source === "delete") {
@@ -34,6 +40,12 @@ class ModeratorWarnings
                         [new ConditionData('moderator_warnings', -1)]
                     )
                 );
+                $this->events->dispatch(
+                    new UpdateCondition(
+                        $user,
+                        [new ConditionData('moderator_warning_strikes', -1 * $model->strikes)]
+                    )
+                );
             }
         } else if ($source === "update") {
             $requestBody = $request->getParsedBody();
@@ -42,6 +54,12 @@ class ModeratorWarnings
                 new UpdateCondition(
                     $user,
                     [new ConditionData('moderator_warnings', $requestData['isHidden'] ? -1 : 1)]
+                )
+            );
+            $this->events->dispatch(
+                new UpdateCondition(
+                    $user,
+                    [new ConditionData('moderator_warning_strikes', ($requestData['isHidden'] ? -1 : 1) * $model->strikes)]
                 )
             );
         }

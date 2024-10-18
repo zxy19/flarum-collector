@@ -22,6 +22,7 @@ use Xypp\Collector\Integration\Conditions\DiscussionViews;
 use Xypp\Collector\Integration\Conditions\LikeRecv;
 use Xypp\Collector\Integration\Conditions\LikeSend;
 use Xypp\Collector\Integration\Conditions\ModeratorWarnings;
+use Xypp\Collector\Integration\Conditions\ModeratorWarningStrikes;
 use Xypp\Collector\Integration\Conditions\Money;
 use Xypp\Collector\Integration\Conditions\PostCount;
 use Xypp\Collector\Integration\Conditions\StoreItemPurchase;
@@ -104,6 +105,7 @@ class CollectorServiceProvider extends AbstractServiceProvider
 
             if ($extensionManager->isEnabled("askvortsov-moderator-warnings")) {
                 $collector->addDefinition($container->make(ModeratorWarnings::class));
+                $collector->addDefinition($container->make(ModeratorWarningStrikes::class));
             }
             return $collector;
         });
