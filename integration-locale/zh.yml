@@ -19,6 +19,7 @@ xypp-collector:
         valid_post_count: "有效发帖数"
         valid_discussion_count: "有效讨论数"
         moderator_warnings: "警告"
+        moderator_warning_strikes: "警告点数"
         money: "货币"
       reward:
         money: "货币"

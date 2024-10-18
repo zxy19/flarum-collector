@@ -19,6 +19,7 @@ xypp-collector:
         valid_post_count: "Valid Post Count"
         valid_discussion_count: "Valid Discussion Count"
         moderator_warnings: "Moderator Warnings"
+        moderator_warning_strikes: "Moderator Warnings Strikes"
         money: "Money"
       global-condition:
         post_count: "Global Post Count"
