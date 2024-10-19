@@ -17,7 +17,7 @@ class BadgeReward extends RewardDefinition
     private NotificationSyncer $notifications;
     public function __construct(NotificationSyncer $notifications)
     {
-        parent::__construct("badge",null,"xypp-collector.ref.integration.reward.badge");
+        parent::__construct("badge", null, "xypp-collector.ref.integration.reward.badge");
         $this->notifications = $notifications;
     }
     public function perform(\Flarum\User\User $user, $value): bool
@@ -25,6 +25,10 @@ class BadgeReward extends RewardDefinition
         if (!Badge::find($value)->exists()) {
             return false;
         }
+        if (UserBadge::where('user_id', $user->id)->where('badge_id', $value)->exists()) {
+            return true;
+        }
+
         $badge = UserBadge::build($user->id, $value);
         $badge->save();
 
