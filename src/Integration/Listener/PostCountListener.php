@@ -35,7 +35,7 @@ class PostCountListener
             return;
         if ($event->post->discussion->hidden_at)
             return;
-        $this->postCondition($event->actor, $event->post, 1);
+        $this->postCondition($event->post->user, $event->post, 1);
     }
     public function hidden(Hidden $event)
     {
@@ -43,7 +43,7 @@ class PostCountListener
             return;
         if ($event->post->discussion->hidden_at)
             return;
-        $this->postCondition($event->actor, $event->post, -1);
+        $this->postCondition($event->post->user, $event->post, -1);
     }
     public function delete(Deleted $event)
     {
@@ -52,7 +52,7 @@ class PostCountListener
         if ($event->post->discussion->hidden_at)
             return;
         if (!$event->post->hidden_at)
-            $this->postCondition($event->actor, $event->post, -1);
+            $this->postCondition($event->post->user, $event->post, -1);
     }
 
     protected function postCondition(User $user, Post $post, int $amount)

@@ -31,23 +31,23 @@ class DiscussionCountListener
     }
     public function startOrRestore(Started|Restored $event)
     {
-        $this->discussionCondition($event->actor, $event->discussion, 1);
+        $this->discussionCondition($event->discussion->user, $event->discussion, 1);
         if ($event instanceof Restored) {
-            $this->discussionPostCondition($event->actor, $event->discussion, 1);
+            $this->discussionPostCondition($event->discussion->user, $event->discussion, 1);
         }
     }
 
     public function hidden(Hidden $event)
     {
-        $this->discussionCondition($event->actor, $event->discussion, -1);
-        $this->discussionPostCondition($event->actor, $event->discussion, -1);
+        $this->discussionCondition($event->discussion->user, $event->discussion, -1);
+        $this->discussionPostCondition($event->discussion->user, $event->discussion, -1);
     }
     public function deleted(Deleted $event)
     {
         if ($event->discussion->hidden_at)
             return;
-        $this->discussionCondition($event->actor, $event->discussion, -1);
-        $this->discussionPostCondition($event->actor, $event->discussion, -1);
+        $this->discussionCondition($event->discussion->user, $event->discussion, -1);
+        $this->discussionPostCondition($event->discussion->user, $event->discussion, -1);
     }
 
     public function discussionCondition(User $user, Discussion $discussion, int $amount)

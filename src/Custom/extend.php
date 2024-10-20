@@ -7,8 +7,7 @@ use Xypp\LocalizeDate\Event\DateChangeEvent;
 
 return [
     (new Extend\Event)
-        ->subscribe(ChangeListener::class)
-        ->listen(DateChangeEvent::class, DateChangeListener::class),
+        ->subscribe(ChangeListener::class),
     (new Extend\Settings)
         ->default("xypp.collector.custom-global-update", false)
         ->default("xypp.collector.use_custom", false),
