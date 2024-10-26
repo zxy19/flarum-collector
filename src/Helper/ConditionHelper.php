@@ -65,14 +65,16 @@ class ConditionHelper
     {
         return $this->checkCondition($data['name'], $data['operator'], $data['value'], isset($data['span']) ? $data['span'] : null, $data['calculate'], $condition);
     }
-    public function checkCondition(string $name, string $operator, int $value, ?int $span, ?int $calculate, Condition $condition): bool
+    public function checkCondition(string $name, string $operator, int $value, ?int $span, ?int $calculate, ?Condition $condition): bool
     {
         $currentTime = $this->cz->now();
         $conditionDefine = $this->collection->getConditionDefinition($name);
-        if (!$condition) {
+        if (!$conditionDefine) {
             return false;
         }
-        if ($span)
+        if (!$condition)
+            $currentValue = 0;
+        else if ($span)
             $currentValue = $condition->getAccumulation()->getSpan($currentTime, $span, intval($calculate));
         else {
             $currentValue = $condition->getAccumulation()->getTotal($calculate);
