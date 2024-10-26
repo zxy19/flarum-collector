@@ -5,9 +5,11 @@ namespace Xypp\Collector\Console;
 use Carbon\Carbon;
 use Flarum\User\User;
 use Illuminate\Console\Command;
+use Illuminate\Events\Dispatcher;
 use Symfony\Component\Console\Input\InputArgument;
 
 use Xypp\Collector\Data\ConditionAccumulation;
+use Xypp\Collector\Event\DebugInfo;
 use Xypp\Collector\Helper\ConditionHelper;
 use Xypp\Collector\Condition;
 use Xypp\LocalizeDate\Helper\CarbonZoneHelper;
@@ -25,12 +27,14 @@ class Debug extends Command
 
     protected ConditionHelper $conditionHelper;
     public CarbonZoneHelper $cz;
+    protected Dispatcher $dispatcher;
 
-    public function __construct(CarbonZoneHelper $carbonZoneHelper, ConditionHelper $conditionHelper)
+    public function __construct(CarbonZoneHelper $carbonZoneHelper, ConditionHelper $conditionHelper, Dispatcher $dispatcher)
     {
         parent::__construct();
         $this->conditionHelper = $conditionHelper;
         $this->cz = $carbonZoneHelper;
+        $this->dispatcher = $dispatcher;
         $this->addArgument("id", InputArgument::REQUIRED, "UserId");
     }
     public function handle()
@@ -53,6 +57,8 @@ class Debug extends Command
             $this->info("Accumulation(5 days): " . $accumulation->getSpan($now, 5, intval($condition->calculate)));
             $this->info("Accumulation(Total): " . $accumulation->getTotal(intval($condition->calculate)));
         });
+
+        $this->dispatcher->dispatch(new DebugInfo($user, $this));
     }
 
     protected function getValue(int $span, Condition $condition): ?int
