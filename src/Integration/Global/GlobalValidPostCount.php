@@ -31,7 +31,7 @@ class GlobalValidPostCount extends GlobalConditionDefinition
                     return;
                 if ($post->hidden_at)
                     return;
-                if ($this->helper->isAllTagValid($post->discussion->tags))
+                if ($this->helper->isAllTagValid($post->discussion->tags, "post"))
                     $conditionAccumulation->updateValue($post->created_at, 1);
             }
             if ($progress)

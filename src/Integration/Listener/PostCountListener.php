@@ -70,7 +70,7 @@ class PostCountListener
         );
 
         if (class_exists(\Flarum\Tags\Tag::class)) {
-            if ($this->helper->isAllTagValid($post->discussion->tags)) {
+            if ($this->helper->isAllTagValid($post->discussion->tags, "post")) {
                 $this->events->dispatch(
                     new UpdateCondition(
                         $user,

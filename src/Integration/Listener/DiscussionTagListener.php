@@ -40,8 +40,8 @@ class DiscussionTagListener
             $newTags = Tag::whereIn('id', $newTagIds)->get();
             $oldTags = $event->discussion->tags()->get();
 
-            $newValid = $this->helper->isAllTagValid($newTags);
-            $oldValid = $this->helper->isAllTagValid($oldTags);
+            $newValid = $this->helper->isAllTagValid($newTags, "discussion");
+            $oldValid = $this->helper->isAllTagValid($oldTags, "discussion");
             if ($newValid && !$oldValid)
                 $this->updateTagCount($event->discussion, $newValid ? 1 : -1);
         }

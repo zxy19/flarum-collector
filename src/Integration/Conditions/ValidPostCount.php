@@ -26,7 +26,7 @@ class ValidPostCount extends ConditionDefinition
                 continue;
             if ($post->hidden_at)
                 continue;
-            if ($this->helper->isAllTagValid($post->discussion->tags))
+            if ($this->helper->isAllTagValid($post->discussion->tags, "post"))
                 $conditionAccumulation->updateValue($post->created_at, 1);
         }
         if (!$conditionAccumulation->dirty)

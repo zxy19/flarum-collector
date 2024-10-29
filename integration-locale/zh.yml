@@ -39,4 +39,5 @@ xypp-collector:
         group_select: "选择用户组"
         group_select_button: "选择"
   admin:
-    valid_tag: "有效标签"
+    valid_tag_discussion: "有效标签（讨论）"
+    valid_tag_post: "有效标签（帖子）"

@@ -25,7 +25,7 @@ class GlobalValidDiscussionCount extends GlobalConditionDefinition
         $this->commandContextHelper->withProgressBar($discussions, function ($discuss) use (&$conditionAccumulation) {
             if ($discuss->hidden_at)
                 return;
-            if ($this->helper->isAllTagValid($discuss->tags))
+            if ($this->helper->isAllTagValid($discuss->tags, "discussion"))
                 $conditionAccumulation->updateValue($discuss->created_at, 1);
 
         });

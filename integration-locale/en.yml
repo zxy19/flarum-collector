@@ -45,4 +45,5 @@ xypp-collector:
         group_select: "Select Group"
         group_select_button: "Select"
   admin:
-    valid_tag: "Valid Tags"
+    valid_tag_discussion: "Valid Tags (Discussion)"
+    valid_tag_post: "Valid Tags (Post)"

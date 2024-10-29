@@ -24,7 +24,7 @@ class ValidDiscussionCount extends ConditionDefinition
         foreach ($discussions as $discuss) {
             if ($discuss->hidden_at)
                 continue;
-            if ($this->helper->isAllTagValid($discuss->tags))
+            if ($this->helper->isAllTagValid($discuss->tags, "discussion"))
                 $conditionAccumulation->updateValue($discuss->created_at, 1);
         }
         if (!$conditionAccumulation->dirty)

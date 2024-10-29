@@ -17,7 +17,7 @@ export default class adminPage extends ExtensionPage {
     autoEmit?: Stream<string>
     autoEmitObj: Record<string, Record<string, boolean>> = {};
     invalidTags?: Stream<string>;
-    invalidTagsObj: Record<string, boolean> = {};
+    invalidTagsObj: Record<string, boolean | string[]> = {};
     customs?: CustomCondition[];
     deletingCustom: Record<string, boolean> = {};
     oncreate(vnode: any): void {
@@ -68,9 +68,15 @@ export default class adminPage extends ExtensionPage {
             {showIf(this.loadingData, <LoadingIndicator />)}
             {this.submitButton()}
             <div className="Form-group valid-tags">
-                <h3>{app.translator.trans("xypp-collector.admin.valid_tag")}</h3>
+                <h3>{app.translator.trans("xypp-collector.admin.valid_tag_discussion")}</h3>
                 <div className="xypp-collector-valid-tags-check">
-                    {this.getValidTags()}
+                    {this.getValidTagsDiscussion()}
+                </div>
+            </div>
+            <div className="Form-group valid-tags">
+                <h3>{app.translator.trans("xypp-collector.admin.valid_tag_post")}</h3>
+                <div className="xypp-collector-valid-tags-check">
+                    {this.getValidTagsPost()}
                 </div>
             </div>
             {
@@ -259,18 +265,48 @@ export default class adminPage extends ExtensionPage {
         }).bind(this);
     }
 
-    getValidTags() {
+    getValidTagsDiscussion() {
         return app.store.all<Tag>("tags").map(tag => {
-            return <Checkbox onchange={this.changeValidTagsStateCbMaker(tag)} state={!this.invalidTagsObj[tag.id() || 0]}>
+            return <Checkbox onchange={this.changeValidTagsStateCbMaker(tag, "discussion")} state={this.isValidTags(tag.id() || "0", "discussion")}>
                 {tag.name()}
             </Checkbox>
         })
     }
+    getValidTagsPost() {
+        return app.store.all<Tag>("tags").map(tag => {
+            return <Checkbox onchange={this.changeValidTagsStateCbMaker(tag, "post")} state={this.isValidTags(tag.id() || "0", "post")}>
+                {tag.name()}
+            </Checkbox>
+        })
+    }
+    isValidTags(tagId: string, source: string) {
+        if (this.invalidTagsObj[tagId || 0] === true) return false;
+        else if (Array.isArray(this.invalidTagsObj[tagId || 0]))
+            return !((this.invalidTagsObj[tagId || 0] as string[]).includes(source));
 
-    changeValidTagsStateCbMaker(tag: Tag) {
+        return true;
+    }
+    changeValidTagsStateCbMaker(tag: Tag, source: string) {
         return ((e: boolean) => {
-            if (!e) this.invalidTagsObj[tag.id() || 0] = true;
-            else if (this.invalidTagsObj[tag.id() || 0]) delete this.invalidTagsObj[tag.id() || 0];
+            const id = tag.id() || "0";
+            // Backward compatibility
+            if (!Array.isArray(this.invalidTagsObj[id])) {
+                if (this.invalidTagsObj[id] === true) {
+                    this.invalidTagsObj[id] = ["post", "discussion"];
+                } else {
+                    this.invalidTagsObj[id] = [];
+                }
+            }
+
+            if (!e) {
+                if (!(this.invalidTagsObj[id] as string[]).includes(source))
+                    (this.invalidTagsObj[id] as string[]).push(source);
+            } else {
+                if ((this.invalidTagsObj[id] as string[]).includes(source))
+                    this.invalidTagsObj[id] = (this.invalidTagsObj[id] as string[]).filter(s => s != source);
+                if ((this.invalidTagsObj[id] as string[]).length == 0)
+                    delete this.invalidTagsObj[id];
+            }
             this.invalidTags!(JSON.stringify(this.invalidTagsObj));
         }).bind(this);
     }

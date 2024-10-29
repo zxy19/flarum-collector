@@ -64,7 +64,7 @@ class DiscussionCountListener
             )
         );
         if (class_exists(\Flarum\Tags\Tag::class)) {
-            if ($this->helper->isAllTagValid($discussion->tags)) {
+            if ($this->helper->isAllTagValid($discussion->tags, "discussion")) {
                 $this->events->dispatch(
                     new UpdateCondition(
                         $user,
@@ -83,7 +83,7 @@ class DiscussionCountListener
     {
         $updateValid = false;
         if (class_exists(\Flarum\Tags\Tag::class)) {
-            if ($this->helper->isAllTagValid($discussion->tags))
+            if ($this->helper->isAllTagValid($discussion->tags, "discussion"))
                 $updateValid = true;
         }
 

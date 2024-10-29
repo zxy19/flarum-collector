@@ -20,13 +20,19 @@ class ValidTagsHelper
         return $this->invalidTags;
     }
 
-    public function isAllTagValid($tags): bool
+    public function isAllTagValid($tags, $source): bool
     {
         if (count($tags)) {
             $invalidTags = $this->getInvalidTags();
             foreach ($tags as $tag) {
-                if (isset($invalidTags[$tag->id]) && $invalidTags[$tag->id])
-                    return false;
+                if (isset($invalidTags[$tag->id])) {
+                    if ($invalidTags[$tag->id] === true)
+                        return false;
+                    else if (is_array($invalidTags[$tag->id])) {
+                        if (in_array($source, $invalidTags[$tag->id]))
+                            return false;
+                    }
+                }
             }
         }
         return true;
