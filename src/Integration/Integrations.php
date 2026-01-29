@@ -11,6 +11,7 @@ use Xypp\Collector\Integration\Listener\BestAnswerListener;
 use Xypp\Collector\Integration\Listener\DiscussionCountListener;
 use Xypp\Collector\Integration\Listener\DiscussionTagListener;
 use Xypp\Collector\Integration\Listener\DiscussionViewed;
+use Xypp\Collector\Integration\Listener\DiscussionViewedByUserListener;
 use Xypp\Collector\Integration\Listener\LikeEventsListener;
 use Xypp\Collector\Integration\Listener\MoneyChangeListener;
 use Xypp\Collector\Integration\Listener\PostCountListener;
@@ -28,6 +29,7 @@ $ret = [
         ->listen(MoneyUpdated::class, MoneyChangeListener::class)
         //Integrate with michaelbelgium/flarum-discussion-views
         ->listen(DiscussionWasViewed::class, DiscussionViewed::class)
+        ->listen(DiscussionWasViewed::class, DiscussionViewedByUserListener::class)
         //Integrate with xypp/store
         ->listen(PurchaseDone::class, StoreEventListener::class)
         //Integrate with flarum/likes

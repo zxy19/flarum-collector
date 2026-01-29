@@ -11,6 +11,7 @@ xypp-collector:
         store_purchased: "Store Purchased"
         discussion_replied: "Discussion Replied"
         discussion_views: "Discussion was view"
+        discussion_viewed_by_user: "Discussions Viewed"
         badge_received: "Badge Received"
         email_changed: "Change Email"
         avatar_changed: "Change Avatar"

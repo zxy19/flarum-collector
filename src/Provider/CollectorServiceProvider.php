@@ -19,6 +19,7 @@ use Xypp\Collector\Integration\Conditions\BestAnswer;
 use Xypp\Collector\Integration\Conditions\DiscussionCount;
 use Xypp\Collector\Integration\Conditions\DiscussionReplied;
 use Xypp\Collector\Integration\Conditions\DiscussionViews;
+use Xypp\Collector\Integration\Conditions\DiscussionViewedByUser;
 use Xypp\Collector\Integration\Conditions\LikeRecv;
 use Xypp\Collector\Integration\Conditions\LikeSend;
 use Xypp\Collector\Integration\Conditions\ModeratorWarnings;
@@ -74,8 +75,10 @@ class CollectorServiceProvider extends AbstractServiceProvider
                 $collector->addDefinition($container->make(Money::class));
 
             // Integrate with michaelbelgium/flarum-discussion-views
-            if ($extensionManager->isEnabled("michaelbelgium-discussion-views"))
+            if ($extensionManager->isEnabled("michaelbelgium-discussion-views")) {
                 $collector->addDefinition($container->make(DiscussionViews::class));
+                $collector->addDefinition($container->make(DiscussionViewedByUser::class));
+            }
 
             // Integrate with flarum-likes
             if ($extensionManager->isEnabled("flarum-likes")) {
